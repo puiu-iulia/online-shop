@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, Platform, ActivityIndicator, View, StyleSheet, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { withBadge } from 'react-native-elements';
 
 import HeaderButton from '../components/HeaderButton';
 import Order from '../components/Order';
@@ -12,7 +13,12 @@ const OrdersScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   // console.log(isLoading);
   const orders = useSelector(state => state.orders.orders);
+  const totalItems = useSelector(state => state.cart.totalItems);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    props.navigation.setParams({totalItems: totalItems});
+  }, [totalItems]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -53,6 +59,14 @@ const OrdersScreen = props => {
 };
 
 OrdersScreen.navigationOptions = navData => {
+  const itemsCount = navData.navigation.getParam('totalItems');
+  const ItemsCart = withBadge(itemsCount, {
+    bottom: 12,
+    right: 0,
+    badgeStyle: {
+      backgroundColor: Colors.accent
+    }
+  })(HeaderButton);
   return {
     headerTitle: 'Comenzile Tale',
     headerLeft: (
@@ -72,7 +86,9 @@ OrdersScreen.navigationOptions = navData => {
       </HeaderButtons>
     ),
     headerRight: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      <HeaderButtons 
+      HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}
+      >
         <Item
           title="Cart"
           iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}

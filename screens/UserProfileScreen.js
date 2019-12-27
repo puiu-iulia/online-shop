@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, Button, TextInput, Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useSelector, useDispatch } from 'react-redux';
+import { withBadge } from 'react-native-elements';
 
 import HeaderButton from '../components/HeaderButton';
 import Colors from '../constants/Colors';
 
 const UserProfileScreen = props => {
+
+  const totalItems = useSelector(state => state.cart.totalItems);
+
+  useEffect(() => {
+    props.navigation.setParams({totalItems: totalItems});
+  }, [totalItems]);
+
   return (
     <ScrollView>
       <View style={styles.dataContainer}>
@@ -68,6 +77,15 @@ const styles = StyleSheet.create({
 });
 
 UserProfileScreen.navigationOptions = navData => {
+  const itemsCount = navData.navigation.getParam('totalItems');
+  const ItemsCart = withBadge(itemsCount, {
+    bottom: 12,
+    right: 0,
+    badgeStyle: {
+      backgroundColor: Colors.accent
+    }
+  })(HeaderButton);
+
   return {
     headerTitle: "Profilul Meu",
     headerLeft: (
@@ -82,7 +100,9 @@ UserProfileScreen.navigationOptions = navData => {
       </HeaderButtons>
     ),
     headerRight: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      <HeaderButtons 
+      HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}
+      >
         <Item
           title="Cart"
           iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
