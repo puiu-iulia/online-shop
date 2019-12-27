@@ -35,10 +35,14 @@ const formReducer = (state, action) => {
     return state;
   };
 
+
+
 const PlaceOrderScreen = props => {
     const [error, setError] = useState();
     const [county, setCounty] = useState();
     const [town, setTown] = useState();
+    const [billingCounty, setBillingCounty] = useState();
+    const [billingTown, setBillingTown] = useState();
     const dispatch = useDispatch();
 
     const countyData = [];
@@ -48,18 +52,26 @@ const PlaceOrderScreen = props => {
     }
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
-          name: '',
+          billingName: '',
           emailAddress: '',
           address: '',
+          billingPhoneNumber: '',
           phoneNumber: '',
-          town
+          town: '',
+          billingAddress: '',
+          billingTown: '',
+          name: ''
         },
         inputValidities: {
+          billingName: '',
+          billingPhoneNumber: '',
           name: '',
           emailAddress: '',
           address: '',
           phoneNumber: '',
-          town
+          town: '',
+          billingAddress: '',
+          billingTown: ''
         },
         formIsValid: false
     });
@@ -108,10 +120,11 @@ const PlaceOrderScreen = props => {
 
     return (
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
-                <View style={styles.orderContainer}>
-                    <ScrollView>
+          <ScrollView style={styles.orderContainer}>
+                <View style={styles.orderContainer}>  
+                      <View style={styles.centered}><Text>Date facturare:</Text></View> 
                         <Input
-                           id="name"
+                           id="billingName"
                            label="Nume"
                            keyboardType="default"
                            required
@@ -132,6 +145,67 @@ const PlaceOrderScreen = props => {
                             initialValue=''
                         />
                         <Input
+                            id="billingPhoneNumber"
+                            label="Numar de Telefon"
+                            keyboardType="number-pad"
+                            secureTextEntry
+                            required
+                            minLength={8}
+                            autoCapitalize="none"
+                            errorText="Introdu un numar de telefon valid."
+                            onInputChange={inputChangeHandler}
+                            initialValue=''
+                        />
+                         <View style={styles.countyContainer}>
+                          <Text>Judet </Text>
+                          <Picker
+                              style={styles.countyPicker}
+                              mode="dropdown"
+                              selectedValue={billingCounty}
+                              onValueChange={(billingCounty)=> {
+                                setCounty(billingCounty);
+                              }}
+                            >
+                              {countyData.map((item, index) => {
+                                return (<Picker.Item label={item} value={index} key={index}/>) 
+                              })}
+                            </Picker>
+                        </View>
+                        <Input
+                              id="billingTown"
+                              label="Localitate"
+                              keyboardType="default"
+                              required
+                              autoCapitalize="words"
+                              errorText="Introdu localitatea."
+                              onInputChange={inputChangeHandler}
+                              initialValue=''
+                          />
+                          <Input
+                              id="billingAddress"
+                              label="Adresa"
+                              keyboardType="default"
+                              required
+                              placeholder="Strada, numar, alte detalii..."
+                              autoCapitalize="none"
+                              errorText="Introdu o adresa valida."
+                              onInputChange={inputChangeHandler}
+                              initialValue=''
+                          />
+                        
+                        <View style={styles.centered}><Text>Date livrare:</Text></View> 
+
+                        <Input
+                           id="name"
+                           label="Nume"
+                           keyboardType="default"
+                           required
+                           autoCapitalize="words"
+                           errorText="Introdu numele tau."
+                           onInputChange={inputChangeHandler}
+                           initialValue=''
+                        />
+                          <Input
                             id="phoneNumber"
                             label="Numar de Telefon"
                             keyboardType="number-pad"
@@ -146,39 +220,40 @@ const PlaceOrderScreen = props => {
                         <View style={styles.countyContainer}>
                           <Text>Judet </Text>
                           <Picker
-                            style={styles.countyPicker}
-                            mode="dropdown"
-                            selectedValue={county}
-                            onValueChange={(county)=> {
-                              setCounty(county);
-                            }}
-                          >
-                            {countyData.map((item, index) => {
-                              return (<Picker.Item label={item} value={index} key={index}/>) 
-                            })}
-                          </Picker>
+                              style={styles.countyPicker}
+                              mode="dropdown"
+                              selectedValue={county}
+                              onValueChange={(county)=> {
+                                setCounty(county);
+                              }}
+                            >
+                              {countyData.map((item, index) => {
+                                return (<Picker.Item label={item} value={index} key={index}/>) 
+                              })}
+                            </Picker>
                         </View>
                         <Input
-                           id="town"
-                           label="Localitate"
-                           keyboardType="default"
-                           required
-                           autoCapitalize="words"
-                           errorText="Introdu localitatea."
-                           onInputChange={inputChangeHandler}
-                           initialValue=''
-                        />
-                        <Input
-                            id="address"
-                            label="Adresa"
-                            keyboardType="default"
-                            required
-                            placeholder="Strada, numar, alte detalii..."
-                            autoCapitalize="none"
-                            errorText="Introdu o adresa valida."
-                            onInputChange={inputChangeHandler}
-                            initialValue=''
-                        />
+                              id="town"
+                              label="Localitate"
+                              keyboardType="default"
+                              required
+                              autoCapitalize="words"
+                              errorText="Introdu localitatea."
+                              onInputChange={inputChangeHandler}
+                              initialValue=''
+                          />
+                          <Input
+                              id="address"
+                              label="Adresa"
+                              keyboardType="default"
+                              required
+                              placeholder="Strada, numar, alte detalii..."
+                              autoCapitalize="none"
+                              errorText="Introdu o adresa valida."
+                              onInputChange={inputChangeHandler}
+                              initialValue=''
+                          />
+       
                         <View style={styles.orderSummary}>
                           <Text style={styles.orderSummaryText}>Total de plata: {Math.round(props.navigation.getParam('totalAmount') * 100) / 100} RON</Text>
                         </View>
@@ -189,8 +264,9 @@ const PlaceOrderScreen = props => {
                               onPress={() => {payHandler}} 
                             />
                         </View>   
-                    </ScrollView>
+                    
                 </View>
+              </ScrollView>
         </KeyboardAvoidingView>
        
     );
@@ -206,8 +282,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     orderContainer: {
-        width: '96%',
-        padding: 10
+        width: '100%',
+        paddingHorizontal: 10
     },
     orderSummary: {
       flex: 1,
@@ -215,7 +291,7 @@ const styles = StyleSheet.create({
       marginTop: 20
     },
     buttonContainer: {
-        marginTop: 16
+        marginVertical: 16
     }, 
     orderSummaryText: {
       fontSize: 20
@@ -225,6 +301,12 @@ const styles = StyleSheet.create({
     },
     countyPicker: {
       padding: 0
+    }, 
+    centered: {
+      flex: 1,
+      marginVertical: 8,
+      alignItems: 'center',
+      justifyContent: 'center'
     }
 });
 
