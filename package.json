@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "braces": "^3.0.2",
     "expo": "^35.0.0",
     "expo-linear-gradient": "^7.0.1",
     "mem": "^4.0.0",
