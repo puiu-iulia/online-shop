@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button, TextInput, Platform } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button, Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 import { withBadge } from 'react-native-elements';
@@ -25,16 +25,7 @@ const UserProfileScreen = props => {
         <View style={styles.nameContainer}>
           <Text>Email:</Text>
           <Text>Nume@yahoo.com</Text>
-        </View>
-        <View style={styles.ordersButton}>
-          <Button 
-              color={Colors.primary}
-              title="Editeaza"
-              onPress={() => {
-                
-              }} 
-          />
-        </View>   
+        </View>  
       </View>
       <View style={styles.ordersButton}>
         <Button
@@ -73,6 +64,9 @@ const styles = StyleSheet.create({
   ordersButton: {
     marginHorizontal: 32,
     marginVertical: 8
+  },
+  cart: {
+    marginRight: 4
   }
 });
 
@@ -104,6 +98,7 @@ UserProfileScreen.navigationOptions = navData => {
       HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}
       >
         <Item
+          style={styles.cart}
           title="Cart"
           iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
           onPress={() => {

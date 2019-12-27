@@ -61,7 +61,7 @@ const OrdersScreen = props => {
 OrdersScreen.navigationOptions = navData => {
   const itemsCount = navData.navigation.getParam('totalItems');
   const ItemsCart = withBadge(itemsCount, {
-    bottom: 12,
+    bottom: 0,
     right: 0,
     badgeStyle: {
       backgroundColor: Colors.accent
@@ -90,6 +90,7 @@ OrdersScreen.navigationOptions = navData => {
       HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}
       >
         <Item
+          style={styles.car}
           title="Cart"
           iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
           onPress={() => {
@@ -106,6 +107,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  }, 
+  cart: {
+    marginRight: 4
   }
 })
 

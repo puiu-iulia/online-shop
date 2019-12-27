@@ -22,7 +22,7 @@ const Cart = props => {
               style={styles.deleteButton}
             >
               <FontAwesome
-                name={Platform.OS === 'android' ? 'minus-circle' : 'minus-circle'}
+                name={Platform.OS === 'android' ? 'minus-circle' : 'minus'}
                 size={36}
                 color='#08292F'
               />
@@ -35,7 +35,7 @@ const Cart = props => {
               style={styles.deleteButton}
             >
               <FontAwesome
-                name={Platform.OS === 'android' ? 'plus-circle' : 'plus-circle'}
+                name={Platform.OS === 'android' ? 'plus-circle' : 'plus'}
                 size={36}
                 color='#08292F'
               />
@@ -60,12 +60,14 @@ const styles = StyleSheet.create({
   },
   itemData: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignContent: 'center'
   },
   quantity: {
     // fontFamily: 'open-sans',
     color: '#888',
-    fontSize: 18
+    fontSize: 16
   },
   quantityContainer: {
     flexDirection: 'row',

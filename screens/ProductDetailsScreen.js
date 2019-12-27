@@ -92,7 +92,7 @@ const ProductDetailScreen = props => {
 ProductDetailScreen.navigationOptions = navData => {
   let itemsCount = navData.navigation.getParam('totalItemsCount');
   const ItemsCart = withBadge(itemsCount, {
-    bottom: 12,
+    bottom: 0,
     right: 0,
     badgeStyle: {
       backgroundColor: Colors.accent
@@ -103,6 +103,7 @@ ProductDetailScreen.navigationOptions = navData => {
     headerRight: (
       <HeaderButtons HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}>
         <Item
+          style={styles.cart}
           title="Cart"
           iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
           onPress={() => {
@@ -119,19 +120,22 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300
   },
+  cart: {
+    marginRight: 4
+  },
   actions: {
     flex: 1,
     flexDirection: 'row',
-    marginVertical: 10,
-    marginHorizontal: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
     alignItems: 'center',
     justifyContent: 'space-between'
   },
   price: {
-    fontSize: 20,
+    fontSize: 16,
     color: '#888',
     textAlign: 'center',
-    marginVertical: 20,
+    marginVertical: 16,
     // fontFamily: 'open-sans-bold'
   },
   quantityContainer: {
