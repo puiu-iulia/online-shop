@@ -29,10 +29,8 @@ const CartScreen = props => {
   const dispatch = useDispatch();
 
   const sendOrderHandler = async () => {
-    setIsLoading(true);
     // await dispatch(ordersActions.addOrder(cartItems, cartTotalAmount));
     props.navigation.navigate('Order', {totalAmount: cartTotalAmount});
-    setIsLoading(false);  
   }
 
   return (

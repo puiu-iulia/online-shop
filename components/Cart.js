@@ -15,32 +15,32 @@ const Cart = props => {
       <View style={styles.itemData}>
         <Text style={styles.mainText} numberOfLines={2}>{props.title}</Text>
         <Text style={styles.quantity}> x </Text>
-          <View style={styles.quantityContainer}>
-            {/* {props.deletable && ( */}
-            <TouchableOpacity
-              onPress={props.onRemove}
-              style={styles.deleteButton}
-            >
-              <FontAwesome
-                name={Platform.OS === 'android' ? 'minus-circle' : 'minus'}
-                size={36}
-                color='#08292F'
-              />
-            </TouchableOpacity>
-            <View style={styles.quantityBox}>
-              <Text style={styles.quantity}>{props.quantity}</Text>
-            </View>
-            <TouchableOpacity
-              onPress={props.onAdd}
-              style={styles.deleteButton}
-            >
-              <FontAwesome
-                name={Platform.OS === 'android' ? 'plus-circle' : 'plus'}
-                size={36}
-                color='#08292F'
-              />
-            </TouchableOpacity> 
+        <View style={styles.quantityContainer}>
+          {/* {props.deletable && ( */}
+          <TouchableOpacity
+            onPress={props.onRemove}
+            style={styles.deleteButton}
+          >
+            <FontAwesome
+              name={Platform.OS === 'android' ? 'minus-circle' : 'minus'}
+              size={36}
+              color='#08292F'
+            />
+          </TouchableOpacity>
+          <View style={styles.quantityBox}>
+            <Text style={styles.quantity}>{props.quantity}</Text>
           </View>
+          <TouchableOpacity
+            onPress={props.onAdd}
+            style={styles.deleteButton}
+          >
+            <FontAwesome
+              name={Platform.OS === 'android' ? 'plus-circle' : 'plus'}
+              size={36}
+              color='#08292F'
+            />
+          </TouchableOpacity> 
+        </View>
       </View>
       <View style={styles.amount}>
         <Text style={styles.quantity}>= {props.amount} RON</Text> 
@@ -55,8 +55,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomColor: '#08292F',
     borderBottomWidth: 0.5
-    // flexDirection: 'row',
-    // justifyContent: 'space-between'
   },
   itemData: {
     flexDirection: 'row',

@@ -2,6 +2,7 @@ import { ADD_ORDER, SET_ORDERS } from '../actions/orders';
 import Order from '../../models/order';
 
 const initialState = {
+  isLoading: true,
   orders: []
 };
 
@@ -12,7 +13,18 @@ export default (state = initialState, action) => {
         action.orderData.id,
         action.orderData.items,
         action.orderData.amount,
-        action.orderData.date
+        action.orderData.date,
+        action.orderData.billingName,
+        action.orderData.billingEmail,
+        action.orderData.billingPhone,
+        action.orderData.billingCounty,
+        action.orderData.billingCity,
+        action.orderData.billingAddress,
+        action.orderData.shippingName,
+        action.orderData.shipppingPhone,
+        action.orderData.shippingCounty,
+        action.orderData.shippingCity,
+        action.orderData.shippingAddress,
       );
       return {
         ...state,

@@ -6,40 +6,26 @@ import Colors from '../constants/Colors';
 import Card from './Card';
 
 const Order = props => {
-  const [showDetails, setShowDetails] = useState(false);
 
   return (
     <Card style={styles.orderItem}>
       <View style={styles.summary}>
-        <Text style={styles.totalAmount}>${props.amount}</Text>
+        <Text style={styles.totalAmount}>{props.amount} RON</Text>
         <Text style={styles.date}>{props.date}</Text>
       </View>
       <Button
         color={Colors.primary}
-        title={showDetails ? 'Ascunde Detalii' : 'Arata Detalii'}
-        onPress={() => {
-          setShowDetails(prevState => !prevState);
-        }}
+        title={'Arata Detalii'}
+        onPress={props.onSelect}
       />
-      {showDetails && (
-        <View style={styles.detailItems}>
-          {props.items.map(cartItem => (
-            <Cart
-              key={cartItem.productId}
-              quantity={cartItem.quantity}
-              amount={cartItem.sum}
-              title={cartItem.productTitle}
-            />
-          ))}
-        </View>
-      )}
     </Card>
   );
 };
 
 const styles = StyleSheet.create({
   orderItem: {
-    margin: 20,
+    marginHorizontal: 20,
+    marginVertical: 10,
     padding: 10,
     alignItems: 'center'
   },
@@ -58,9 +44,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     // fontFamily: 'open-sans',
     color: '#888'
-  },
-  detailItems: {
-    width: '100%'
   }
 });
 

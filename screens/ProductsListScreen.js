@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, FlatList, Button, Platform, ActivityIndicator, Text, StyleSheet, Picker, ScrollView, TextInput, Dimensions } from 'react-native';
+import { View, Image, Button, Platform, ActivityIndicator, Text, StyleSheet, Picker, ScrollView, TextInput, Dimensions } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { withBadge } from 'react-native-elements';
@@ -12,12 +12,9 @@ import * as cartActions from '../store/actions/cart';
 import * as productsActions from '../store/actions/products';
 import * as categoriesActions from '../store/actions/categories';
 import Colors from '../constants/Colors';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const ProductsListScreen = props => {
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isCategoryLoading, setIsCategoryLoading] = useState(false);
   const [error, setError] = useState();
   const [categoryError, setCategoryError] = useState();
   const [category, setCategory] = useState('Toate');
@@ -25,81 +22,39 @@ const ProductsListScreen = props => {
   const isLoading = useSelector(state => state.products.isLoading);
   const isCategoryLoading = useSelector(state => state.categories.isCategoryLoading);
   const [allProducts, setAllProducts] = useState(true);
-  const [fProducts, setFProducts] = useState(false);
+  const [query, setQuery] = useState('');
   const categories = useSelector(state => state.categories.availableCategories);
-  // FIX ME!! console.log(isLoading);
   const filterProducts = useSelector(state=> state.products.filterProducts);
   // console.log(filterProducts);
-  // const searchProducts = useSelector(state=> state.products.searchProducts);
   const totalItems = useSelector(state => state.cart.totalItems);
   const dispatch = useDispatch();
-
-  // const loadProducts = useCallback(async () => {
-  //   setError(null);
-  //   // setCategoryError(null);
-  //   try {
-  //     await dispatch(productsActions.fetchProducts());
-  //   } catch (err) {
-  //     setError(err.message);
-  //   };
-  //   try {
-  //     await dispatch(categoriesActions.fetchCategories());
-  //   } catch (err) {
-  //     setCategoryError(err.message);
-  //   };
-  // }, [dispatch, setIsLoading, setError]);
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   // setIsCategoryLoading(true);
-  //   loadProducts().then(() => {
-  //     setIsLoading(false);
-  //     // setIsCategoryLoading(false);
-  //   });
-  // }, [dispatch, loadProducts]);
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        // setIsLoading(true);
         await dispatch(productsActions.fetchProducts());
-        // setIsLoading(false);
       } catch (err) {
-        // setIsLoading(false);
         setError(err.message);
       };
     };
     const loadCategories = async () => {
-      // setIsCategoryLoading(true);
       try {
         await dispatch(categoriesActions.fetchCategories());
-        // setIsCategoryLoading(false);
       } catch (err) {
-        // setIsCategoryLoading(false);
         setError(err.message);
       };
     };
   
     loadCategories().then(() => {
-      //setIsCategoryLoading(false);
       loadProducts();
     });
   }, [dispatch]);
 
 
-  // const renderFlatList = () => {
-  //   if (allProducts) {
-  //     return (<ProductsList listData={products} navigation={props.navigation} />);
-  //   } else if (fProducts) {
-  //     return (<ProductsList listData={filterProducts} navigation={props.navigation} />)
-  //   }  
-  // };
-
-  const updateProductsList = (category) => {
+  const updateProductsList = (category, query) => {
     setCategory(category);
-    dispatch(productsActions.filterProducts(category));
+    dispatch(productsActions.filterProducts(category, query));
     setAllProducts(false);
-    setFProducts(true);
   };
 
 
@@ -113,7 +68,10 @@ const ProductsListScreen = props => {
         <Text>A avut loc o eroare. Incercati mai tarziu.</Text>
         <Button
           title="Incearca mai tarziu" 
-          onPress={() => {}}
+          onPress={() => {
+            loadCategories();
+            loadProducts();
+          }}
           color={Colors.primary}
         />
       </View>
@@ -146,7 +104,7 @@ const ProductsListScreen = props => {
               mode="dropdown"
               selectedValue={category}
               onValueChange={(category)=> {
-                updateProductsList(category);
+                updateProductsList(category, query);
               }}
             >
               {categories.map((item, index) => {
@@ -161,7 +119,11 @@ const ProductsListScreen = props => {
             <View>
               <TextInput
                 style={styles.search}
-                onValueChange={() => {}} 
+                multiline={false}
+                clearButtonMode={'always'}
+                onChangeText={(query) => {
+                  setQuery(query);
+                }} 
                 id="search"
                 keyboardType="default"
                 placeholder=" Cauta Produse..."
@@ -170,6 +132,10 @@ const ProductsListScreen = props => {
                   style={styles.searchButton}
                   name={Platform.OS === 'android' ? 'md-search' : 'ios-search'}
                   size={24}
+                  onPress={(category, query) => {
+                    console.log(query);
+                    updateProductsList(category, query);
+                  }}
                   color={Colors.primary}
                 />
             </View>
@@ -187,6 +153,34 @@ const ProductsListScreen = props => {
 
 ProductsListScreen.navigationOptions = navData => {
   const itemsCount = navData.navigation.getParam('totalItems');
+  const Logo = () => {
+    return (
+      <View style={{
+        flex: 1,
+        flexDirection: 'row',
+        marginLeft: 48,
+        alignItems: 'center'
+      }}>
+        {/* <Image 
+          source={{uri: 'asset:/logo.PNG'}}
+          style={{height: 24}}
+        /> */}
+        <Ionicons
+            name={'ios-flower'}
+            size={28}
+            color={Colors.accent}
+          />
+        <Text 
+          style={{
+            marginLeft: 4,
+            fontSize: 24,
+            color: 'white',
+            textTransform: 'uppercase'
+          }}
+        >Gardenia</Text>
+      </View>
+    );
+  }
   const ItemsCart = withBadge(itemsCount, {
     bottom: 0,
     right: 0,
@@ -195,17 +189,18 @@ ProductsListScreen.navigationOptions = navData => {
     }
   })(HeaderButton);
   return {
-    headerTitle: 'Gardenia',
+    headerTitle: <Logo />,
     headerLeft: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
+        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+          <Item
+            title="Menu"
+            iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+            onPress={() => {
+              navData.navigation.toggleDrawer();
+            }}
+          />
+        </HeaderButtons>
+      
     ),
     headerRight: (
         <HeaderButtons
@@ -240,7 +235,7 @@ const styles = StyleSheet.create({
   filtersContainer: {
     width: '100%',
     height: '10%',
-    maxHeight: 50,
+    maxHeight: 48,
     paddingVertical: 24,
     borderRadius: 0,
     // marginTop: 8,
@@ -277,6 +272,7 @@ const styles = StyleSheet.create({
     bottom: -16,
     left: 0,
     width: '75%',
+    maxWidth: 180,
     borderColor: '#888',
     borderWidth: 0.7,
     borderRadius: 4   

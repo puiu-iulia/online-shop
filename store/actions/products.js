@@ -8,7 +8,6 @@ export const FILTER_PRODUCTS = 'FILTER_PRODUCTS';
 
 export const fetchProducts = () => {
   let isLoading;
-  console.log('getting');
   return async dispatch => {
     ShopWooCommerceAPI.get('products', {
       per_page: 100
@@ -39,7 +38,6 @@ export const fetchProducts = () => {
         );
       }
       isLoading = false;
-      console.log('got');
       dispatch({ type: SET_PRODUCTS, products: loadedProducts, isLoading: isLoading });
     })
     .catch(error => {
@@ -50,16 +48,11 @@ export const fetchProducts = () => {
   };
 };
 
-export const searchProducts = (query) => {
-  // return {
-  //   type: SEARCH_PRODUCTS,
-  //   searchQuery: query
-  // }
-};
 
-export const filterProducts = (category) => {
+export const filterProducts = (category, query) => {
   return {
     type: FILTER_PRODUCTS,
-    filterCategory: category
+    filterCategory: category,
+    searchQuery: query
   }
 };

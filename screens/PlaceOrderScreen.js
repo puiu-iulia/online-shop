@@ -1,6 +1,6 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
 import { ScrollView, StyleSheet, View, KeyboardAvoidingView, Button, Text, Alert, Picker } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Input from '../components/Input';
 import Card from '../components/Card';
@@ -8,7 +8,7 @@ import Colors from '../constants/Colors';
 import * as data from '../data/judete.json';
 
 
-// import * as authActions from '../store/actions/auth';
+import * as orderActions from '../store/actions/orders';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -38,40 +38,44 @@ const formReducer = (state, action) => {
 
 
 const PlaceOrderScreen = props => {
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
     const [county, setCounty] = useState();
-    const [town, setTown] = useState();
     const [billingCounty, setBillingCounty] = useState();
-    const [billingTown, setBillingTown] = useState();
     const dispatch = useDispatch();
 
-    const countyData = [];
+    const cartItems = useSelector(state => state.cart.items);
+    const cartTotalAmount = useSelector(state => state.cart.totalAmount);
 
+    const countyData = [];
     for (const key in data.judete) {
       countyData.push(data.judete[key].nume);
     }
+
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
           billingName: '',
-          emailAddress: '',
-          address: '',
-          billingPhoneNumber: '',
-          phoneNumber: '',
-          town: '',
+          billingEmail: '',
+          billingPhone: '',
+          billingCounty: '',
+          billingCity: '',
           billingAddress: '',
-          billingTown: '',
-          name: ''
+          shippingName: '',
+          shipppingPhone: '',
+          shippingCity: '',
+          shippingAddress: ''
         },
         inputValidities: {
           billingName: '',
-          billingPhoneNumber: '',
-          name: '',
-          emailAddress: '',
-          address: '',
-          phoneNumber: '',
-          town: '',
+          billingEmail: '',
+          billingPhone: '',
+          billingCounty: '',
+          billingCity: '',
           billingAddress: '',
-          billingTown: ''
+          shippingName: '',
+          shipppingPhone: '',
+          shippingCity: '',
+          shippingAddress: ''
         },
         formIsValid: false
     });
@@ -83,27 +87,24 @@ const PlaceOrderScreen = props => {
       }, [error]);
 
     const placeOrderHandler = async () => {
-        // let action;
-        // if (isSignup) {
-        //   action =  authActions.signup(
-        //     formState.inputValues.email,
-        //     formState.inputValues.password
-        // );
-        // } else {
-        //   action = authActions.login(
-        //     formState.inputValues.email,
-        //     formState.inputValues.password
-        // );
-        // }
-        // setError(null);
-        // setIsLoading(true);
-        // try {
-        //     await dispatch(action);
-        //     props.navigation.navigate('Shop');
-        // } catch (err) {
-        //     setError(err.message);
-        //     setIsLoading(false);
-        // }
+      setIsLoading(true);
+      await dispatch(orderActions.addOrder(
+        cartItems, 
+        cartTotalAmount, 
+        formState.inputValues.billingName,
+        formState.inputValues.billingEmail,
+        formState.inputValues.billingPhone,
+        billingCounty,
+        formState.inputValues.billingCity,
+        formState.inputValues.billingAddress,
+        formState.inputValues.shippingName,
+        formState.inputValues.shipppingPhone,
+        county,
+        formState.inputValues.shippingCity,
+        formState.inputValues.shippingAddress
+      ));
+      setIsLoading(false);
+      props.navigation.navigate('Shop');
     };
 
     const inputChangeHandler = useCallback(
@@ -148,7 +149,6 @@ const PlaceOrderScreen = props => {
                             id="billingPhoneNumber"
                             label="Numar de Telefon"
                             keyboardType="number-pad"
-                            secureTextEntry
                             required
                             minLength={8}
                             autoCapitalize="none"
@@ -163,7 +163,7 @@ const PlaceOrderScreen = props => {
                               mode="dropdown"
                               selectedValue={billingCounty}
                               onValueChange={(billingCounty)=> {
-                                setCounty(billingCounty);
+                                setBillingCounty(billingCounty);
                               }}
                             >
                               {countyData.map((item, index) => {
@@ -209,7 +209,6 @@ const PlaceOrderScreen = props => {
                             id="phoneNumber"
                             label="Numar de Telefon"
                             keyboardType="number-pad"
-                            secureTextEntry
                             required
                             minLength={8}
                             autoCapitalize="none"
@@ -261,7 +260,7 @@ const PlaceOrderScreen = props => {
                             <Button 
                               title={"Plateste"} 
                               color={Colors.primary} 
-                              onPress={() => {payHandler}} 
+                              onPress={placeOrderHandler} 
                             />
                         </View>   
                     

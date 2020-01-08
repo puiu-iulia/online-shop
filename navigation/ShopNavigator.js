@@ -17,6 +17,7 @@ import OrdersScreen from '../screens/OrdersScreen';
 import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/auth';
 import PlaceOrderScreen from '../screens/PlaceOrderScreen';
+import OrderDetailsScreen from '../screens/OrderDetailsScreen';
 
 const defaultNavOptions = {
     headerStyle: {
@@ -43,7 +44,7 @@ const defaultNavOptions = {
         drawerIcon: drawerConfig => (
           <Ionicons
             name={Platform.OS === 'android' ? 'md-flower' : 'ios-flower'}
-            size={23}
+            size={24}
             color={drawerConfig.tintColor}
           />
         ),
@@ -55,14 +56,15 @@ const defaultNavOptions = {
 
   const OrdersNavigator = createStackNavigator(
     {
-      Orders: OrdersScreen
+      Orders: OrdersScreen,
+      OrderDetails: OrderDetailsScreen
     },
     {
       navigationOptions: {
         drawerIcon: drawerConfig => (
           <Ionicons
             name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
-            size={23}
+            size={24}
             color={drawerConfig.tintColor}
           />
         ), 
@@ -85,6 +87,7 @@ const defaultNavOptions = {
             size={24}
             color={drawerConfig.tintColor}
           />
+          // <View>if ()</View>
         ),
         drawerLabel: "Profilul Meu"
       },

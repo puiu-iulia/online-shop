@@ -10,8 +10,7 @@ import * as orderActions from '../store/actions/orders';
 import Colors from '../constants/Colors';
 
 const OrdersScreen = props => {
-  const [isLoading, setIsLoading] = useState(false);
-  // console.log(isLoading);
+  const isLoading = useSelector(state => state.orders.isLoading);
   const orders = useSelector(state => state.orders.orders);
   const totalItems = useSelector(state => state.cart.totalItems);
   const dispatch = useDispatch();
@@ -21,10 +20,14 @@ const OrdersScreen = props => {
   }, [totalItems]);
 
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(orderActions.fetchOrders()).then(() => {
-      setIsLoading(false);
-    });
+    const loadOrders = async () => {
+      try {
+        await dispatch(orderActions.fetchOrders());
+      } catch (err) {
+        setError(err.message);
+      };
+    };
+    loadOrders();
   }, [dispatch]);
 
   if (isLoading) {
@@ -35,23 +38,32 @@ const OrdersScreen = props => {
     );
   }
 
-  if (orders.length === 0) {
+  if (orders === null) {
     return (
       <View style={styles.centered}>
-        <Text>Nu s-au gasit comenzi.</Text>
+        <Text>Nu s-au gasit comenzi. </Text>
       </View>
     );
   }
 
+  const selectItemHandler = (id) => {
+    props.navigation.navigate('OrderDetails', {
+      orderId: id,
+    });
+  };
+
   return (
     <FlatList
       data={orders}
-      keyExtractor={item => item.id}
+      keyExtractor={item => item.id.toString()}
       renderItem={itemData => (
         <Order
           amount={itemData.item.totalAmount}
           date={itemData.item.readableDate}
           items={itemData.item.items}
+          onSelect={() => {
+            selectItemHandler(itemData.item.id);
+          }}
         />
       )}
     />

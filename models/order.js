@@ -1,22 +1,26 @@
 import moment from 'moment';
 
 class Order {
-  constructor(id, items, totalAmount, date) {
+  constructor(id, items, totalAmount, date, billingName, email, billingPhone, billingCounty, billingCity, billingAddress, shippingName, shippingPhone, shippingCounty, shippingCity, shippingAddress) {
     this.id = id;
     this.items = items;
     this.totalAmount = totalAmount;
     this.date = date;
+    this.billingName = billingName;
+    this.email = email;
+    this.billingPhone = billingPhone;
+    this.billingCounty = billingCounty;
+    this.billingCity = billingCity;
+    this.billingAddress = billingAddress;
+    this.shippingName = shippingName;
+    this.shippingPhone = shippingPhone;
+    this.shippingCounty = shippingCounty;
+    this.shippingCity = shippingCity;
+    this.shippingAddress = shippingAddress;
   }
 
   get readableDate() {
-      // return this.date.toLocaleDateString('en-EN', {
-      //     year: 'numeric',
-      //     month: 'long',
-      //     day: 'numeric',
-      //     hour: '2-digit',
-      //     minute: '2-digit'
-      // });
-    return moment(this.date).format('MMMM Do YYYY, hh:mm');
+    return moment(this.date).format('DD.MM.YYYY');
   }
 }
 

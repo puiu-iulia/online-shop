@@ -46,7 +46,8 @@ export default (state = initialState, action) => {
     case FILTER_PRODUCTS: 
         const availableProducts = [...state.availableProducts];
         let filterResults = [];
-        if (availableProducts)
+        let results = [];
+        if (availableProducts) {
           if (action.filterCategory === 'Toate') {
             filterResults = availableProducts;
           } else {
@@ -57,11 +58,24 @@ export default (state = initialState, action) => {
                 }
               }
             }
-          }   
-        // console.log(filterResults);
+          }
+          results = filterResults;
+          if (filterResults) {
+            if (action.searchQuery !== '') {
+              // console.log(action.searchQuery);
+              for (let prod of filterResults) {
+                if (action.searchQuery === prod.name.toLowerCase()) {
+                  results.push(prod);
+                } else {
+                  results = [];
+                }
+              }
+            }
+          }
+        }
         return {
           ...state,
-          filterProducts: filterResults,
+          filterProducts: results,
         };
 
   }

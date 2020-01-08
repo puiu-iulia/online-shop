@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   price: {
     // fontFamily: 'open-sans',
     fontSize: 14,
-    color: '#888'
+    color: '#888',
   },
   actions: {
     flexDirection: 'row',
@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: '23%',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    marginTop: 2
   }
 });
 
