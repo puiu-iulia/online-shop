@@ -9,6 +9,7 @@ import Order from '../components/Order';
 import * as orderActions from '../store/actions/orders';
 import Colors from '../constants/Colors';
 
+
 const OrdersScreen = props => {
   const isLoading = useSelector(state => state.orders.isLoading);
   const orders = useSelector(state => state.orders.orders);
@@ -41,7 +42,7 @@ const OrdersScreen = props => {
   if (orders === null) {
     return (
       <View style={styles.centered}>
-        <Text>Nu s-au gasit comenzi. </Text>
+        <Text>Nu s-au gasit comenzi.</Text>
       </View>
     );
   }
@@ -57,14 +58,14 @@ const OrdersScreen = props => {
       data={orders}
       keyExtractor={item => item.id.toString()}
       renderItem={itemData => (
-        <Order
-          amount={itemData.item.totalAmount}
-          date={itemData.item.readableDate}
-          items={itemData.item.items}
-          onSelect={() => {
-            selectItemHandler(itemData.item.id);
-          }}
-        />
+          <Order
+            amount={itemData.item.totalAmount}
+            date={itemData.item.readableDate}
+            items={itemData.item.items}
+            onSelect={() => {
+              selectItemHandler(itemData.item.id);
+            }}
+          />
       )}
     />
   );

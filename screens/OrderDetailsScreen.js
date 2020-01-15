@@ -44,9 +44,10 @@ const OrderDetailsScreen = props => {
               renderItem={
                 itemData => (
                   <View style={styles.card}>
-                    <View styles={styles.itemDataContainer}>
-                      <Text numberOfLines={2}>{itemData.item.productTitle} X </Text>
-                      <Text style={styles.price}>{itemData.item.quantity}</Text>
+                    <View style={styles.itemDataContainer}>
+                      <View><Text>{itemData.item.productTitle}</Text></View>
+                      <View><Text> x </Text></View>
+                      <View><Text>{itemData.item.quantity}</Text></View>
                     </View>
                     <View><Text style={styles.price}>= {itemData.item.sum}</Text></View>
                   </View>
@@ -80,32 +81,31 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   dataContainer: {
-    padding: 10,
+    padding: 8,
     margin: 8,
   },
   list: {
+    marginTop: 16,
     borderBottomColor: '#08292F',
     borderBottomWidth: 0.5
   },
-  card: {
-    padding: 10,
-    margin: 8,
-  },
   price: {
-    textAlign: 'right',
+    textAlign: 'right'
+  },
+  card: {
+    marginBottom: 16,
   },
   itemDataContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // alignItems: 'center',
-    // alignContent: 'center'
+    alignItems: 'center',
   },
   description: {
     // fontFamily: 'open-sans',
     fontSize: 16,
     textAlign: 'right',
-    margin: 10
+    marginVertical: 16
   },
   shipping: {
     marginVertical: 8

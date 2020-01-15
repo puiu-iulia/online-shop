@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { ScrollView, StyleSheet, View, KeyboardAvoidingView, Button, Text, Alert, Picker } from 'react-native';
+import { ScrollView, ActivityIndicator, StyleSheet, View, KeyboardAvoidingView, Button, Text, Alert, Picker } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Input from '../components/Input';
@@ -38,7 +38,7 @@ const formReducer = (state, action) => {
 
 
 const PlaceOrderScreen = props => {
-    const [isLoading, setIsLoading] = useState(false);
+    const isLoading = useSelector(state => state.orders.isLoading);
     const [error, setError] = useState();
     const [county, setCounty] = useState();
     const [billingCounty, setBillingCounty] = useState();
@@ -86,24 +86,31 @@ const PlaceOrderScreen = props => {
         }
       }, [error]);
 
+    useEffect(() => {
+      
+    })
+
     const placeOrderHandler = async () => {
-      setIsLoading(true);
-      await dispatch(orderActions.addOrder(
-        cartItems, 
-        cartTotalAmount, 
-        formState.inputValues.billingName,
-        formState.inputValues.billingEmail,
-        formState.inputValues.billingPhone,
-        billingCounty,
-        formState.inputValues.billingCity,
-        formState.inputValues.billingAddress,
-        formState.inputValues.shippingName,
-        formState.inputValues.shipppingPhone,
-        county,
-        formState.inputValues.shippingCity,
-        formState.inputValues.shippingAddress
-      ));
-      setIsLoading(false);
+      try {
+        await dispatch(orderActions.addOrder(
+          cartItems,
+          cartTotalAmount,
+          formState.inputValues.billingName,
+          formState.inputValues.billingEmail,
+          formState.inputValues.billingPhone,
+          billingCounty,
+          formState.inputValues.billingCity,
+          formState.inputValues.billingAddress,
+          formState.inputValues.shippingName,
+          formState.inputValues.shipppingPhone,
+          county,
+          formState.inputValues.shippingCity,
+          formState.inputValues.shippingAddress
+        ));
+      } catch (err) {
+        setError(err.message);
+      }
+      console.log("Navigate") 
       props.navigation.navigate('Shop');
     };
 
@@ -118,6 +125,14 @@ const PlaceOrderScreen = props => {
         },
         [dispatchFormState]
       );
+
+      // if (isLoading) {
+      //   return (
+      //     <View style={styles.centered}>
+      //       <ActivityIndicator size='large' color={Colors.primary} />
+      //     </View>
+      //   );
+      // }
 
     return (
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
@@ -139,7 +154,6 @@ const PlaceOrderScreen = props => {
                             label="Adresa de E-mail"
                             keyboardType="email-address"
                             required
-                            email
                             autoCapitalize="none"
                             errorText="Introdu o adresa de email valida."
                             onInputChange={inputChangeHandler}
@@ -167,7 +181,7 @@ const PlaceOrderScreen = props => {
                               }}
                             >
                               {countyData.map((item, index) => {
-                                return (<Picker.Item label={item} value={index} key={index}/>) 
+                                return (<Picker.Item label={item} value={item} key={index}/>) 
                               })}
                             </Picker>
                         </View>
@@ -196,7 +210,7 @@ const PlaceOrderScreen = props => {
                         <View style={styles.centered}><Text>Date livrare:</Text></View> 
 
                         <Input
-                           id="name"
+                           id="shippingName"
                            label="Nume"
                            keyboardType="default"
                            required
@@ -206,7 +220,7 @@ const PlaceOrderScreen = props => {
                            initialValue=''
                         />
                           <Input
-                            id="phoneNumber"
+                            id="shipppingPhone"
                             label="Numar de Telefon"
                             keyboardType="number-pad"
                             required
@@ -227,12 +241,12 @@ const PlaceOrderScreen = props => {
                               }}
                             >
                               {countyData.map((item, index) => {
-                                return (<Picker.Item label={item} value={index} key={index}/>) 
+                                return (<Picker.Item label={item} value={item} key={index}/>) 
                               })}
                             </Picker>
                         </View>
                         <Input
-                              id="town"
+                              id="shippingCity"
                               label="Localitate"
                               keyboardType="default"
                               required
@@ -242,7 +256,7 @@ const PlaceOrderScreen = props => {
                               initialValue=''
                           />
                           <Input
-                              id="address"
+                              id="shippingAddress"
                               label="Adresa"
                               keyboardType="default"
                               required

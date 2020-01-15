@@ -9,15 +9,15 @@ const Order = props => {
 
   return (
     <Card style={styles.orderItem}>
-      <View style={styles.summary}>
-        <Text style={styles.totalAmount}>{props.amount} RON</Text>
-        <Text style={styles.date}>{props.date}</Text>
-      </View>
-      <Button
-        color={Colors.primary}
-        title={'Arata Detalii'}
-        onPress={props.onSelect}
-      />
+        <View style={styles.summary}>
+          <Text style={styles.totalAmount}>{props.amount} RON</Text>
+          <Text style={styles.date}>{props.date}</Text>
+        </View>
+        <Button
+          color={Colors.primary}
+          title={'Arata Detalii'}
+          onPress={props.onSelect}
+        />
     </Card>
   );
 };
@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 10,
     padding: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#f5e296'
   },
   summary: {
     flexDirection: 'row',

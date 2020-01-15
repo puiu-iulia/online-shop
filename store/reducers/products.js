@@ -18,35 +18,14 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: action.isLoading,
         availableProducts: action.products,
-        searchProducts: action.searchProducts,
-        filterProducts: action.filterProducts,
-      
+        filterProducts: action.filterProducts  
       };
-
-    // case SEARCH_PRODUCTS: 
-    //     let searchResults = [...state.products];
-    //     searchResults = searchResults.filter(product => {
-    //       if (action.searchQuery.trim() === '')
-    //         return product;
-    //       let result = false;
-    //       action.searchQuery.split(" ").map(query => {
-    //           if (query.trim() !== '') {
-    //               if (product.name.toLowerCase().indexOf(query.toLowerCase()) > -1 || product.description.toLowerCase().indexOf(query.toLowerCase()) > -1)
-    //                   result = result || true;
-    //           }
-    //       })
-    //       if (result)
-    //           return product;
-    //     });
-    //     return {
-    //       ...state,
-    //       searchProducts: searchResults
-    //     }
 
     case FILTER_PRODUCTS: 
         const availableProducts = [...state.availableProducts];
         let filterResults = [];
         let results = [];
+        let searchResults = [];
         if (availableProducts) {
           if (action.filterCategory === 'Toate') {
             filterResults = availableProducts;
@@ -59,17 +38,20 @@ export default (state = initialState, action) => {
               }
             }
           }
-          results = filterResults;
+          
           if (filterResults) {
             if (action.searchQuery !== '') {
-              // console.log(action.searchQuery);
               for (let prod of filterResults) {
-                if (action.searchQuery === prod.name.toLowerCase()) {
-                  results.push(prod);
-                } else {
-                  results = [];
-                }
+                action.searchQuery.split(" ").map(query => {
+                  if (query.trim() !== '') {
+                      if (prod.name.toLowerCase().indexOf(query.toLowerCase()) > -1 || prod.description.toLowerCase().indexOf(query.toLowerCase()) > -1)
+                          searchResults.push(prod);
+                  }
+                })
               }
+              results = searchResults;
+            } else {
+              results = filterResults;
             }
           }
         }

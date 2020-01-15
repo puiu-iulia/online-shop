@@ -3,7 +3,7 @@ import { View, Image, Button, Platform, ActivityIndicator, Text, StyleSheet, Pic
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { withBadge } from 'react-native-elements';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import HeaderButton from '../components/HeaderButton';
 import ProductsList from '../components/ProductsList';
@@ -17,6 +17,7 @@ import Colors from '../constants/Colors';
 const ProductsListScreen = props => {
   const [error, setError] = useState();
   const [categoryError, setCategoryError] = useState();
+  const [isSearching, setIsSearching] = useState(false);
   const [category, setCategory] = useState('Toate');
   const products = useSelector(state => state.products.availableProducts);
   const isLoading = useSelector(state => state.products.isLoading);
@@ -41,7 +42,7 @@ const ProductsListScreen = props => {
       try {
         await dispatch(categoriesActions.fetchCategories());
       } catch (err) {
-        setError(err.message);
+        setCategoryError(err.message);
       };
     };
   
@@ -56,7 +57,6 @@ const ProductsListScreen = props => {
     dispatch(productsActions.filterProducts(category, query));
     setAllProducts(false);
   };
-
 
   useEffect(() => {
     props.navigation.setParams({totalItems: totalItems});
@@ -77,6 +77,7 @@ const ProductsListScreen = props => {
       </View>
     );
   }
+
 
   if (products === null)  {
     return (
@@ -117,23 +118,45 @@ const ProductsListScreen = props => {
           </View>
           <View style={styles.searchBox}>
             <View>
-              <TextInput
-                style={styles.search}
-                multiline={false}
-                clearButtonMode={'always'}
-                onChangeText={(query) => {
-                  setQuery(query);
-                }} 
-                id="search"
-                keyboardType="default"
-                placeholder=" Cauta Produse..."
-              />
+              <View style={styles.search}>
+                <TextInput
+                  style={styles.searchInput}
+                  multiline={false}
+                  value={query}
+                  clearButtonMode='always'
+                  onChangeText={(query) => {
+                    setQuery(query);
+                    // updateProductsList(category, query);
+                  }} 
+                  id="search"
+                  keyboardType="default"
+                  placeholder=" Cauta Produse..."
+                />
+                {isSearching ? (
+                      <View>
+                        <MaterialIcons
+                          style={styles.clearSearchButton}
+                          name={'cancel'}
+                          size={24}
+                          onPress={() => {
+                            setQuery('');
+                            setIsSearching(false);
+                            updateProductsList(category, '');
+                          }}
+                          color={'#888'}
+                        />
+                      </View>
+                    )
+                  : null
+                }
+              </View>
               <Ionicons
                   style={styles.searchButton}
                   name={Platform.OS === 'android' ? 'md-search' : 'ios-search'}
                   size={24}
-                  onPress={(category, query) => {
+                  onPress={() => {
                     console.log(query);
+                    setIsSearching(true);
                     updateProductsList(category, query);
                   }}
                   color={Colors.primary}
@@ -264,11 +287,20 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     justifyContent: 'flex-end'
   },
+  clearSearchButton: {
+
+  },
   pickerItem: {
     fontSize: 16
   },
+  searchInput: {
+
+  },
   search: {
     position: "absolute",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     bottom: -16,
     left: 0,
     width: '75%',

@@ -7,33 +7,84 @@ export const ADD_ORDER = 'ADD_ORDER';
 export const SET_ORDERS = 'SET_ORDERS';
 
 export const addOrder = (cartItems, totalAmount, billingName, billingEmail, billingPhone, billingCounty, billingCity, billingAddress, shippingName, shippingPhone, shippingCounty, shippingCity, shippingAddress) => {
+  let isLoading;
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const date = new Date();
 
+    lineItems = [];
+    for (const key in cartItems) {
+      lineItems.push({
+        product_id: key,
+        quantity: cartItems[key].quantity
+      })
+    };
+
     const data = {
-      line_items: cartItems,
+      payment_method: "bacs",
+      payment_method_title: "Direct Bank Transfer",
+      set_paid: true,
       billing: {
         first_name: billingName,
-        email: billingEmail.toString(),
-        phone: billingPhone,
-        county: billingCounty,
-        city: billingCity,
+        last_name: billingPhone,
         address_1: billingAddress,
+        address_2: billingEmail,
+        city: billingCity,
+        state: billingCounty,
+        postcode: "",
+        country: "RO",
+        phone: ""
       },
       shipping: {
         first_name: shippingName,
-        phone: shippingPhone,
-        county: shippingCounty,
-        city: shippingCity,
+        last_name: shippingPhone,
         address_1: shippingAddress,
-      }
+        address_2: "",
+        city: shippingCity,
+        state: shippingCounty,
+        postcode: "",
+        country: "RO"
+      },
+      line_items: lineItems
     };
+
+    // const data = {
+    //   payment_method: "bacs",
+    //   payment_method_title: "Direct Bank Transfer",
+    //   set_paid: true,
+    //   billing: {
+    //     first_name: "John",
+    //     last_name: "Doe",
+    //     address_1: "969 Market",
+    //     address_2: "",
+    //     city: "San Francisco",
+    //     state: "CA",
+    //     postcode: "94103",
+    //     country: "US",
+    //     email: "john.doe@example.com",
+    //     phone: "(555) 555-5555"
+    //   },
+    //   shipping: {
+    //     first_name: "John",
+    //     last_name: "Doe",
+    //     address_1: "969 Market",
+    //     address_2: "",
+    //     city: "San Francisco",
+    //     state: "CA",
+    //     postcode: "94103",
+    //     country: "US"
+    //   }
+    // };
+
+
    
-    ShopWooCommerceAPI.post('orders', data)
+    ShopWooCommerceAPI.post('orders', data, {
+
+    })
     .then((response) => {
       console.log(response);
+      isLoading = false;
       dispatch({
         type: ADD_ORDER,
         orderData: {
@@ -52,7 +103,8 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
           shippingCounty: shippingCounty,
           shippingCity: shippingCity,
           shippingAddress: shippingAddress
-        }
+        }, 
+        isLoading: isLoading
       });
     })
     .catch(error => {
@@ -63,7 +115,6 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
 
 export const fetchOrders = () => {
   let isLoading;
-  console.log('getting');
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
     ShopWooCommerceAPI.get('orders', {

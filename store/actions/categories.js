@@ -14,7 +14,6 @@ export const fetchCategories = () => {
         const loadedCategories = [];
         const toate = new Category(-1, 'Toate');
         loadedCategories.push(toate);
-        // console.log(data);
     
         for (const key in data) {
             if (data[key].name != 'Uncategorized')
@@ -26,8 +25,6 @@ export const fetchCategories = () => {
             );   
         }
 
-        // console.log(loadedCategories);
-        console.log('render categories');
         dispatch({ type: SET_CATEGORIES, categories: loadedCategories, isCategoryLoading: isCategoryLoading });
       })
       .catch(error => {
