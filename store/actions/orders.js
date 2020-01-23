@@ -12,6 +12,7 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().user.userId;
+    console.log(userId);
     const date = new Date();
 
     lineItems = [];
@@ -25,8 +26,8 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
     const data = {
       payment_method: "bacs",
       payment_method_title: "Direct Bank Transfer",
-      set_paid: true,
-      customer_id: userId,
+      // set_paid: true,
+      customer_id: (userId) ? userId : 0,
       billing: {
         first_name: billingName,
         last_name: billingPhone,
@@ -76,7 +77,8 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
     //     state: "CA",
     //     postcode: "94103",
     //     country: "US"
-    //   }
+    //   },
+    //   line_items: lineItems
     // };
 
 
@@ -85,7 +87,7 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
 
     })
     .then((response) => {
-      // console.log(response);
+      console.log(response);
       isLoading = false;
       dispatch({
         type: ADD_ORDER,
@@ -150,15 +152,15 @@ export const fetchOrders = () => {
               items,
               data[key].total,
               new Date(data[key].date_created),
-              data[key].billing.first_name + data[key].billing.last_name,
+              data[key].billing.first_name + " " + data[key].billing.last_name,
               data[key].billing.email,
               data[key].billing.phone,
-              data[key].billing.county,
+              data[key].billing.state,
               data[key].billing.city,
               data[key].billing.address_1,
               data[key].shipping.first_name + " " + data[key].shipping.last_name,
               data[key].shipping.phone,
-              data[key].shipping.county,
+              data[key].shipping.state,
               data[key].shipping.city,
               data[key].shipping.address_1
             )

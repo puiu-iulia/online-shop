@@ -35,7 +35,14 @@ const UserProfileScreen = props => {
     loadUser();    
   }, [dispatch]);
 
-  
+  if (isSignedIn && isUserLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size='large' color={Colors.primary} />
+      </View>
+    );
+  }
+
   if (!isSignedIn || user === null) {
     return (
       <View style={styles.centered}>
@@ -51,14 +58,7 @@ const UserProfileScreen = props => {
     )
   }
 
-  if (isSignedIn && isUserLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size='large' color={Colors.primary} />
-      </View>
-    );
-  }
-
+  
   // if (products === null)  {
   //   return (
   //     <View style={styles.centered}>

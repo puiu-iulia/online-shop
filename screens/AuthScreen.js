@@ -1,7 +1,8 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { ScrollView, Text, StyleSheet, View, KeyboardAvoidingView, Button, ActivityIndicator, Alert, AsyncStorage } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, KeyboardAvoidingView, Button, ActivityIndicator, Alert, AsyncStorage, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
+import Toast from 'react-native-simple-toast';
 
 import Input from '../components/Input';
 import Card from '../components/Card';
@@ -58,31 +59,32 @@ const AuthScreen = props => {
       }, [error]);
 
     const authHandler = async () => {
-        let action;
-        if (!isSignin) {
-          action =  authActions.signup(
-            formState.inputValues.email,
-            formState.inputValues.password
-          );
-          Alert.alert('Contul tau a fost creat cu succes! Acum te poti conecta.')
+      let action;
+      if (!isSignin) {
+        action = authActions.signup(
+          formState.inputValues.email,
+          formState.inputValues.password
+        );
+      } else {
+        action = authActions.login(
+          formState.inputValues.email,
+          formState.inputValues.password
+        );
+      }
+      setError(null);
+      try {
+        setIsLoading(true);
+        await dispatch(action);
+        setIsLoading(false);
+        if (isSignin) {
+          props.navigation.navigate('ProductsOverview');
         } else {
-          action = authActions.login(
-            formState.inputValues.email,
-            formState.inputValues.password
-          );  
-        }
-        setError(null);
-        try {
-            setIsLoading(true);
-            await dispatch(action);
-            setIsLoading(false);
-            props.navigation.navigate('ProductsOverview');
-            console.log('Signed In');
-        } catch (err) {
-            setError(err.message);
-            setIsLoading(false);
-        };
-        
+          Toast.show('Contul tau a fost creat cu succes! Acum te poti conecta.', Toast.SHORT);
+        }  
+      } catch (err) {
+        setError(err.message);
+        setIsLoading(false);
+      }
     };
 
     const inputChangeHandler = useCallback(
@@ -143,7 +145,7 @@ const AuthScreen = props => {
                               color={Colors.primary} 
                               onPress={() => {setIsSignin(prevState => !prevState)}} 
                             />
-                        </View>   
+                        </View>  
                     </ScrollView>
                 </Card>
             </LinearGradient>

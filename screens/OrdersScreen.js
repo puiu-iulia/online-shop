@@ -93,22 +93,6 @@ OrdersScreen.navigationOptions = navData => {
   })(HeaderButton);
   return {
     headerTitle: 'Comenzile Tale',
-    headerLeft: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Back"
-          iconName={Platform.OS === 'android' ? 'md-arrow-back' : 'ios-arrow-back'}
-          onPress={() => {
-            // console.log(navData.navigation);
-            if (navData.navigation.getParam('route') === 'User') {
-              navData.navigation.navigate('UserProfile');
-            } else {
-              navData.navigation.navigate('ProductsOverview');
-            }  
-          }}
-        />
-      </HeaderButtons>
-    ),
     headerRight: (
       <HeaderButtons 
       HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}

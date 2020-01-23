@@ -9,6 +9,7 @@ import * as data from '../data/judete.json';
 
 
 import * as orderActions from '../store/actions/orders';
+import * as cartActions from '../store/actions/cart';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -38,7 +39,7 @@ const formReducer = (state, action) => {
 
 
 const PlaceOrderScreen = props => {
-    const isLoading = useSelector(state => state.orders.isLoading);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
     const [county, setCounty] = useState();
     const [billingCounty, setBillingCounty] = useState();
@@ -46,6 +47,7 @@ const PlaceOrderScreen = props => {
 
     const cartItems = useSelector(state => state.cart.items);
     const cartTotalAmount = useSelector(state => state.cart.totalAmount);
+    const user = useSelector(state => state.user.user);
 
     const countyData = [];
     for (const key in data.judete) {
@@ -86,12 +88,9 @@ const PlaceOrderScreen = props => {
         }
       }, [error]);
 
-    useEffect(() => {
-      
-    })
-
     const placeOrderHandler = async () => {
       try {
+        setIsLoading(true);
         await dispatch(orderActions.addOrder(
           cartItems,
           cartTotalAmount,
@@ -107,11 +106,11 @@ const PlaceOrderScreen = props => {
           formState.inputValues.shippingCity,
           formState.inputValues.shippingAddress
         ));
+        setIsLoading(false);
+        props.navigation.navigate('ProductsOverview');
       } catch (err) {
         setError(err.message);
       }
-      console.log("Navigate") 
-      props.navigation.navigate('Shop');
     };
 
     const inputChangeHandler = useCallback(
@@ -271,11 +270,16 @@ const PlaceOrderScreen = props => {
                           <Text style={styles.orderSummaryText}>Total de plata: {Math.round(props.navigation.getParam('totalAmount') * 100) / 100} RON</Text>
                         </View>
                         <View style={styles.buttonContainer}>
-                            <Button 
+                            {isLoading ? ( 
+                              <ActivityIndicator size='small' color={Colors.primary} />
+                            ) : 
+                            (<Button 
                               title={"Plateste"} 
                               color={Colors.primary} 
-                              onPress={placeOrderHandler} 
-                            />
+                              onPress={() => {
+                                placeOrderHandler();
+                              }} 
+                            />)}
                         </View>   
                     
                 </View>
