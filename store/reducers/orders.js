@@ -1,9 +1,10 @@
-import { ADD_ORDER, SET_ORDERS } from '../actions/orders';
+import { ADD_ORDER, SET_ORDERS, FILTER_ORDERS } from '../actions/orders';
 import Order from '../../models/order';
 
 const initialState = {
   isLoading: true,
-  orders: []
+  orders: [],
+  filteredOrders: []
 };
 
 export default (state = initialState, action) => {
@@ -33,6 +34,20 @@ export default (state = initialState, action) => {
     case SET_ORDERS:
       return {
         orders: action.orders
+      };
+    case FILTER_ORDERS: 
+      const availableOrders = [...state.orders];
+      let filteredOrders = [];
+      if (availableOrders) {
+        for (let order of availableOrders) {
+          if (action.userId === order.customer_id) {
+            filteredOrders.push(order);
+          }
+        }    
+      }
+      return {
+        ...state,
+        filteredOrders: filteredOrders
       };
   }
 

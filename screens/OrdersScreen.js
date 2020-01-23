@@ -7,10 +7,12 @@ import { withBadge } from 'react-native-elements';
 import HeaderButton from '../components/HeaderButton';
 import Order from '../components/Order';
 import * as orderActions from '../store/actions/orders';
+import * as userActions from '../store/actions/user';
 import Colors from '../constants/Colors';
 
 
 const OrdersScreen = props => {
+  const [error, setError] = useState();
   const isLoading = useSelector(state => state.orders.isLoading);
   const orders = useSelector(state => state.orders.orders);
   const totalItems = useSelector(state => state.cart.totalItems);
@@ -28,7 +30,16 @@ const OrdersScreen = props => {
         setError(err.message);
       };
     };
-    loadOrders();
+    // const loadUser = async () => {
+    //   try {
+    //     await dispatch(userActions.getUser());
+    //   } catch (err) {
+    //     setUserError(err.message);
+    //   };
+    // };
+    // loadUser().then(() => {
+      loadOrders();
+    // });
   }, [dispatch]);
 
   if (isLoading) {
@@ -48,7 +59,7 @@ const OrdersScreen = props => {
   }
 
   const selectItemHandler = (id) => {
-    props.navigation.navigate('OrderDetails', {
+    props.navigation.navigate('OrderDetls', {
       orderId: id,
     });
   };

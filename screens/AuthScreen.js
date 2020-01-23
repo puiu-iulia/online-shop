@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { ScrollView, StyleSheet, View, KeyboardAvoidingView, Button, ActivityIndicator, Alert } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, KeyboardAvoidingView, Button, ActivityIndicator, Alert, AsyncStorage } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
 
@@ -36,7 +36,7 @@ const formReducer = (state, action) => {
 const AuthScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
-    const [isSignup, setIsSignup] = useState(true);
+    const [isSignin, setIsSignin] = useState(true);
     const dispatch = useDispatch();
 
     const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -53,32 +53,36 @@ const AuthScreen = props => {
 
     useEffect(() => {
         if (error) {
-          Alert.alert('An Error Occurred!', error, [{ text: 'Okay' }]);
+          Alert.alert('A avut loc o eroare!', error, [{ text: 'In regula' }]);
         }
       }, [error]);
 
     const authHandler = async () => {
         let action;
-        if (isSignup) {
+        if (!isSignin) {
           action =  authActions.signup(
             formState.inputValues.email,
             formState.inputValues.password
-        );
+          );
+          Alert.alert('Contul tau a fost creat cu succes! Acum te poti conecta.')
         } else {
           action = authActions.login(
             formState.inputValues.email,
             formState.inputValues.password
-        );
+          );  
         }
         setError(null);
-        setIsLoading(true);
         try {
+            setIsLoading(true);
             await dispatch(action);
-            props.navigation.navigate('Shop');
+            setIsLoading(false);
+            props.navigation.navigate('ProductsOverview');
+            console.log('Signed In');
         } catch (err) {
             setError(err.message);
             setIsLoading(false);
-        }
+        };
+        
     };
 
     const inputChangeHandler = useCallback(
@@ -126,17 +130,18 @@ const AuthScreen = props => {
                                 <ActivityIndicator size='small' color={Colors.primary} />
                             ) : (
                                 <Button 
-                                    title={isSignup ? "Creaza Cont": "Conecteaza-te"} 
+                                    title={isSignin ? "Conecteaza-te": "Creaza Cont"} 
                                     color={Colors.accent} 
                                     onPress={authHandler} 
                                 /> 
                             )}
                         </View>
                         <View style={styles.buttonContainer}>
+                            <View style={styles.text}><Text>{isSignin ? 'Nu am cont.' : 'Am deja cont.'}</Text></View>
                             <Button 
-                              title={isSignup ? "Vreau sa ma conectez": "Vreau sa imi creez cont"} 
+                              title={isSignin? "Vreau sa imi creez cont": "Vreau sa ma conectez"} 
                               color={Colors.primary} 
-                              onPress={() => {setIsSignup(prevState => !prevState)}} 
+                              onPress={() => {setIsSignin(prevState => !prevState)}} 
                             />
                         </View>   
                     </ScrollView>
@@ -160,6 +165,11 @@ const styles = StyleSheet.create({
         // maxWidth: 600,
         maxHeight: 400,
         padding: 20
+    },
+    text: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 16
     },
     gradient: {
         flex: 1,

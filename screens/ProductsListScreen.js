@@ -26,7 +26,6 @@ const ProductsListScreen = props => {
   const [query, setQuery] = useState('');
   const categories = useSelector(state => state.categories.availableCategories);
   const filterProducts = useSelector(state=> state.products.filterProducts);
-  // console.log(filterProducts);
   const totalItems = useSelector(state => state.cart.totalItems);
   const dispatch = useDispatch();
 
@@ -45,7 +44,6 @@ const ProductsListScreen = props => {
         setCategoryError(err.message);
       };
     };
-  
     loadCategories().then(() => {
       loadProducts();
     });
@@ -65,9 +63,9 @@ const ProductsListScreen = props => {
   if (error || categoryError) {
     return (
       <View style={styles.centered}>
-        <Text>A avut loc o eroare. Incercati mai tarziu.</Text>
+        <Text>A avut loc o eroare.</Text>
         <Button
-          title="Incearca mai tarziu" 
+          title="Incearca din nou" 
           onPress={() => {
             loadCategories();
             loadProducts();

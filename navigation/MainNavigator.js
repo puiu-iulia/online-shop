@@ -3,13 +3,12 @@ import { createAppContainer, SafeAreaView } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createSwitchNavigator } from 'react-navigation-switch-transitioner';
-import { Platform, Button, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
+import { Platform, Button, View, AsyncStorage } from 'react-native';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ProductsListScreen from '../screens/ProductsListScreen';
 import ProductDetailsScreen from '../screens/ProductDetailsScreen';
-import StartupScreen from '../screens/StartupScreen';
 import UserProfileScreen from '../screens/UserProfileScreen';
 import AuthScreen from '../screens/AuthScreen';
 import CartScreen from '../screens/CartScreen';
@@ -18,6 +17,7 @@ import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/auth';
 import PlaceOrderScreen from '../screens/PlaceOrderScreen';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen';
+
 
 const defaultNavOptions = {
     headerStyle: {
@@ -77,13 +77,14 @@ const defaultNavOptions = {
   const UserNavigator = createStackNavigator(
     {
       UserProfile: UserProfileScreen,
-      PreviousOrders: OrdersScreen
+      PreviousOrders: OrdersScreen,
+      OrderDetls: OrderDetailsScreen
     },
     {
       navigationOptions: {
         drawerIcon: drawerConfig => (
-          <Ionicons
-            name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+          <FontAwesome
+            name={'user'}
             size={24}
             color={drawerConfig.tintColor}
           />
@@ -99,7 +100,6 @@ const defaultNavOptions = {
   const ShopNavigator = createDrawerNavigator(
     {
       Produse: ProductsNavigator,
-      Comenzi: OrdersNavigator,
       Profil: UserNavigator
     },
     {
@@ -108,18 +108,27 @@ const defaultNavOptions = {
       },
       contentComponent: props => {
         const dispatch = useDispatch();
+        const isSignedIn = useSelector(state => state.auth.isSignedIn);
         return (
           <View style={{ flex: 1, paddingTop: 20 }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
               <DrawerItems {...props} />
-              <Button
+              {(!isSignedIn) ? (<Button
                 title="Conecteaza-te"
                 color={Colors.primary}
                 onPress={() => {
-                  dispatch(authActions.logout());
-                  props.navigation.navigate('Auth');
+                  // dispatch(authActions.logout());
+                  props.navigation.navigate('AuthScreen');
                 }}
-              />
+              />) : (
+                <Button
+                  title="Deconecteaza-te"
+                  color={Colors.primary}
+                  onPress={() => {
+                    dispatch(authActions.logout());
+                    props.navigation.navigate('ProductsOverview');
+                  }}
+                />)}   
             </SafeAreaView>
           </View>
         );
@@ -129,7 +138,7 @@ const defaultNavOptions = {
 
   const AuthNavigator = createStackNavigator(
     {
-      Auth: AuthScreen
+      AuthScreen: AuthScreen
     },
     {
       defaultNavigationOptions: defaultNavOptions
@@ -137,8 +146,12 @@ const defaultNavOptions = {
   );
 
   const MainNavigator = createSwitchNavigator({
-    Shop: ShopNavigator,
-    Auth: AuthNavigator
-  });
+      Shop: ShopNavigator,
+      Auth: AuthNavigator
+    },
+    {
+      initialRouteName: 'Shop'
+    }
+  );
 
   export default createAppContainer(MainNavigator);

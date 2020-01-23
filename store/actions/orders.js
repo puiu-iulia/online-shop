@@ -5,12 +5,13 @@ import moment from 'moment';
 
 export const ADD_ORDER = 'ADD_ORDER';
 export const SET_ORDERS = 'SET_ORDERS';
+export const FILTER_ORDERS = 'FILTER_ORDERS';
 
 export const addOrder = (cartItems, totalAmount, billingName, billingEmail, billingPhone, billingCounty, billingCity, billingAddress, shippingName, shippingPhone, shippingCounty, shippingCity, shippingAddress) => {
   let isLoading;
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    const userId = getState().auth.userId;
+    const userId = getState().user.userId;
     const date = new Date();
 
     lineItems = [];
@@ -25,6 +26,7 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
       payment_method: "bacs",
       payment_method_title: "Direct Bank Transfer",
       set_paid: true,
+      customer_id: userId,
       billing: {
         first_name: billingName,
         last_name: billingPhone,
@@ -83,12 +85,13 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
 
     })
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       isLoading = false;
       dispatch({
         type: ADD_ORDER,
         orderData: {
           id: response.id,
+          userId: response.customer_id,
           items: cartItems,
           amount: totalAmount,
           date: response.date_created, 
@@ -116,9 +119,12 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
 export const fetchOrders = () => {
   let isLoading;
   return async (dispatch, getState) => {
-    const userId = getState().auth.userId;
+    console.log(getState().user);
+    const userId = getState().user.userId;
+    console.log(userId);
     ShopWooCommerceAPI.get('orders', {
-      per_page: 100
+      per_page: 100,
+      customer: userId
     })
     .then(data => {
       const loadedOrders = [];
@@ -136,25 +142,28 @@ export const fetchOrders = () => {
             )
           );
         }
-        loadedOrders.push(
-          new Order(
-            data[key].id,
-            items,
-            data[key].total,
-            new Date(data[key].date_created),
-            data[key].billing.first_name + data[key].billing.last_name,
-            data[key].billing.email,
-            data[key].billing.phone,
-            data[key].billing.county,
-            data[key].billing.city,
-            data[key].billing.address_1,
-            data[key].shipping.first_name + " " + data[key].shipping.last_name,
-            data[key].shipping.phone,
-            data[key].shipping.county,
-            data[key].shipping.city,
-            data[key].shipping.address_1
-          )
-        );
+        // if (data[key].customer_id === userId) {
+          loadedOrders.push(
+            new Order(
+              data[key].id,
+              data[key].customer_id,
+              items,
+              data[key].total,
+              new Date(data[key].date_created),
+              data[key].billing.first_name + data[key].billing.last_name,
+              data[key].billing.email,
+              data[key].billing.phone,
+              data[key].billing.county,
+              data[key].billing.city,
+              data[key].billing.address_1,
+              data[key].shipping.first_name + " " + data[key].shipping.last_name,
+              data[key].shipping.phone,
+              data[key].shipping.county,
+              data[key].shipping.city,
+              data[key].shipping.address_1
+            )
+          );
+        // }        
       }
         // console.log(loadedOrders);
         isLoading = false;
@@ -167,6 +176,12 @@ export const fetchOrders = () => {
       
   };
 };
+
+export const filterOrders = (getState) => {
+  return {
+    type: FILTER_ORDERS
+  }
+}
 
   
       

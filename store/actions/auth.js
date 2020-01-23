@@ -1,62 +1,66 @@
 import { AsyncStorage } from 'react-native';
+import ShopWooCommerceAPI from '../../constants/ShopWooCommerceAPI';
 
-// export const SIGNUP = 'SIGNUP';
-// export const LOGIN = 'LOGIN';
-export const AUTHENTICATE = 'AUTHENTICATE';
+export const SIGNUP = 'SIGNUP';
+export const LOGIN = 'LOGIN';
+
 export const LOGOUT = 'LOGOUT';
 
-let timer;
+// let timer;
 
-export const authenticate = (userId, token, expiryTime) => {
-  return dispatch => {
-    // dispatch(setLogoutTimer(expiryTime));
-    dispatch({ type: AUTHENTICATE, userId: userId, token: token });
-  };
-};
+// export const authenticate = (userId, token, expiryTime) => {
+//   return dispatch => {
+//     dispatch(setLogoutTimer(expiryTime));
+//     dispatch({ type: AUTHENTICATE, userId: userId, token: token });
+//   };
+// };
 
 export const signup = (email, password) => {
   return async dispatch => {
-    const response = await fetch(
-      'https://clients.fizteq.com/gardenia/wp-json/wp/v2/users',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        })
-      }
-    );
 
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      let message = 'Something went wrong!';
-      if (errorId === 'EMAIL_EXISTS') {
-        message = 'This email exists already!';
-      }
-      throw new Error(message);
+    data = {
+      email: email,
+      password: password
     }
 
-    const resData = await response.json();
-    console.log(resData);
-    dispatch(
-      authenticate(
-        resData.localId,
-        resData.idToken,
-        // parseInt(resData.expiresIn) * 1000
-      )
-    );
-    // const expirationDate = new Date(
-    //   new Date().getTime() + parseInt(resData.expiresIn) * 1000
+    ShopWooCommerceAPI.post('customers', data, { 
+      })
+      .then((responseData) => {
+        console.log(responseData);
+        dispatch({ type: SIGNUP, userId: responseData.id });
+      })
+      .catch(error => {
+        console.log(error);
+      }); 
+
+    // const response = await fetch(
+    //   'https://clients.fizteq.com/gardenia/wp-json/jwt-auth/v1/token',
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       username: email,
+    //       password: password
+    //     })
+    //   }
     // );
-    saveDataToStorage(resData.idToken, resData.localId);
+
+    // if (!response.ok) {
+    //   const errorResData = await response.json();
+    //   console.log(errorResData);
+    //   let message = errorResData.message;
+    //   throw new Error(message);
+    // }
+
+    // const resData = await response.json();
+    // console.log(resData);
   };
 };
 
 export const login = (email, password) => {
+  let isSignedIn;
   return async dispatch => {
     const response = await fetch(
       'https://clients.fizteq.com/gardenia/wp-json/jwt-auth/v1/token',
@@ -67,43 +71,52 @@ export const login = (email, password) => {
         },
         body: JSON.stringify({
           username: email,
-          password: password,
+          password: password
         })
       }
     );
-    console.log(response.code);
+
     if (!response.ok) {
-      // const errorResData = await response.json();
-      // const errorId = errorResData.error.code;
-      // let message = 'Something went wrong!';
-      // if (errorId === 'jwt_auth_failed') {
-      //   message = 'This email could not be found!';
-      // } else if (errorId === 'INVALID_PASSWORD') {
-      //   message = 'This password is not valid!';
-      // }
-      throw new Error(response.code);
+      const errorResData = await response.json();
+      console.log(errorResData);
+      let message = errorResData;
+      throw new Error(message);
     }
 
     const resData = await response.json();
-    console.log(resData);
-    dispatch(
-      authenticate(
-        resData.localId,
-        resData.idToken,
-        // parseInt(resData.expiresIn) * 1000
-      )
-    );
+    
+    // console.log(resData);
+
+    // ShopWooCommerceAPI.get('customers', {
+    //   per_page: 100
+    // })
+    // .then((responseData) => {
+    //   // console.log(responseData);
+    //   for (const key in responseData) {
+    //     if (responseData[key].email === email) {
+    //       id = responseData[key].id;
+    //       console.log(id);
+    //     }
+    //   }
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    // });
+    isSignedIn = true;
+    dispatch({ type: LOGIN, token: resData.token, userId: resData.user_email, isSignedIn: isSignedIn  });
     // const expirationDate = new Date(
     //   new Date().getTime() + parseInt(resData.expiresIn) * 1000
     // );
-    saveDataToStorage(resData.idToken, resData.localId);
+    saveDataToStorage(resData.token, resData.user_email);
+    
   };
 };
 
 export const logout = () => {
   // clearLogoutTimer();
   AsyncStorage.removeItem('userData');
-  return { type: LOGOUT };
+  console.log('Logged out!');
+  return { type: LOGOUT, token: null, userId: null, isSignedIn: false };
 };
 
 // const clearLogoutTimer = () => {

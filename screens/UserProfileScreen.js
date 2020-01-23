@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button, Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, Button, Platform, ActivityIndicator } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,14 +8,79 @@ import { withBadge } from 'react-native-elements';
 import HeaderButton from '../components/HeaderButton';
 import Colors from '../constants/Colors';
 import Card from '../components/Card';
+import * as userActions from '../store/actions/user';
+import * as authActions from '../store/actions/auth';
 
 const UserProfileScreen = props => {
 
+  const [userError, setUserError] = useState();
   const totalItems = useSelector(state => state.cart.totalItems);
+  const isUserLoading = useSelector(state => state.user.isLoading);
+  const isSignedIn = useSelector(state => state.auth.isSignedIn);
+  const user = useSelector(state => state.user.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     props.navigation.setParams({totalItems: totalItems});
   }, [totalItems]);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        await dispatch(userActions.getUser());
+      } catch (err) {
+        setUserError(err.message);
+      };
+    };
+    loadUser();    
+  }, [dispatch]);
+
+  
+  if (!isSignedIn || user === null) {
+    return (
+      <View style={styles.centered}>
+        <Text>Nu esti conectat.</Text>
+        <Button
+          title="Conecteaza-te" 
+          onPress={() => {
+            props.navigation.navigate('AuthScreen');
+          }}
+          color={Colors.primary}
+        />
+      </View>
+    )
+  }
+
+  if (isSignedIn && isUserLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size='large' color={Colors.primary} />
+      </View>
+    );
+  }
+
+  // if (products === null)  {
+  //   return (
+  //     <View style={styles.centered}>
+  //       <Text>Nu s-au gasit produse. Incercati mai tarziu.</Text>
+  //     </View>
+  //   );
+  // }
+
+  if (userError) {
+    return (
+      <View style={styles.centered}>
+        <Text>A avut loc o eroare.</Text>
+        <Button
+          title="Incearca din nou" 
+          onPress={() => {
+            loadUser();
+          }}
+          color={Colors.primary}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>
@@ -27,23 +92,27 @@ const UserProfileScreen = props => {
             </View>
             <View style={styles.nameContainer}>
               <Text>Nume: </Text>
-              <Text>Nume Prenume</Text>
+              <Text>{user.billingName}</Text>
             </View>
             <View style={styles.nameContainer}>
               <Text>Email: </Text>
-              <Text>Nume@yahoo.com</Text>
+              <Text>{user.email}</Text>
+            </View>
+            <View style={styles.nameContainer}>
+              <Text>Nr. de telefon: </Text>
+              <Text>{user.billingPhone}</Text>
             </View>
             <View style={styles.centered}>
               <Text>Adresa de Facturare: </Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text>Str. Oituz</Text>
+              <Text>Adresa: {user.billingAddress}</Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text>Localitate: Onesti</Text>
+              <Text>Localitate: {user.billingCity}</Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text>Judet: Bacau</Text>
+              <Text>Judet: {user.billingCounty}</Text>
             </View>   
           </Card>
           <View style={styles.buttonsContainer}>
@@ -52,7 +121,7 @@ const UserProfileScreen = props => {
                   color={Colors.primary}
                   title="Vezi Comenzi Anterioare"
                   onPress={() => {
-                    props.navigation.navigate('PreviousOrders', {route: 'User'});
+                    props.navigation.navigate('PreviousOrders');
                   }} 
               />
             </View>
@@ -61,7 +130,8 @@ const UserProfileScreen = props => {
                   color={Colors.primary}
                   title="Deconecteaza-te"
                   onPress={() => {
-                    
+                    dispatch(authActions.logout());
+                    props.navigation.navigate('ProductsOverview');
                   }} 
               />
             </View>
@@ -79,7 +149,8 @@ const styles = StyleSheet.create({
   centered: {
     marginVertical: 8,
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   gradient: {
     flex: 1,
