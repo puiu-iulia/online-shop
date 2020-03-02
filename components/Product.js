@@ -68,13 +68,14 @@ const styles = StyleSheet.create({
     padding: 10
   },
   title: {
-    // fontFamily: 'open-sans-bold',
+    fontFamily: 'playfair',
     fontSize: 18,
     marginVertical: 2
   },
   price: {
-    // fontFamily: 'open-sans',
+    fontFamily: 'montserrat',
     fontSize: 14,
+    fontWeight: '600',
     color: '#888',
   },
   actions: {

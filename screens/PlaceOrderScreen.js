@@ -1,6 +1,7 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
 import { ScrollView, ActivityIndicator, StyleSheet, View, KeyboardAvoidingView, Button, Text, Alert, Picker } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import Toast from 'react-native-simple-toast';
 
 import Input from '../components/Input';
 import Card from '../components/Card';
@@ -9,7 +10,8 @@ import * as data from '../data/judete.json';
 
 
 import * as orderActions from '../store/actions/orders';
-import * as cartActions from '../store/actions/cart';
+import * as userActions from '../store/actions/user';
+
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -45,9 +47,14 @@ const PlaceOrderScreen = props => {
     const [billingCounty, setBillingCounty] = useState();
     const dispatch = useDispatch();
 
+    const email = useSelector(state => state.auth.userId);
     const cartItems = useSelector(state => state.cart.items);
     const cartTotalAmount = useSelector(state => state.cart.totalAmount);
+
+    
     const user = useSelector(state => state.user.user);
+   
+    
 
     const countyData = [];
     for (const key in data.judete) {
@@ -106,12 +113,28 @@ const PlaceOrderScreen = props => {
           formState.inputValues.shippingCity,
           formState.inputValues.shippingAddress
         ));
-        setIsLoading(false);
-        props.navigation.navigate('ProductsOverview');
       } catch (err) {
         setError(err.message);
+        setIsLoading(false);
       }
     };
+
+    const updateUserData = async () => {
+      try {
+        setIsLoading(true);
+        await dispatch(userActions.updateUser(
+          formState.inputValues.billingName,
+          formState.inputValues.billingEmail,
+          formState.inputValues.billingPhone,
+          billingCounty,
+          formState.inputValues.billingCity,
+          formState.inputValues.billingAddress,
+        ))
+      } catch (err) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    }
 
     const inputChangeHandler = useCallback(
         (inputIdentifier, inputValue, inputValidity) => {
@@ -146,28 +169,29 @@ const PlaceOrderScreen = props => {
                            autoCapitalize="words"
                            errorText="Introdu numele tau."
                            onInputChange={inputChangeHandler}
-                           initialValue=''
+                           initialValue={(user) ? user.billingName : ""}
                         />
                         <Input
                             id="email"
                             label="Adresa de E-mail"
                             keyboardType="email-address"
                             required
+                            email
                             autoCapitalize="none"
                             errorText="Introdu o adresa de email valida."
                             onInputChange={inputChangeHandler}
-                            initialValue=''
+                            initialValue={(user) ? user.billingEmail : ""}
                         />
                         <Input
                             id="billingPhoneNumber"
                             label="Numar de Telefon"
                             keyboardType="number-pad"
                             required
-                            minLength={8}
+                            minLength={10}
                             autoCapitalize="none"
                             errorText="Introdu un numar de telefon valid."
                             onInputChange={inputChangeHandler}
-                            initialValue=''
+                            initialValue={(user) ? user.billingPhone : ""}
                         />
                          <View style={styles.countyContainer}>
                           <Text>Judet </Text>
@@ -192,7 +216,7 @@ const PlaceOrderScreen = props => {
                               autoCapitalize="words"
                               errorText="Introdu localitatea."
                               onInputChange={inputChangeHandler}
-                              initialValue=''
+                              initialValue={(user) ? user.billingCity : ""}
                           />
                           <Input
                               id="billingAddress"
@@ -203,7 +227,7 @@ const PlaceOrderScreen = props => {
                               autoCapitalize="none"
                               errorText="Introdu o adresa valida."
                               onInputChange={inputChangeHandler}
-                              initialValue=''
+                              initialValue={(user) ? user.billingAddress : ""}
                           />
                         
                         <View style={styles.centered}><Text>Date livrare:</Text></View> 
@@ -277,7 +301,14 @@ const PlaceOrderScreen = props => {
                               title={"Plateste"} 
                               color={Colors.primary} 
                               onPress={() => {
-                                placeOrderHandler();
+                                placeOrderHandler().then(() => {
+                                  updateUserData().then(() => {
+                                    setIsLoading(false);
+                                    
+                                  });
+                                });
+                                Toast.show('Comanda a fost trimisa cu succes!', Toast.SHORT);
+                                props.navigation.navigate('OrderConfirmation');
                               }} 
                             />)}
                         </View>   
@@ -311,7 +342,8 @@ const styles = StyleSheet.create({
         marginVertical: 16
     }, 
     orderSummaryText: {
-      fontSize: 20
+      fontSize: 20,
+      fontFamily: 'montserrat'
     },
     countyContainer: {
       marginTop: 10

@@ -27,12 +27,12 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
       payment_method: "bacs",
       payment_method_title: "Direct Bank Transfer",
       // set_paid: true,
-      customer_id: (userId) ? userId : 0,
+      customer_id: userId,
       billing: {
         first_name: billingName,
-        last_name: billingPhone,
+        last_name: "",
         address_1: billingAddress,
-        address_2: billingEmail,
+        address_2: billingPhone,
         city: billingCity,
         state: billingCounty,
         postcode: "",
@@ -41,47 +41,17 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
       },
       shipping: {
         first_name: shippingName,
-        last_name: shippingPhone,
+        last_name: "",
         address_1: shippingAddress,
-        address_2: "",
+        address_2: shippingPhone,
         city: shippingCity,
         state: shippingCounty,
         postcode: "",
-        country: "RO"
+        country: "RO",
+        phone: ""
       },
       line_items: lineItems
     };
-
-    // const data = {
-    //   payment_method: "bacs",
-    //   payment_method_title: "Direct Bank Transfer",
-    //   set_paid: true,
-    //   billing: {
-    //     first_name: "John",
-    //     last_name: "Doe",
-    //     address_1: "969 Market",
-    //     address_2: "",
-    //     city: "San Francisco",
-    //     state: "CA",
-    //     postcode: "94103",
-    //     country: "US",
-    //     email: "john.doe@example.com",
-    //     phone: "(555) 555-5555"
-    //   },
-    //   shipping: {
-    //     first_name: "John",
-    //     last_name: "Doe",
-    //     address_1: "969 Market",
-    //     address_2: "",
-    //     city: "San Francisco",
-    //     state: "CA",
-    //     postcode: "94103",
-    //     country: "US"
-    //   },
-    //   line_items: lineItems
-    // };
-
-
    
     ShopWooCommerceAPI.post('orders', data, {
 
@@ -154,12 +124,12 @@ export const fetchOrders = () => {
               new Date(data[key].date_created),
               data[key].billing.first_name + " " + data[key].billing.last_name,
               data[key].billing.email,
-              data[key].billing.phone,
+              data[key].billing.address_2,
               data[key].billing.state,
               data[key].billing.city,
               data[key].billing.address_1,
               data[key].shipping.first_name + " " + data[key].shipping.last_name,
-              data[key].shipping.phone,
+              data[key].shipping.address_2,
               data[key].shipping.state,
               data[key].shipping.city,
               data[key].shipping.address_1

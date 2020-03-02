@@ -33,6 +33,7 @@ const ProductsList = props => {
                 <Button
                     color={Colors.primary}
                     title="Vezi Detalii"
+                    textStyle={{fontFamily: 'montserrat'}}
                     onPress={() => {
                         selectItemHandler(itemData.item.id, itemData.item.name);
                     }}

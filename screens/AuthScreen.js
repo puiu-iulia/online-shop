@@ -36,6 +36,8 @@ const formReducer = (state, action) => {
 
 const AuthScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
     const [error, setError] = useState();
     const [isSignin, setIsSignin] = useState(true);
     const dispatch = useDispatch();
@@ -58,32 +60,69 @@ const AuthScreen = props => {
         }
       }, [error]);
 
+    // const authHandler = async () => {
+    //   let action;
+    //   if (!isSignin) {
+    //     action = authActions.signup(
+    //       formState.inputValues.email,
+    //       formState.inputValues.password
+    //     );
+    //   } else {
+    //     action = authActions.login(
+    //       formState.inputValues.email,
+    //       formState.inputValues.password
+    //     );
+    //   }
+    //   setError(null);
+    //   try {
+    //     setIsLoading(true);
+    //     await dispatch(action);
+    //     setIsLoading(false);
+    //     if (isSignin) {
+    //       props.navigation.navigate('ProductsOverview');
+    //     } else {
+    //       Toast.show('Contul tau a fost creat cu succes! Acum te poti conecta.', Toast.SHORT);
+    //     }  
+    //   } catch (err) {
+    //     setError(err.message);
+    //     setIsLoading(false);
+    //   }
+    // };
+
     const authHandler = async () => {
       let action;
       if (!isSignin) {
-        action = authActions.signup(
-          formState.inputValues.email,
-          formState.inputValues.password
-        );
+        try {
+          setIsLoading(true);
+          await dispatch(authActions.signup(
+            formState.inputValues.email,
+            formState.inputValues.password
+          ));
+          setIsLoading(false);
+        } catch (err) {
+          setError(err.message);
+          setIsLoading(false);
+        }
+        console.log(error);
+        // if (error) {
+        //   Alert.alert('A avut loc o eroare!', err.message, [{ text: 'In regula' }]);
+        // } else {
+        //   Toast.show('Contul tau a fost creat cu succes! Acum te poti conecta.', Toast.SHORT);
+        // }
+        
       } else {
-        action = authActions.login(
-          formState.inputValues.email,
-          formState.inputValues.password
-        );
-      }
-      setError(null);
-      try {
-        setIsLoading(true);
-        await dispatch(action);
-        setIsLoading(false);
-        if (isSignin) {
+        try {
+          setIsLoading(true);
+          await dispatch(authActions.login(
+            formState.inputValues.email,
+            formState.inputValues.password
+          ));
+          setIsLoading(false);
           props.navigation.navigate('ProductsOverview');
-        } else {
-          Toast.show('Contul tau a fost creat cu succes! Acum te poti conecta.', Toast.SHORT);
-        }  
-      } catch (err) {
-        setError(err.message);
-        setIsLoading(false);
+        } catch (err) {
+          setError(err.message);
+          setIsLoading(false);
+        }
       }
     };
 
@@ -116,14 +155,14 @@ const AuthScreen = props => {
                             initialValue=''
                         />
                         <Input
-                            id="password"
+                            value={password}
                             label="Parola"
                             keyboardType="default"
                             secureTextEntry
                             required
-                            minLength={8}
+                            minLength={6}
                             autoCapitalize="none"
-                            errorText="Introdu o parola de minim 8 caractere."
+                            errorText="Introdu o parola de minim 6 caractere."
                             onInputChange={inputChangeHandler}
                             initialValue=''
                         />
@@ -133,8 +172,16 @@ const AuthScreen = props => {
                             ) : (
                                 <Button 
                                     title={isSignin ? "Conecteaza-te": "Creaza Cont"} 
-                                    color={Colors.accent} 
-                                    onPress={authHandler} 
+                                    color={Colors.accent}
+                                    onPress={() => {
+                                      if (formState.inputValues.email == "") {
+                                        // console.log(formState.inputValues.email);
+                                        Alert.alert('Te rugam sa introduci datele tale');
+                                      } else {
+                                        authHandler();
+                                      }
+                                      
+                                    }} 
                                 /> 
                             )}
                         </View>

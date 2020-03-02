@@ -10,14 +10,21 @@ import Colors from '../constants/Colors';
 import Card from '../components/Card';
 import * as userActions from '../store/actions/user';
 import * as authActions from '../store/actions/auth';
+import * as orderActions from '../store/actions/orders';
 
 const UserProfileScreen = props => {
 
   const [userError, setUserError] = useState();
+  const [error, setError] = useState();
   const totalItems = useSelector(state => state.cart.totalItems);
   const isUserLoading = useSelector(state => state.user.isLoading);
+  const isOrderLoading = useSelector(state => state.orders.isLoading);
   const isSignedIn = useSelector(state => state.auth.isSignedIn);
+  const orders = useSelector(state => state.orders.orders);
+  const lastOrder = orders[0];
+  console.log(lastOrder);
   const user = useSelector(state => state.user.user);
+  const email = useSelector(state => state.auth.userId);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -67,14 +74,14 @@ const UserProfileScreen = props => {
   //   );
   // }
 
-  if (userError) {
+  if (userError || error) {
     return (
       <View style={styles.centered}>
         <Text>A avut loc o eroare.</Text>
         <Button
           title="Incearca din nou" 
           onPress={() => {
-            loadUser();
+            // loadUser();
           }}
           color={Colors.primary}
         />
@@ -88,31 +95,31 @@ const UserProfileScreen = props => {
         <ScrollView>
           <Card style={styles.dataContainer}>
             <View style={styles.centered}>
-              <Text>Date Personale: </Text>
+              <Text style={styles.text}>Date Personale: </Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text>Nume: </Text>
-              <Text>{user.billingName}</Text>
+              <Text style={styles.text}>Nume: </Text>
+              <Text style={styles.text}>{user.billingName}</Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text>Email: </Text>
-              <Text>{user.email}</Text>
+              <Text style={styles.text}>Email: </Text>
+              <Text style={styles.text}>{email}</Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text>Nr. de telefon: </Text>
-              <Text>{user.billingPhone}</Text>
+              <Text style={styles.text}>Nr. de telefon: </Text>
+              <Text style={styles.text}>{user.billingPhone}</Text>
             </View>
             <View style={styles.centered}>
-              <Text>Adresa de Facturare: </Text>
+              <Text style={styles.text}>Adresa de Facturare: </Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text>Adresa: {user.billingAddress}</Text>
+              <Text style={styles.text}>Adresa: {user.billingAddress}</Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text>Localitate: {user.billingCity}</Text>
+              <Text style={styles.text}>Localitate: {user.billingCity}</Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text>Judet: {user.billingCounty}</Text>
+              <Text style={styles.text}>Judet: {user.billingCounty}</Text>
             </View>   
           </Card>
           <View style={styles.buttonsContainer}>
@@ -185,6 +192,9 @@ const styles = StyleSheet.create({
   },
   cart: {
     marginRight: 4
+  },
+  text: {
+    fontFamily: 'montserrat'
   }
 });
 

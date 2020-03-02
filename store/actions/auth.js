@@ -80,6 +80,12 @@ export const login = (email, password) => {
       const errorResData = await response.json();
       console.log(errorResData);
       let message = errorResData;
+      if (errorResData.code === "[jwt_auth] invalid_email" || errorResData.code === "[jwt_auth] incorrect_password") {
+        message = "Ai introdus o adresa de email sau o parola gresita";
+      }
+      // if (errorResData.code === "[jwt_auth] empty_password" || errorResData.code === "registration-error-missing-password") {
+      //   message = "Te rugam introdu o parolă pentru cont."
+      // }
       throw new Error(message);
     }
 

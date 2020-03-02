@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     alignContent: 'center'
   },
   quantity: {
-    // fontFamily: 'open-sans',
+    fontFamily: 'montserrat',
     color: '#888',
     fontSize: 16
   },
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   mainText: {
-    // fontFamily: 'open-sans-bold',
+    fontFamily: 'montserrat',
     fontSize: 16
   },
   amount: {

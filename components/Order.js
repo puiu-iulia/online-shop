@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   totalAmount: {
-    // fontFamily: 'open-sans-bold',
+    fontFamily: 'montserrat',
     fontSize: 16
   },
   date: {
     fontSize: 16,
-    // fontFamily: 'open-sans',
+    fontFamily: 'montserrat',
     color: '#888'
   }
 });

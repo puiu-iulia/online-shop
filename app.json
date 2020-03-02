@@ -24,7 +24,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "ro.gardenia.gardenia"
     },
     "android": {
       "package": "ro.gardenia.gardenia"

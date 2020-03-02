@@ -17,18 +17,20 @@ import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/auth';
 import PlaceOrderScreen from '../screens/PlaceOrderScreen';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen';
+import StartupScreen from '../screens/StartupScreen';
+import OrderConfirmationScreen from '../screens/OrderConfirmationScreen';
 
 
 const defaultNavOptions = {
     headerStyle: {
       backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
     },
-    // headerTitleStyle: {
-    //   fontFamily: 'open-sans-bold'
-    // },
-    // headerBackTitleStyle: {
-    //   fontFamily: 'open-sans'
-    // },
+    headerTitleStyle: {
+      fontFamily: 'playfair'
+    },
+    headerBackTitleStyle: {
+      fontFamily: 'playfair'
+    },
     headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
   };
 
@@ -37,7 +39,8 @@ const defaultNavOptions = {
       ProductsOverview: ProductsListScreen,
       ProductDetail: ProductDetailsScreen,
       Cart: CartScreen, 
-      Order: PlaceOrderScreen
+      Order: PlaceOrderScreen,
+      OrderConfirmation: OrderConfirmationScreen
     },
     {
       navigationOptions: {
@@ -145,12 +148,22 @@ const defaultNavOptions = {
     }
   );
 
-  const MainNavigator = createSwitchNavigator({
-      Shop: ShopNavigator,
-      Auth: AuthNavigator
+  const StartupNavigator = createStackNavigator(
+    {
+      StartupsScreen: StartupScreen
     },
     {
-      initialRouteName: 'Shop'
+      defaultNavigationOptions: defaultNavOptions
+    }
+  )
+
+  const MainNavigator = createSwitchNavigator({
+      Shop: ShopNavigator,
+      Auth: AuthNavigator,
+      Startup: StartupNavigator
+    },
+    {
+      initialRouteName: 'Startup'
     }
   );
 

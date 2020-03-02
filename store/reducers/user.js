@@ -1,4 +1,5 @@
-import { GET_USER } from '../actions/user';
+import { GET_USER, UPDATE_USER } from '../actions/user';
+import User from '../../models/user';
 
 const  initialState = {
     userId: null,
@@ -14,7 +15,25 @@ export default (state = initialState, action) => {
                 user: action.user,
                 isLoading: action.isLoading
             };
-        
+        case UPDATE_USER:
+            const updatedUser = new User(
+                action.pid,
+                action.billingName,
+                action.billingEmail,
+                action.billingPhone,
+                action.billingCounty,
+                action.billingCity,
+                action.billingAddress,
+                "",
+                "",
+                "",
+                "",
+                ""
+            );
+            return {
+                ...state,
+                user: updatedUser
+            };
     }   
     return state;
 };

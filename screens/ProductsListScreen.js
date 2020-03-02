@@ -9,6 +9,7 @@ import HeaderButton from '../components/HeaderButton';
 import ProductsList from '../components/ProductsList';
 import Card from '../components/Card';
 import * as cartActions from '../store/actions/cart';
+import * as userActions from '../store/actions/user';
 import * as productsActions from '../store/actions/products';
 import * as categoriesActions from '../store/actions/categories';
 import Colors from '../constants/Colors';
@@ -21,6 +22,7 @@ const ProductsListScreen = props => {
   const [category, setCategory] = useState('Toate');
   const products = useSelector(state => state.products.availableProducts);
   const isLoading = useSelector(state => state.products.isLoading);
+  const isSignedIn = useSelector(state => state.auth.isSignedIn);
   const isCategoryLoading = useSelector(state => state.categories.isCategoryLoading);
   const [allProducts, setAllProducts] = useState(true);
   const [query, setQuery] = useState('');
@@ -44,9 +46,19 @@ const ProductsListScreen = props => {
         setCategoryError(err.message);
       };
     };
+    const loadUser = async () => {
+      try {
+        await dispatch(userActions.getUser());
+      } catch (err) {
+        setUserError(err.message);
+      };
+    };
     loadCategories().then(() => {
       loadProducts();
     });
+    if (isSignedIn) {
+      loadUser();
+    }
   }, [dispatch]);
 
 
@@ -102,6 +114,7 @@ const ProductsListScreen = props => {
               style={styles.categoryPicker}
               mode="dropdown"
               selectedValue={category}
+              Style={{fontFamily: 'montserrat', fontWeight: 300, fontWeight: 18}}
               onValueChange={(category)=> {
                 updateProductsList(category, query);
               }}
@@ -180,7 +193,8 @@ ProductsListScreen.navigationOptions = navData => {
         flex: 1,
         flexDirection: 'row',
         marginLeft: 48,
-        alignItems: 'center'
+        alignItems: 'center',
+        alignContent: 'center'
       }}>
         {/* <Image 
           source={{uri: 'asset:/logo.PNG'}}
@@ -194,9 +208,12 @@ ProductsListScreen.navigationOptions = navData => {
         <Text 
           style={{
             marginLeft: 4,
+            marginBottom: 4,
             fontSize: 24,
             color: 'white',
-            textTransform: 'uppercase'
+            textTransform: 'uppercase',
+            fontFamily: 'playfair',
+            fontWeight: '400'
           }}
         >Gardenia</Text>
       </View>
@@ -271,13 +288,15 @@ const styles = StyleSheet.create({
     flex: 1,  
     flexDirection: 'row',
     paddingLeft: 8,
-    justifyContent: 'flex-start'
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center'
   },
   categoryPicker: {
-    width: "65%",
-    position: 'absolute',
-    right: 0,
-    top: -14
+    width: "68%",
+    // position: 'absolute',
+    // right: 0,
+    // top: -14
   },
   searchBox: {
     flex: 1,  
@@ -289,7 +308,8 @@ const styles = StyleSheet.create({
 
   },
   pickerItem: {
-    fontSize: 16
+    fontSize: 16,
+    marginBottom: 2
   },
   searchInput: {
 

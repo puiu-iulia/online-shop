@@ -136,14 +136,14 @@ const styles = StyleSheet.create({
     color: '#888',
     textAlign: 'center',
     marginVertical: 16,
-    // fontFamily: 'open-sans-bold'
+    fontFamily: 'montserrat'
   },
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center'
   },
   description: {
-    // fontFamily: 'open-sans',
+    fontFamily: 'montserrat',
     fontSize: 14,
     textAlign: 'center',
     marginHorizontal: 20

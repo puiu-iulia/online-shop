@@ -45,9 +45,9 @@ const OrderDetailsScreen = props => {
                 itemData => (
                   <View style={styles.card}>
                     <View style={styles.itemDataContainer}>
-                      <View><Text>{itemData.item.productTitle}</Text></View>
+                      <View><Text style={styles.text}>{itemData.item.productTitle}</Text></View>
                       <View><Text> x </Text></View>
-                      <View><Text>{itemData.item.quantity}</Text></View>
+                      <View><Text style={styles.text}>{itemData.item.quantity}</Text></View>
                     </View>
                     <View><Text style={styles.price}>= {itemData.item.sum}</Text></View>
                   </View>
@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   },
   products: {
     fontSize: 18,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'montserrat'
   },
   dataContainer: {
     padding: 8,
@@ -102,13 +103,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   description: {
-    // fontFamily: 'open-sans',
+    fontFamily: 'montserrat',
     fontSize: 16,
     textAlign: 'right',
     marginVertical: 16
   },
   shipping: {
-    marginVertical: 8
+    marginVertical: 8,
+    fontFamily: 'montserrat'
+  },
+  text: {
+    fontFamily: 'montserrat'
   }
 });
 
