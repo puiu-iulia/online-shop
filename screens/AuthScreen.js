@@ -36,8 +36,6 @@ const formReducer = (state, action) => {
 
 const AuthScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
     const [error, setError] = useState();
     const [isSignin, setIsSignin] = useState(true);
     const dispatch = useDispatch();
@@ -149,13 +147,14 @@ const AuthScreen = props => {
                             keyboardType="email-address"
                             required
                             email
+                            autoFocus={true}
                             autoCapitalize="none"
                             errorText="Introdu o adresa de email valida."
                             onInputChange={inputChangeHandler}
                             initialValue=''
                         />
                         <Input
-                            value={password}
+                            id={password}
                             label="Parola"
                             keyboardType="default"
                             secureTextEntry
@@ -174,13 +173,8 @@ const AuthScreen = props => {
                                     title={isSignin ? "Conecteaza-te": "Creaza Cont"} 
                                     color={Colors.accent}
                                     onPress={() => {
-                                      if (formState.inputValues.email == "") {
-                                        // console.log(formState.inputValues.email);
-                                        Alert.alert('Te rugam sa introduci datele tale');
-                                      } else {
-                                        authHandler();
-                                      }
-                                      
+                                        console.log(formState.inputValues.password);
+                                        authHandler();    
                                     }} 
                                 /> 
                             )}

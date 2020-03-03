@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
   input: {
     paddingHorizontal: 2,
     paddingVertical: 8,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
+    borderColor: '#ccc',
+    borderWidth: 1
   },
   errorContainer: {
     marginVertical: 5

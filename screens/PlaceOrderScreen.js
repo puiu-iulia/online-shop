@@ -166,6 +166,7 @@ const PlaceOrderScreen = props => {
                            label="Nume"
                            keyboardType="default"
                            required
+                           autoFocus={true}
                            autoCapitalize="words"
                            errorText="Introdu numele tau."
                            onInputChange={inputChangeHandler}
@@ -304,11 +305,11 @@ const PlaceOrderScreen = props => {
                                 placeOrderHandler().then(() => {
                                   updateUserData().then(() => {
                                     setIsLoading(false);
-                                    
+                                    Toast.show('Comanda a fost trimisa cu succes!', Toast.SHORT);
+                                    props.navigation.navigate('OrderConfirmation');
                                   });
                                 });
-                                Toast.show('Comanda a fost trimisa cu succes!', Toast.SHORT);
-                                props.navigation.navigate('OrderConfirmation');
+                                
                               }} 
                             />)}
                         </View>   
