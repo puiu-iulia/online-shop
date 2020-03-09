@@ -9,7 +9,7 @@ export const getUser = () => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId;
         // console.log(getState().auth);
-        ShopWooCommerceAPI.get('customers', {
+        await ShopWooCommerceAPI.get('customers', {
             per_page: 100,
             email: userId
         }).then(data => {

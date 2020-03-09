@@ -8,7 +8,7 @@ export const fetchCategories = () => {
     let isCategoryLoading;
     return async dispatch => {
   
-      ShopWooCommerceAPI.get('products/categories', {
+      await ShopWooCommerceAPI.get('products/categories', {
       })
       .then(data => {
         const loadedCategories = [];

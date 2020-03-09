@@ -23,7 +23,7 @@ export const signup = (email, password) => {
       password: password
     }
 
-    ShopWooCommerceAPI.post('customers', data, { 
+    await ShopWooCommerceAPI.post('customers', data, { 
       })
       .then((responseData) => {
         console.log(responseData);

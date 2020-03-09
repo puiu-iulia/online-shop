@@ -154,7 +154,7 @@ const AuthScreen = props => {
                             initialValue=''
                         />
                         <Input
-                            id={password}
+                            id="password"
                             label="Parola"
                             keyboardType="default"
                             secureTextEntry

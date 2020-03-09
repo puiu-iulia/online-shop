@@ -94,7 +94,7 @@ export const fetchOrders = () => {
     console.log(getState().user);
     const userId = getState().user.userId;
     console.log(userId);
-    ShopWooCommerceAPI.get('orders', {
+    await ShopWooCommerceAPI.get('orders', {
       per_page: 100,
       customer: userId
     })

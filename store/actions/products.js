@@ -9,7 +9,7 @@ export const FILTER_PRODUCTS = 'FILTER_PRODUCTS';
 export const fetchProducts = () => {
   let isLoading;
   return async dispatch => {
-    ShopWooCommerceAPI.get('products', {
+    await ShopWooCommerceAPI.get('products', {
       per_page: 100
     })
     .then(data => {
