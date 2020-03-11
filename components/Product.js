@@ -31,9 +31,9 @@ const Product = props => {
               <Text style={styles.title} numberOfLines={1}>{props.title}</Text>
               <Text style={styles.price}>{props.price} RON</Text>
             </View>
-            <View style={styles.actions}>
+            {/* <View style={styles.actions}>
               {props.children}
-            </View>
+            </View> */}
           </View>
         </TouchableCmp>
       </View>
@@ -43,9 +43,10 @@ const Product = props => {
 
 const styles = StyleSheet.create({
   product: {
-    height: Dimensions.get('window').height/2.3,
+    height: Dimensions.get('window').height/2.4,
     width: Dimensions.get('window').width/2.25,
-    margin: 10
+    margin: 10, 
+    backgroundColor: '#f1f1f3'
   },
   touchable: {
     borderRadius: 10,
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '100%',
-    height: '60%',
+    height: '80%',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     overflow: 'hidden'
@@ -64,12 +65,12 @@ const styles = StyleSheet.create({
   },
   details: {
     alignItems: 'center',
-    height: '17%',
-    padding: 10
+    height: '15%',
+    padding: 8
   },
   title: {
     fontFamily: 'playfair',
-    fontSize: 18,
+    fontSize: 20,
     marginVertical: 2
   },
   price: {
@@ -78,15 +79,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#888',
   },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '23%',
-    paddingHorizontal: 20,
-    marginTop: 2
-  }
+  // actions: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   height: '23%',
+  //   paddingHorizontal: 20,
+  //   marginTop: 2
+  // }
 });
 
 export default Product;

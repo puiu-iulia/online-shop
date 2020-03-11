@@ -8,6 +8,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import HeaderButton from '../components/HeaderButton';
 import ProductsList from '../components/ProductsList';
 import Card from '../components/Card';
+import Logo from '../components/Logo';
 import * as cartActions from '../store/actions/cart';
 import * as userActions from '../store/actions/user';
 import * as productsActions from '../store/actions/products';
@@ -107,29 +108,27 @@ const ProductsListScreen = props => {
 
     return (
       <View style={styles.screen}>
-        <Card style={styles.filtersContainer}>
+        <View style={styles.filtersContainer}>
           <View style={styles.categoryContainer}>
             <Text style={styles.pickerItem} >Categorii:</Text>
             <Picker
               style={styles.categoryPicker}
               mode="dropdown"
               selectedValue={category}
-              Style={{fontFamily: 'montserrat', fontWeight: 300, fontWeight: 18}}
               onValueChange={(category)=> {
                 updateProductsList(category, query);
               }}
             >
               {categories.map((item, index) => {
                 return (<Picker.Item
+                  style={{fontFamily: 'montserrat', fontWeight: 400, fontWeight: 18}}
                   label={item.name} 
                   value={item.name} 
                   key={index}/>) 
               })}
             </Picker>
           </View>
-          <View style={styles.searchBox}>
-            <View>
-              <View style={styles.search}>
+          <View style={styles.searchContainer}>
                 <TextInput
                   style={styles.searchInput}
                   multiline={false}
@@ -137,7 +136,8 @@ const ProductsListScreen = props => {
                   clearButtonMode='always'
                   onChangeText={(query) => {
                     setQuery(query);
-                    // updateProductsList(category, query);
+                    setIsSearching(true);
+                    updateProductsList(category, query);
                   }} 
                   id="search"
                   keyboardType="default"
@@ -158,23 +158,23 @@ const ProductsListScreen = props => {
                         />
                       </View>
                     )
-                  : null
+                  :   
+                  ( 
+                  <Ionicons
+                    style={styles.clearSearchButton}
+                    name={Platform.OS === 'android' ? 'md-search' : 'ios-search'}
+                    size={32}
+                    onPress={() => {
+                      console.log(query);
+                      setIsSearching(true);
+                      updateProductsList(category, query);
+                    }}
+                    color={Colors.primary}
+                  /> 
+                  )
                 }
               </View>
-              <Ionicons
-                  style={styles.searchButton}
-                  name={Platform.OS === 'android' ? 'md-search' : 'ios-search'}
-                  size={24}
-                  onPress={() => {
-                    console.log(query);
-                    setIsSearching(true);
-                    updateProductsList(category, query);
-                  }}
-                  color={Colors.primary}
-                />
-            </View>
-          </View>
-        </Card>
+        </View>
         <ProductsList listData={allProducts ? products: filterProducts} navigation={props.navigation} />     
       </View>
     );
@@ -187,38 +187,6 @@ const ProductsListScreen = props => {
 
 ProductsListScreen.navigationOptions = navData => {
   const itemsCount = navData.navigation.getParam('totalItems');
-  const Logo = () => {
-    return (
-      <View style={{
-        flex: 1,
-        flexDirection: 'row',
-        marginLeft: 48,
-        alignItems: 'center',
-        alignContent: 'center'
-      }}>
-        {/* <Image 
-          source={{uri: 'asset:/logo.PNG'}}
-          style={{height: 24}}
-        /> */}
-        <Ionicons
-            name={'ios-flower'}
-            size={28}
-            color={Colors.accent}
-          />
-        <Text 
-          style={{
-            marginLeft: 4,
-            marginBottom: 4,
-            fontSize: 24,
-            color: 'white',
-            textTransform: 'uppercase',
-            fontFamily: 'playfair',
-            fontWeight: '400'
-          }}
-        >Gardenia</Text>
-      </View>
-    );
-  }
   const ItemsCart = withBadge(itemsCount, {
     bottom: 0,
     right: 0,
@@ -272,67 +240,77 @@ const styles = StyleSheet.create({
   },
   filtersContainer: {
     width: '100%',
-    height: '10%',
-    maxHeight: 48,
-    paddingVertical: 24,
+    height: '15%',
+    maxHeight: 64,
+    paddingVertical: 32,
     borderRadius: 0,
     // marginTop: 8,
     marginRight: 16,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     alignContent: 'center',
   },
   categoryContainer: {
+    // backgroundColor: '#dbe1e1',
     flex: 1,  
     flexDirection: 'row',
-    paddingLeft: 8,
+    height: 40,
+    backgroundColor: '#dbe1e1',
+    marginLeft: 8,
     justifyContent: 'space-between',
     alignContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderRadius: 8,
   },
   categoryPicker: {
-    width: "68%",
+     width: "66%",
+     marginRight: 8
     // position: 'absolute',
     // right: 0,
     // top: -14
   },
-  searchBox: {
+  searchContainer: {
     flex: 1,  
     flexDirection: 'row',
-    paddingLeft: 8,
-    justifyContent: 'flex-end'
+    marginLeft: 16,
+    marginRight: 8,
+    height: 40,
+    borderColor: '#dbe1e1',
+    borderWidth: 0.7,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   clearSearchButton: {
-
+    marginRight: 4,
+    color:'#dbe1e1'
   },
   pickerItem: {
-    fontSize: 16,
-    marginBottom: 2
+    fontSize: 14,
+    marginLeft: 4,
+    fontFamily: 'montserrat'
   },
   searchInput: {
-
   },
-  search: {
-    position: "absolute",
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    bottom: -16,
-    left: 0,
-    width: '75%',
-    maxWidth: 180,
-    borderColor: '#888',
-    borderWidth: 0.7,
-    borderRadius: 4   
-  }, 
-  searchButton: {
-    position: "absolute",
-    right: 16,
-    top: -12,
-    justifyContent: 'flex-end'
-  }
+  // search: {
+  //   position: "absolute",
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   bottom: -16,
+  //   left: 0,
+  //   width: '95%',
+  //   maxWidth: 240,
+  //   // height: '10%',
+  //   // maxHeight: 48,
+  //   borderColor: '#888',
+  //   borderWidth: 0.7,
+  //   borderRadius: 4,
+  //   flex: 1,
+  //   flexDirection: 'row'  
+  // }, 
 })
 
 

@@ -51,7 +51,10 @@ const defaultNavOptions = {
             color={drawerConfig.tintColor}
           />
         ),
-        drawerLabel: "Toate Produsele"
+        drawerLabel: "Toate Produsele",
+        labelStyle: {
+          color: 'white'
+        }
       },
       defaultNavigationOptions: defaultNavOptions
     }
@@ -68,7 +71,7 @@ const defaultNavOptions = {
           <Ionicons
             name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
             size={24}
-            color={drawerConfig.tintColor}
+            color={Colors.accent}
           />
         ), 
         drawerLabel: "Comenzi Anterioare"
@@ -89,44 +92,56 @@ const defaultNavOptions = {
           <FontAwesome
             name={'user'}
             size={24}
-            color={drawerConfig.tintColor}
+            color={Colors.accent}
           />
           // <View>if ()</View>
         ),
-        drawerLabel: "Profilul Meu"
+        drawerLabel: "Profilul Meu",
+        labelStyle: {
+          color: 'white'
+        }
       },
 
       defaultNavigationOptions: defaultNavOptions
     }
   );
 
+
+
   const ShopNavigator = createDrawerNavigator(
     {
       Produse: ProductsNavigator,
-      Profil: UserNavigator
+      Profil: UserNavigator, 
     },
+    // {
+    //   drawerBackgroundColor: Colors.primary
+    // },
     {
+      drawerBackgroundColor: Colors.primary,
       contentOptions: {
-        activeTintColor: Colors.primary
+        labelStyle: {
+          color: 'white'
+        },
+        activeTintColor: Colors.accent
       },
       contentComponent: props => {
         const dispatch = useDispatch();
         const isSignedIn = useSelector(state => state.auth.isSignedIn);
         return (
-          <View style={{ flex: 1, paddingTop: 20 }}>
+          <View style={{ flex: 1, paddingTop: 20, flexDirection: 'column' }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
               <DrawerItems {...props} />
-              {(!isSignedIn) ? (<Button
+              {(!isSignedIn) ? (<View style={{alignContent: 'flex-end'}}><Button
                 title="Conecteaza-te"
                 color={Colors.primary}
                 onPress={() => {
                   // dispatch(authActions.logout());
                   props.navigation.navigate('AuthScreen');
                 }}
-              />) : (
+              /></View>) : (
                 <Button
                   title="Deconecteaza-te"
-                  color={Colors.primary}
+                  color={Colors.accent}
                   onPress={() => {
                     dispatch(authActions.logout());
                     props.navigation.navigate('ProductsOverview');
@@ -163,7 +178,7 @@ const defaultNavOptions = {
       Startup: StartupNavigator
     },
     {
-      initialRouteName: 'Startup'
+      initialRouteName: 'Shop'
     }
   );
 

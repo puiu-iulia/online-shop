@@ -12,9 +12,11 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { withBadge } from 'react-native-elements';
-import { FontAwesome } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 import HeaderButton from '../components/HeaderButton';
+import Logo from '../components/Logo';
+
 import Colors from '../constants/Colors';
 import * as cartActions from '../store/actions/cart';
 
@@ -46,45 +48,56 @@ const ProductDetailScreen = props => {
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />
-      <Text style={styles.description}>{selectedProduct.description}</Text>
+      <Text style={styles.title}>{selectedProduct.name}</Text>
       <Text style={styles.price}>{selectedProduct.price} RON</Text>
       <View style={styles.actions}>
         <View style={styles.quantityContainer}>
             {/* {props.deletable && ( */}
             <TouchableOpacity
+              style={styles.controller}
               onPress={() => {
                 if (quantity > 1) {
                   setQuantity(quantity - 1);
                 }
               }}
             >
-              <FontAwesome
-                name={Platform.OS === 'android' ? 'minus-circle' : 'minus-circle'}
+              <Ionicons
+                name={'ios-remove'}
                 size={36}
-                color={Colors.primary}
+                color={'white'}
               />
             </TouchableOpacity>
             <View style={styles.quantityBox}>
               <Text style={styles.quantity}>{quantity}</Text>
             </View>
             <TouchableOpacity
+              style={styles.controller}
               onPress={() => 
                 setQuantity(quantity + 1)
               }
             >
-              <FontAwesome
-                name={Platform.OS === 'android' ? 'plus-circle' : 'plus-circle'}
+              <Ionicons
+                name={'ios-add'}
                 size={36}
-                color={Colors.primary}
+                color={'white'}
               />
             </TouchableOpacity> 
           </View>
-        <Button
-          color={Colors.accent}
-          title="Adauga in cos"
-          onPress={addToCartHandler}
-        />
+        <TouchableOpacity 
+          style={styles.addToCartButton}
+          onPress={addToCartHandler}>
+            <View style={styles.addToCartButton}>
+              <Text style={styles.addToCartText}>Adauga in Cos</Text>  
+              <Ionicons
+                onPress={addToCartHandler}
+                name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
+                size={24}
+                color={'white'}
+              />
+            </View>
+        </TouchableOpacity> 
       </View>
+      <Text style={styles.description}>{selectedProduct.description}</Text>
     </ScrollView>
   );
 };
@@ -99,7 +112,7 @@ ProductDetailScreen.navigationOptions = navData => {
     }
   })(HeaderButton);
   return {
-    headerTitle: navData.navigation.getParam('productTitle'),
+    headerTitle: <Logo />,
     headerRight: (
       <HeaderButtons HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}>
         <Item
@@ -116,6 +129,20 @@ ProductDetailScreen.navigationOptions = navData => {
 };
 
 const styles = StyleSheet.create({
+  addToCartButton: {
+    marginRight: 8,
+    marginLeft: 24,
+    height: 40,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.accent,
+    borderRadius: 8
+  },
+  addToCartText: {
+    color: 'white'
+  },
   image: {
     width: '100%',
     height: 300
@@ -132,15 +159,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   price: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#888',
     textAlign: 'center',
-    marginVertical: 16,
+    marginBottom: 16,
     fontFamily: 'montserrat'
   },
   quantityContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f1f1f3',
+  },
+  title: {
+    fontFamily: 'playfair',
+    fontSize: 30,
+    textAlign: 'center',
+    marginVertical: 20,
+    color: Colors.primary
   },
   description: {
     fontFamily: 'montserrat',
@@ -149,8 +185,25 @@ const styles = StyleSheet.create({
     marginHorizontal: 20
   },
   quantityBox: {
-    paddingHorizontal: 16
-   }
+    width: 64,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  controller: {
+    height: 40,
+    width: 40,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.primary
+  },
+  quantity: {
+    textAlign: 'center',
+    fontSize: 24,
+    fontFamily: 'playfair',
+    paddingBottom: 8
+  }
 });
 
 export default ProductDetailScreen;
