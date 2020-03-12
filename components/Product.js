@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import Card from './Card';
+import CustomLinearGradient from './CustomLinearGradient';
 
 const Product = props => {
   let TouchableCmp = TouchableOpacity;
@@ -27,6 +28,7 @@ const Product = props => {
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={{ uri: props.image }} />
             </View>
+            <CustomLinearGradient></CustomLinearGradient>
             <View style={styles.details}>
               <Text style={styles.title} numberOfLines={1}>{props.title}</Text>
               <Text style={styles.price}>{props.price} RON</Text>
@@ -44,19 +46,20 @@ const Product = props => {
 const styles = StyleSheet.create({
   product: {
     height: Dimensions.get('window').height/2.4,
-    width: Dimensions.get('window').width/2.25,
-    margin: 10, 
+    width: Dimensions.get('window').width/2.22,
+    marginVertical: 8,
+    marginLeft: 12, 
     backgroundColor: '#f1f1f3'
   },
   touchable: {
-    borderRadius: 10,
+    borderRadius: 8,
     overflow: 'hidden'
   },
   imageContainer: {
     width: '100%',
-    height: '80%',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    height: '78%',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
     overflow: 'hidden'
   },
   image: {

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, FlatList, Button, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Colors from '../constants/Colors';
@@ -18,6 +18,7 @@ const CartScreen = props => {
         productId: key,
         productTitle: state.cart.items[key].productTitle,
         productPrice: state.cart.items[key].productPrice,
+        imageUrl: state.cart.items[key].imageUrl,
         quantity: state.cart.items[key].quantity,
         sum: state.cart.items[key].sum
       });
@@ -40,6 +41,7 @@ const CartScreen = props => {
         keyExtractor={item => item.productId}
         renderItem={itemData => (
           <Cart
+            image={itemData.item.imageUrl}
             quantity={itemData.item.quantity}
             title={itemData.item.productTitle}
             amount={itemData.item.sum}
@@ -53,22 +55,40 @@ const CartScreen = props => {
           />
         )}
       />
-      <Card style={styles.summary}>
-        <Text style={styles.summaryText}>
-          Total:{' '}
+      <View style={styles.summaryContainer}>
+        <View style={styles.summary}>
+          <Text style={styles.summaryText}>
+            Subtotal:{' '}
+          </Text>
           <Text style={styles.amount}>
             {Math.round(cartTotalAmount * 100) / 100} RON
+          </Text>  
+        </View>
+        <View style={styles.summary}>
+          <Text style={styles.summaryText}>
+            Livrare:{' '}
           </Text>
-        </Text>
-        {isLoading ? (<ActivityIndicator size='small' color={Colors.primary} />) : 
-          ( <Button
-            color={Colors.accent}
-            title="TRIMITE COMANDA"
-            disabled={cartItems.length === 0}
-            onPress={sendOrderHandler}
-          /> )
-        }
-      </Card>
+          <Text style={styles.amount}>
+            15 RON
+          </Text>  
+        </View>
+        <View style={styles.summaryTotal}>
+          <Text style={styles.summaryText}>
+            Total:{' '}
+          </Text>
+          <Text style={styles.amount}>
+            {Math.round(cartTotalAmount * 100) / 100 + 15} RON
+          </Text>
+        </View>
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          color={Colors.accent}
+          title="TRIMITE COMANDA"
+          disabled={cartItems.length === 0}
+          onPress={sendOrderHandler}
+        />
+      </View>
     </View>
   );
 };
@@ -79,21 +99,48 @@ CartScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   screen: {
-    margin: 20
+    flex: 1,
+    margin: 8
+  },
+  summaryContainer: {
+    justifyContent: 'flex-end',
+    marginTop: 16
   },
   summary: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 20,
-    padding: 10
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  summaryTotal: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 8,
+    padding: 16,
+    borderTopColor: '#888',
+    borderTopWidth: 1,
   },
   summaryText: {
     fontFamily: 'montserrat',
-    fontSize: 18
+    fontSize: 14
   },
   amount: {
-    color: Colors.primary
+    color: Colors.primary,
+    fontSize: 18,
+    fontWeight: '400',
+    fontFamily: 'montserrat'
+  },
+  buttonContainer: {
+    alignSelf: 'center',
+    marginBottom: 8,
+    justifyContent: 'center',
+    borderRadius: 8,
+    width: '50%',
+    overflow: 'hidden'
   }
 });
 

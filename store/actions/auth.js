@@ -62,6 +62,7 @@ export const signup = (email, password) => {
 export const login = (email, password) => {
   let isSignedIn;
   return async dispatch => {
+    console.log(password);
     const response = await fetch(
       'https://clients.fizteq.com/gardenia/wp-json/jwt-auth/v1/token',
       {

@@ -195,7 +195,7 @@ ProductsListScreen.navigationOptions = navData => {
     }
   })(HeaderButton);
   return {
-    headerTitle: <Logo />,
+    headerTitle: <Logo title={'G a r d e n i a'} />,
     headerLeft: (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   categoryPicker: {
-     width: "66%",
+     width: "64%",
      marginRight: 8
     // position: 'absolute',
     // right: 0,
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     flex: 1,  
     flexDirection: 'row',
-    marginLeft: 16,
+    marginLeft: 8,
     marginRight: 8,
     height: 40,
     borderColor: '#dbe1e1',

@@ -6,11 +6,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { withBadge } from 'react-native-elements';
 
 import HeaderButton from '../components/HeaderButton';
+import Logo from '../components/Logo';
 import Colors from '../constants/Colors';
-import Card from '../components/Card';
+import UserDataItem from '../components/UserDataItem';
 import * as userActions from '../store/actions/user';
 import * as authActions from '../store/actions/auth';
 import * as orderActions from '../store/actions/orders';
+import { hide } from 'expo/build/launch/SplashScreen';
 
 const UserProfileScreen = props => {
 
@@ -91,42 +93,38 @@ const UserProfileScreen = props => {
 
   return (
     <View style={styles.screen}>
-      <LinearGradient colors={['#f5e296', '#926b14']} style={styles.gradient}>
         <ScrollView>
-          <Card style={styles.dataContainer}>
-            <View style={styles.centered}>
-              <Text style={styles.text}>Date Personale: </Text>
-            </View>
-            <View style={styles.nameContainer}>
-              <Text style={styles.text}>Nume: </Text>
-              <Text style={styles.text}>{user.billingName}</Text>
-            </View>
-            <View style={styles.nameContainer}>
-              <Text style={styles.text}>Email: </Text>
-              <Text style={styles.text}>{email}</Text>
-            </View>
-            <View style={styles.nameContainer}>
-              <Text style={styles.text}>Nr. de telefon: </Text>
-              <Text style={styles.text}>{user.billingPhone}</Text>
-            </View>
-            <View style={styles.centered}>
+          <View style={styles.dataContainer}>   
+            <Text style={styles.nameText}>{user.billingName}</Text>
+            <UserDataItem
+              smallText={'Adresa de e-mail'}
+              bigText={email}>
+            </UserDataItem>
+            <UserDataItem
+              smallText={'Nr. de telefon'}
+              bigText={user.billingPhone}>
+            </UserDataItem>
+            <View style={styles.billingText}>
               <Text style={styles.text}>Adresa de Facturare: </Text>
             </View>
-            <View style={styles.nameContainer}>
-              <Text style={styles.text}>Adresa: {user.billingAddress}</Text>
-            </View>
-            <View style={styles.nameContainer}>
-              <Text style={styles.text}>Localitate: {user.billingCity}</Text>
-            </View>
-            <View style={styles.nameContainer}>
-              <Text style={styles.text}>Judet: {user.billingCounty}</Text>
-            </View>   
-          </Card>
+            <UserDataItem
+              smallText={'Adresa:'}
+              bigText={user.billingAddress}>
+            </UserDataItem>
+            <UserDataItem
+              smallText={'Localitate:'}
+              bigText={user.billingCity}>
+            </UserDataItem>
+            <UserDataItem
+              smallText={'Judet:'}
+              bigText={user.billingCounty}>
+            </UserDataItem>  
+          </View>
           <View style={styles.buttonsContainer}>
             <View style={styles.ordersButton}>
               <Button
-                  color={Colors.primary}
-                  title="Vezi Comenzi Anterioare"
+                  color={Colors.accent}
+                  title="Comenzile Mele"
                   onPress={() => {
                     props.navigation.navigate('PreviousOrders');
                   }} 
@@ -134,7 +132,7 @@ const UserProfileScreen = props => {
             </View>
             <View style={styles.ordersButton}>
               <Button
-                  color={Colors.primary}
+                  color={'#888'}
                   title="Deconecteaza-te"
                   onPress={() => {
                     dispatch(authActions.logout());
@@ -144,57 +142,58 @@ const UserProfileScreen = props => {
             </View>
           </View>
         </ScrollView>
-      </LinearGradient>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
+    flex: 1,
+    padding: 8,
+    backgroundColor: Colors.primary
+  },
+  billingText: {
+    marginVertical: 8,
     flex: 1
   },
   centered: {
     marginVertical: 8,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  gradient: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   buttonsContainer: {
     flex: 1,
-    justifyContent: 'flex-end'
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
   },
   dataContainer: {
     flex: 1,
     // width: '100%',
     // maxWidth: 340,
-    minWidth: '90%',
-    height: '75%',
-    maxHeight: 380,
-    borderColor: Colors.primary,
+    // minWidth: '90%',
+    // height: '75%',
+    // maxHeight: 380,
     padding: 8,
     margin: 8,
-    elevation: 4,
-    backgroundColor: 'white'
-  },
-  nameContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    marginVertical: 8
   },
   ordersButton: {
-    marginHorizontal: 32,
-    marginVertical: 8
+    marginHorizontal: 16,
+    marginVertical: 8,
+    borderRadius: 8,
+    overflow: 'hidden'
   },
   cart: {
     marginRight: 4
   },
   text: {
-    fontFamily: 'montserrat'
+    fontFamily: 'montserrat', 
+    color: 'white'
+  },
+  nameText: {
+    fontFamily: 'playfair',
+    fontSize: 24,
+    color: 'white'
   }
 });
 
@@ -209,7 +208,7 @@ UserProfileScreen.navigationOptions = navData => {
   })(HeaderButton);
 
   return {
-    headerTitle: "Profilul Meu",
+    headerTitle: <Logo title={'Profilul meu'} style={{textTransform: 'none'}}/>,
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

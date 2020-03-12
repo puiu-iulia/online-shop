@@ -141,7 +141,7 @@ const defaultNavOptions = {
               /></View>) : (
                 <Button
                   title="Deconecteaza-te"
-                  color={Colors.accent}
+                  color={Colors.primary}
                   onPress={() => {
                     dispatch(authActions.logout());
                     props.navigation.navigate('ProductsOverview');

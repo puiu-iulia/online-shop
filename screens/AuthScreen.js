@@ -58,71 +58,72 @@ const AuthScreen = props => {
         }
       }, [error]);
 
-    // const authHandler = async () => {
-    //   let action;
-    //   if (!isSignin) {
-    //     action = authActions.signup(
-    //       formState.inputValues.email,
-    //       formState.inputValues.password
-    //     );
-    //   } else {
-    //     action = authActions.login(
-    //       formState.inputValues.email,
-    //       formState.inputValues.password
-    //     );
-    //   }
-    //   setError(null);
-    //   try {
-    //     setIsLoading(true);
-    //     await dispatch(action);
-    //     setIsLoading(false);
-    //     if (isSignin) {
-    //       props.navigation.navigate('ProductsOverview');
-    //     } else {
-    //       Toast.show('Contul tau a fost creat cu succes! Acum te poti conecta.', Toast.SHORT);
-    //     }  
-    //   } catch (err) {
-    //     setError(err.message);
-    //     setIsLoading(false);
-    //   }
-    // };
-
     const authHandler = async () => {
       let action;
       if (!isSignin) {
-        try {
-          setIsLoading(true);
-          await dispatch(authActions.signup(
-            formState.inputValues.email,
-            formState.inputValues.password
-          ));
-          setIsLoading(false);
-        } catch (err) {
-          setError(err.message);
-          setIsLoading(false);
-        }
-        console.log(error);
-        // if (error) {
-        //   Alert.alert('A avut loc o eroare!', err.message, [{ text: 'In regula' }]);
-        // } else {
-        //   Toast.show('Contul tau a fost creat cu succes! Acum te poti conecta.', Toast.SHORT);
-        // }
-        
+        action = authActions.signup(
+          formState.inputValues.email,
+          formState.inputValues.password
+        );
       } else {
-        try {
-          setIsLoading(true);
-          await dispatch(authActions.login(
-            formState.inputValues.email,
-            formState.inputValues.password
-          ));
-          setIsLoading(false);
+        action = authActions.login(
+          formState.inputValues.email,
+          formState.inputValues.password
+        );
+      }
+      setError(null);
+      try {
+        setIsLoading(true);
+        await dispatch(action);
+        setIsLoading(false);
+        if (isSignin) {
           props.navigation.navigate('ProductsOverview');
-        } catch (err) {
-          setError(err.message);
-          setIsLoading(false);
-        }
+        } else {
+          Toast.show('Contul tau a fost creat cu succes! Acum te poti conecta.', Toast.SHORT);
+        }  
+      } catch (err) {
+        setError(err.message);
+        setIsLoading(false);
       }
     };
+
+    // const authHandler = async () => {
+    //   let action;
+    //   console.log(formState.inputValues.password);
+    //   if (isSignin) {
+    //     try {
+    //       setIsLoading(true);
+    //       console.log(formState.inputValues.password);
+    //       await dispatch(authActions.login(
+    //         formState.inputValues.email,
+    //         formState.inputValues.password
+    //       ));
+    //       setIsLoading(false);
+    //       props.navigation.navigate('ProductsOverview');
+    //     } catch (err) {
+    //       setError(err.message);
+    //       setIsLoading(false);
+    //     }    
+    //   } else {
+    //     try {
+    //       setIsLoading(true);
+    //       await dispatch(authActions.signup(
+    //         formState.inputValues.email,
+    //         formState.inputValues.password
+    //       ));
+    //       setIsLoading(false);
+    //     } catch (err) {
+    //       setError(err.message);
+    //       setIsLoading(false);
+    //     }
+    //     console.log(error);
+    //     // if (error) {
+    //     //   Alert.alert('A avut loc o eroare!', err.message, [{ text: 'In regula' }]);
+    //     // } else {
+    //     //   Toast.show('Contul tau a fost creat cu succes! Acum te poti conecta.', Toast.SHORT);
+    //     // }
+    //   }
+    // };
 
     const inputChangeHandler = useCallback(
         (inputIdentifier, inputValue, inputValidity) => {
@@ -138,15 +139,14 @@ const AuthScreen = props => {
 
     return (
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
-            <LinearGradient colors={['#f5e296', '#926b14']} style={styles.gradient}>
-                <Card style={styles.loginContainer}>
-                    <ScrollView>
+                <View style={styles.loginContainer}>
                         <Input
                             id="email"
-                            label="Adresa de E-mail"
+                            placeholder=" Adresa de E-mail"
                             keyboardType="email-address"
                             required
                             email
+                            style={styles.input}
                             autoFocus={true}
                             autoCapitalize="none"
                             errorText="Introdu o adresa de email valida."
@@ -155,9 +155,10 @@ const AuthScreen = props => {
                         />
                         <Input
                             id="password"
-                            label="Parola"
+                            placeholder=" Parola"
                             keyboardType="default"
-                            secureTextEntry
+                            style={styles.input}
+                            // secureTextEntry
                             required
                             minLength={6}
                             autoCapitalize="none"
@@ -167,31 +168,27 @@ const AuthScreen = props => {
                         />
                         <View style={styles.buttonContainer} >
                             {isLoading ? (
-                                <ActivityIndicator size='small' color={Colors.primary} />
+                                <ActivityIndicator size='small' color={Colors.accent} />
                             ) : (
                                 <Button 
                                     title={isSignin ? "Conecteaza-te": "Creaza Cont"} 
                                     color={Colors.accent}
                                     onPress={() => {
-                                        console.log(formState.inputValues.password);
                                         authHandler();    
                                     }} 
                                 /> 
                             )}
                         </View>
-                        <View style={styles.buttonContainer}>
-                            <View style={styles.text}><Text>{isSignin ? 'Nu am cont.' : 'Am deja cont.'}</Text></View>
+                        <View style={styles.text}><Text style={{fontFamily: 'montserrat', color: 'white'}}>{isSignin ? 'Nu am cont.' : 'Am deja cont.'}</Text></View>
+                        <View style={styles.buttonContainer}>           
                             <Button 
-                              title={isSignin? "Vreau sa imi creez cont": "Vreau sa ma conectez"} 
-                              color={Colors.primary} 
+                              title={isSignin? "Creaza Cont Nou": "Vreau sa ma conectez"} 
+                              color={Colors.accent} 
                               onPress={() => {setIsSignin(prevState => !prevState)}} 
                             />
                         </View>  
-                    </ScrollView>
-                </Card>
-            </LinearGradient>
-        </KeyboardAvoidingView>
-       
+                </View>
+        </KeyboardAvoidingView> 
     );
 };
 
@@ -201,18 +198,22 @@ AuthScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1
+        flex: 1,
+        backgroundColor: Colors.primary,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     loginContainer: {
         width: '80%',
         // maxWidth: 600,
         maxHeight: 400,
-        padding: 20
+        padding: 20,
+        backgroundColor: Colors.primary
     },
     text: {
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: 16
+      color: 'white'
     },
     gradient: {
         flex: 1,
@@ -220,7 +221,16 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }, 
     buttonContainer: {
-        marginTop: 16
+        marginTop: 16,
+        width: '75%',
+        borderRadius: 8,
+        overflow: 'hidden',
+        alignSelf: 'center',
+        marginVertical: 16
+    },
+    input: {
+      fontFamily: 'montserrat',
+      color: 'white'
     }
 });
 
