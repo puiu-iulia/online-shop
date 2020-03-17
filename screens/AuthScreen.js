@@ -79,7 +79,8 @@ const AuthScreen = props => {
         if (isSignin) {
           props.navigation.navigate('ProductsOverview');
         } else {
-          Toast.show('Contul tau a fost creat cu succes! Acum te poti conecta.', Toast.SHORT);
+          Alert.alert('Contul tau a fost creat cu succes! Acum te poti conecta.', [{ text: 'In regula' }]);
+          setIsSignin(true);
         }  
       } catch (err) {
         setError(err.message);
@@ -147,7 +148,6 @@ const AuthScreen = props => {
                             required
                             email
                             style={styles.input}
-                            autoFocus={true}
                             autoCapitalize="none"
                             errorText="Introdu o adresa de email valida."
                             onInputChange={inputChangeHandler}
@@ -158,7 +158,7 @@ const AuthScreen = props => {
                             placeholder=" Parola"
                             keyboardType="default"
                             style={styles.input}
-                            // secureTextEntry
+                            secureTextEntry
                             required
                             minLength={6}
                             autoCapitalize="none"
@@ -170,7 +170,8 @@ const AuthScreen = props => {
                             {isLoading ? (
                                 <ActivityIndicator size='small' color={Colors.accent} />
                             ) : (
-                                <Button 
+                                <Button
+                                    disabled={(formState.inputValues.email.length == 0) || (formState.inputValues.password.length == 0)} 
                                     title={isSignin ? "Conecteaza-te": "Creaza Cont"} 
                                     color={Colors.accent}
                                     onPress={() => {

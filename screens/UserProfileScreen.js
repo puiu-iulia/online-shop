@@ -7,6 +7,7 @@ import { withBadge } from 'react-native-elements';
 
 import HeaderButton from '../components/HeaderButton';
 import Logo from '../components/Logo';
+import CustomLinearGradient from '../components/CustomLinearGradient';
 import Colors from '../constants/Colors';
 import UserDataItem from '../components/UserDataItem';
 import * as userActions from '../store/actions/user';
@@ -96,6 +97,7 @@ const UserProfileScreen = props => {
         <ScrollView>
           <View style={styles.dataContainer}>   
             <Text style={styles.nameText}>{user.billingName}</Text>
+            <CustomLinearGradient /> 
             <UserDataItem
               smallText={'Adresa de e-mail'}
               bigText={email}>
@@ -107,6 +109,7 @@ const UserProfileScreen = props => {
             <View style={styles.billingText}>
               <Text style={styles.text}>Adresa de Facturare: </Text>
             </View>
+            <CustomLinearGradient /> 
             <UserDataItem
               smallText={'Adresa:'}
               bigText={user.billingAddress}>
@@ -120,6 +123,7 @@ const UserProfileScreen = props => {
               bigText={user.billingCounty}>
             </UserDataItem>  
           </View>
+          <CustomLinearGradient /> 
           <View style={styles.buttonsContainer}>
             <View style={styles.ordersButton}>
               <Button

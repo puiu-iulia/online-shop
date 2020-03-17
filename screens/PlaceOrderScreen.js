@@ -66,7 +66,6 @@ const PlaceOrderScreen = props => {
           billingName: '',
           billingEmail: '',
           billingPhone: '',
-          billingCounty: '',
           billingCity: '',
           billingAddress: '',
           shippingName: '',
@@ -78,7 +77,6 @@ const PlaceOrderScreen = props => {
           billingName: '',
           billingEmail: '',
           billingPhone: '',
-          billingCounty: '',
           billingCity: '',
           billingAddress: '',
           shippingName: '',
@@ -166,14 +164,13 @@ const PlaceOrderScreen = props => {
                            label="Nume"
                            keyboardType="default"
                            required
-                           autoFocus={true}
                            autoCapitalize="words"
                            errorText="Introdu numele tau."
                            onInputChange={inputChangeHandler}
                            initialValue={(user) ? user.billingName : ""}
                         />
                         <Input
-                            id="email"
+                            id="billingEmail"
                             label="Adresa de E-mail"
                             keyboardType="email-address"
                             required
@@ -184,7 +181,7 @@ const PlaceOrderScreen = props => {
                             initialValue={(user) ? user.billingEmail : ""}
                         />
                         <Input
-                            id="billingPhoneNumber"
+                            id="billingPhone"
                             label="Numar de Telefon"
                             keyboardType="number-pad"
                             required
@@ -210,7 +207,7 @@ const PlaceOrderScreen = props => {
                             </Picker>
                         </View>
                         <Input
-                              id="billingTown"
+                              id="billingCity"
                               label="Localitate"
                               keyboardType="default"
                               required
@@ -298,14 +295,22 @@ const PlaceOrderScreen = props => {
                             {isLoading ? ( 
                               <ActivityIndicator size='small' color={Colors.primary} />
                             ) : 
-                            (<Button 
+                            (<Button
+                              disabled={(formState.inputValues.billingName.length === 0) 
+                                || (formState.inputValues.billingEmail.length === 0) 
+                                || (formState.inputValues.billingPhone.length === 0) 
+                                || (formState.inputValues.billingCity.length === 0) 
+                                || (formState.inputValues.billingAddress.length === 0)
+                                || (formState.inputValues.shippingName.length === 0) 
+                                || (formState.inputValues.shipppingPhone.length === 0) 
+                                || (formState.inputValues.shippingCity.length === 0)
+                                || (formState.inputValues.shippingAddress.length === 0)} 
                               title={"Plateste"} 
                               color={Colors.primary} 
                               onPress={() => {
                                 placeOrderHandler().then(() => {
                                   updateUserData().then(() => {
                                     setIsLoading(false);
-                                    Toast.show('Comanda a fost trimisa cu succes!', Toast.SHORT);
                                     props.navigation.navigate('OrderConfirmation');
                                   });
                                 });

@@ -10,41 +10,42 @@ const Order = props => {
   return (
     <Card style={styles.orderItem}>
         <View style={styles.summary}>
-          <Text style={styles.totalAmount}>{props.amount} RON</Text>
           <Text style={styles.date}>{props.date}</Text>
+          <Text style={styles.totalAmount}> - </Text>
+          <Text style={styles.totalAmount}>{props.amount} RON</Text>
+          <Button
+            color={Colors.accent}
+            title={'Arata Detalii'}
+            onPress={props.onSelect}
+          />
         </View>
-        <Button
-          color={Colors.primary}
-          title={'Arata Detalii'}
-          onPress={props.onSelect}
-        />
     </Card>
   );
 };
 
 const styles = StyleSheet.create({
   orderItem: {
-    marginHorizontal: 20,
-    marginVertical: 10,
-    padding: 10,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    padding: 16,
     alignItems: 'center',
-    backgroundColor: '#f5e296'
+    alignContent: 'center',
+    backgroundColor: '#f1f1f3'
   },
   summary: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    marginBottom: 15
   },
   totalAmount: {
     fontFamily: 'montserrat',
-    fontSize: 16
+    fontSize: 18,
+    color: '#888'
   },
   date: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'montserrat',
-    color: '#888'
   }
 });
 

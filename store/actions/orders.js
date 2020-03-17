@@ -53,7 +53,7 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
       line_items: lineItems
     };
    
-    ShopWooCommerceAPI.post('orders', data, {
+    await ShopWooCommerceAPI.post('orders', data, {
 
     })
     .then((response) => {

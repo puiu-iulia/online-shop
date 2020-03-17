@@ -70,13 +70,13 @@ const Input = props => {
         style={{...styles.input, ...props.style}}
         value={inputState.value}
         onChangeText={textChangeHandler}
-        onBlur={lostFocusHandler}
+        onChange={lostFocusHandler}
       />
-      {!inputState.isValid && inputState.touched && (
+      {/* {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{props.errorText}</Text>
         </View>
-      )}
+      )} */}
     </View>
   );
 };
