@@ -101,7 +101,10 @@ const ProductsListScreen = props => {
   if (isLoading || isCategoryLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size='large' color={Colors.primary} />
+        <Image
+          style={{height: 40, width: 40}}
+          source={require('../assets/loading.gif')}
+        />
       </View>
     );
   }
@@ -236,15 +239,14 @@ const styles = StyleSheet.create({
   centered: {
     flex: 1, 
     justifyContent: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#fcfcff'
   },
   filtersContainer: {
     width: '100%',
     height: '15%',
     maxHeight: 64,
     paddingVertical: 32,
-    borderRadius: 0,
-    // marginTop: 8,
     marginRight: 16,
     flex: 1,
     flexDirection: 'row',
@@ -278,7 +280,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     height: 40,
     borderColor: '#dbe1e1',
-    borderWidth: 0.7,
+    borderWidth: 1,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'space-between'

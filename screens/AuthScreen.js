@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { ScrollView, Text, StyleSheet, View, KeyboardAvoidingView, Button, ActivityIndicator, Alert, AsyncStorage, RefreshControl } from 'react-native';
+import { Image, Text, StyleSheet, View, KeyboardAvoidingView, Button, ActivityIndicator, Alert, AsyncStorage, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
 import Toast from 'react-native-simple-toast';
@@ -140,6 +140,10 @@ const AuthScreen = props => {
 
     return (
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
+                 <Image
+                    style={{height: '30%', width: '60%'}}
+                    source={require('../assets/logoalb.png')}
+                  />
                 <View style={styles.loginContainer}>
                         <Input
                             id="email"
@@ -168,7 +172,7 @@ const AuthScreen = props => {
                         />
                         <View style={styles.buttonContainer} >
                             {isLoading ? (
-                                <ActivityIndicator size='small' color={Colors.accent} />
+                               <ActivityIndicator size='large' color={Colors.accent} />
                             ) : (
                                 <Button
                                     disabled={(formState.inputValues.email.length == 0) || (formState.inputValues.password.length == 0)} 
@@ -193,16 +197,13 @@ const AuthScreen = props => {
     );
 };
 
-AuthScreen.navigationOptions = {
-    headerTitle: 'Gardenia'
-}
-
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
         backgroundColor: Colors.primary,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingVertical: 24
     },
     loginContainer: {
         width: '80%',

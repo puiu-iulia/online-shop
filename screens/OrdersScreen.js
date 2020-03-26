@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Platform, ActivityIndicator, View, StyleSheet, Text } from 'react-native';
+import { FlatList, Platform, View, StyleSheet, Text, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { withBadge } from 'react-native-elements';
@@ -45,7 +45,10 @@ const OrdersScreen = props => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size='large' color={Colors.primary} />
+        <Image
+          style={{height: 40, width: 40}}
+          source={require('../assets/loading.gif')}
+        />
       </View>
     );
   }
@@ -114,7 +117,8 @@ const styles = StyleSheet.create({
   centered: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#fcfcff'
   }, 
   cart: {
     marginRight: 4

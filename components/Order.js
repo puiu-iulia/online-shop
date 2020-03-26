@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
   },
   totalAmount: {
     fontFamily: 'montserrat',
-    fontSize: 18,
+    fontSize: 16,
     color: '#888'
   },
   date: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'montserrat',
   }
 });
