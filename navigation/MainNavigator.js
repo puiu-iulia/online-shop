@@ -3,7 +3,7 @@ import { createAppContainer, SafeAreaView } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createSwitchNavigator } from 'react-navigation-switch-transitioner';
-import { Platform, Button, View, AsyncStorage } from 'react-native';
+import { Platform, Button, View, Image } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -60,26 +60,6 @@ const defaultNavOptions = {
     }
   );
 
-  const OrdersNavigator = createStackNavigator(
-    {
-      Orders: OrdersScreen,
-      OrderDetails: OrderDetailsScreen
-    },
-    {
-      navigationOptions: {
-        drawerIcon: drawerConfig => (
-          <Ionicons
-            name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
-            size={24}
-            color={Colors.accent}
-          />
-        ), 
-        drawerLabel: "Comenzi Anterioare"
-      },
-      defaultNavigationOptions: defaultNavOptions
-    }
-  );
-
   const UserNavigator = createStackNavigator(
     {
       UserProfile: UserProfileScreen,
@@ -96,7 +76,7 @@ const defaultNavOptions = {
           />
           // <View>if ()</View>
         ),
-        drawerLabel: "Profilul Meu",
+        drawerLabel: "Contul Meu",
         labelStyle: {
           color: 'white'
         }
@@ -130,6 +110,12 @@ const defaultNavOptions = {
         return (
           <View style={{ flex: 1, paddingTop: 20, flexDirection: 'column' }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+              <View style={{height: '35%', width: '70%', marginLeft: 16, marginBottom: 32}}>
+                <Image
+                      style={{height: '100%', width: '100%', margin: 16}}
+                      source={require('../assets/logoalb.png')}
+                />
+              </View>
               <DrawerItems {...props} />
               {(!isSignedIn) ? (<View style={{alignContent: 'flex-end'}}><Button
                 title="Conecteaza-te"

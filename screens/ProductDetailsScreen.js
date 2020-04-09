@@ -112,7 +112,11 @@ ProductDetailScreen.navigationOptions = navData => {
     }
   })(HeaderButton);
   return {
-    headerTitle: <Logo />,
+    headerStyle: {
+      backgroundColor: 'white'
+    },
+    headerTintColor: Colors.primary,
+    headerTitle: <Logo title={'G a r d e n i a'} />,
     headerRight: (
       <HeaderButtons HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}>
         <Item

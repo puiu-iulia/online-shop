@@ -3,6 +3,7 @@ import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity } from 'reac
 import { useSelector, useDispatch } from 'react-redux';
 
 import Colors from '../constants/Colors';
+import Logo from '../components/Logo';
 import Cart from '../components/Cart';
 import Card from '../components/Card';
 import * as cartActions from '../store/actions/cart';
@@ -94,7 +95,11 @@ const CartScreen = props => {
 };
 
 CartScreen.navigationOptions = {
-  headerTitle: 'Cos de Cumparaturi'
+  headerStyle: {
+    backgroundColor: 'white'
+  },
+  headerTintColor: Colors.primary,
+  headerTitle: <Logo title={'Cos de Cumparaturi'} style={{textTransform: 'none'}} />,
 };
 
 const styles = StyleSheet.create({

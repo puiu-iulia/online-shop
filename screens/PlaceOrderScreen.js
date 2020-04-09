@@ -1,10 +1,10 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
 import { ScrollView, ActivityIndicator, StyleSheet, View, KeyboardAvoidingView, Button, Text, Alert, Picker } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import Toast from 'react-native-simple-toast';
 
 import Input from '../components/Input';
-import Card from '../components/Card';
+import Logo from '../components/Logo';
+import CustomLinearGradient from '../components/CustomLinearGradient';
 import Colors from '../constants/Colors';
 import * as data from '../data/judete.json';
 
@@ -158,7 +158,8 @@ const PlaceOrderScreen = props => {
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
           <ScrollView style={styles.orderContainer}>
                 <View style={styles.orderContainer}>  
-                      <View style={styles.centered}><Text>Date facturare:</Text></View> 
+                      <View><Text>Date facturare:</Text></View>
+                      <CustomLinearGradient /> 
                         <Input
                            id="billingName"
                            label="Nume"
@@ -228,8 +229,8 @@ const PlaceOrderScreen = props => {
                               initialValue={(user) ? user.billingAddress : ""}
                           />
                         
-                        <View style={styles.centered}><Text>Date livrare:</Text></View> 
-
+                        <View><Text>Date livrare:</Text></View> 
+                        <CustomLinearGradient /> 
                         <Input
                            id="shippingName"
                            label="Nume"
@@ -327,7 +328,11 @@ const PlaceOrderScreen = props => {
 };
 
 PlaceOrderScreen.navigationOptions = {
-    headerTitle: 'Trimite Comanda'
+  headerStyle: {
+    backgroundColor: 'white'
+  },
+  headerTintColor: Colors.primary,
+  headerTitle: <Logo title={'Trimite Comanda'} style={{textTransform: 'none'}} />,
 }
 
 const styles = StyleSheet.create({

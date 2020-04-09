@@ -202,6 +202,7 @@ ProductsListScreen.navigationOptions = navData => {
     headerLeft: (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
+            color={Colors.primary}
             title="Menu"
             iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
             onPress={() => {
@@ -217,7 +218,8 @@ ProductsListScreen.navigationOptions = navData => {
           HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}
         >
            <Item
-            style={styles.cart} 
+             color={Colors.primary} 
+             style={styles.cart} 
              title="Cart"
              iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
              onPress={() => {
@@ -225,7 +227,10 @@ ProductsListScreen.navigationOptions = navData => {
             }}
            />
         </HeaderButtons>
-    )  
+    ),
+    headerStyle: {
+      backgroundColor: 'white'
+    }  
   };
 };
 
