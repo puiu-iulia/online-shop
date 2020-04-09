@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import {
   View,
-  ActivityIndicator,
+  Image,
   StyleSheet,
   AsyncStorage,
   Text, 
@@ -49,35 +49,33 @@ const OrderConfirmationScreen = props => {
     //   <ActivityIndicator size="large" color={Colors.primary} />
     // </View>
     <View style={styles.screen}>
-        <LinearGradient colors={['#f5e296', '#926b14']} style={styles.gradient}>
-                <Card style={styles.centered}>
-                    <Text style={styles.text}>Plata a fost efectuata cu succes.</Text>
-                   <Text style={styles.text}>Iti multumim pentru comanda. Aceasta va fi expediata in cel mai scurt timp posibil.
-                   </Text>
-                   <Button 
-                                title={"Inapoi la Magazin"} 
-                                color={Colors.primary} 
-                                onPress={() => {
-                                    props.navigation.navigate('ProductsOverview');}} 
-                                />
-                </Card>
-        </LinearGradient>
+        <View style={styles.centered}>
+            <View style={{height: '35%', width: '70%', marginBottom: 32, alignSelf: 'center'}}>
+                <Image
+                      style={{height: '100%', width: '100%', margin: 16}}
+                      source={require('../assets/logoalb.png')}
+                />
+            </View>
+            <Text style={styles.textPrimary}>Plata a fost efectuata cu succes.</Text>
+            <Text style={styles.text}>Iti multumim pentru comanda. Aceasta va fi expediata in cel mai scurt timp posibil.
+            </Text>
+            <Button 
+                title={"Inapoi la Magazin"} 
+                color={Colors.accent} 
+                onPress={() => {
+                    props.navigation.navigate('ProductsOverview');}} 
+                />
+        </View>
     </View>
   );
 };
 
-OrderConfirmationScreen.navigationOptions = {
-    headerTitle: 'Gardenia'
-}
-
 const styles = StyleSheet.create({
-    gradient: {
+    screen: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
-    },
-    screen: {
-        flex: 1
+        alignItems: 'center',
+        backgroundColor: Colors.primary
     },
     centered: {
         flex: 1,
@@ -86,11 +84,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    textPrimary: {
+        fontFamily: 'playfair',
+        fontSize: 32,
+        color: Colors.iron,
+        textAlign: 'center',
+    },
     text: {
-        fontSize: 18,
+        fontSize: 14,
         textAlign: 'center',
         margin: 16,
-        fontFamily: 'montserrat'
+        fontFamily: 'montserrat',
+        color: Colors.iron,
+        marginBottom: 24
     }
 });
 

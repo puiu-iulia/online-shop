@@ -297,25 +297,25 @@ const PlaceOrderScreen = props => {
                               <ActivityIndicator size='small' color={Colors.primary} />
                             ) : 
                             (<Button
-                              disabled={(formState.inputValues.billingName.length === 0) 
-                                || (formState.inputValues.billingEmail.length === 0) 
-                                || (formState.inputValues.billingPhone.length === 0) 
-                                || (formState.inputValues.billingCity.length === 0) 
-                                || (formState.inputValues.billingAddress.length === 0)
-                                || (formState.inputValues.shippingName.length === 0) 
-                                || (formState.inputValues.shipppingPhone.length === 0) 
-                                || (formState.inputValues.shippingCity.length === 0)
-                                || (formState.inputValues.shippingAddress.length === 0)} 
+                              // disabled={(formState.inputValues.billingName.length === 0) 
+                              //   || (formState.inputValues.billingEmail.length === 0) 
+                              //   || (formState.inputValues.billingPhone.length === 0) 
+                              //   || (formState.inputValues.billingCity.length === 0) 
+                              //   || (formState.inputValues.billingAddress.length === 0)
+                              //   || (formState.inputValues.shippingName.length === 0) 
+                              //   || (formState.inputValues.shipppingPhone.length === 0) 
+                              //   || (formState.inputValues.shippingCity.length === 0)
+                              //   || (formState.inputValues.shippingAddress.length === 0)} 
                               title={"Plateste"} 
                               color={Colors.primary} 
                               onPress={() => {
-                                placeOrderHandler().then(() => {
-                                  updateUserData().then(() => {
-                                    setIsLoading(false);
-                                    props.navigation.navigate('OrderConfirmation');
-                                  });
-                                });
-                                
+                                // placeOrderHandler().then(() => {
+                                //   updateUserData().then(() => {
+                                //     setIsLoading(false);
+                                //     props.navigation.navigate('OrderConfirmation');
+                                //   });
+                                // });
+                                props.navigation.navigate('OrderConfirmation');
                               }} 
                             />)}
                         </View>   
