@@ -47,19 +47,9 @@ const ProductsListScreen = props => {
         setCategoryError(err.message);
       };
     };
-    const loadUser = async () => {
-      try {
-        await dispatch(userActions.getUser());
-      } catch (err) {
-        setUserError(err.message);
-      };
-    };
     loadCategories().then(() => {
       loadProducts();
     });
-    if (isSignedIn) {
-      loadUser();
-    }
   }, [dispatch]);
 
 

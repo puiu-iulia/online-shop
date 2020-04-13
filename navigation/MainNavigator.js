@@ -1,4 +1,5 @@
 import React from 'react';
+import { AsyncStorage } from 'react-native';
 import { createAppContainer, SafeAreaView } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
@@ -19,6 +20,7 @@ import PlaceOrderScreen from '../screens/PlaceOrderScreen';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen';
 import StartupScreen from '../screens/StartupScreen';
 import OrderConfirmationScreen from '../screens/OrderConfirmationScreen';
+import WelcomeScreen from '../screens/WelcomeScreen';
 
 
 const defaultNavOptions = {
@@ -106,6 +108,7 @@ const defaultNavOptions = {
       },
       contentComponent: props => {
         const dispatch = useDispatch();
+        const userData = AsyncStorage.getItem('userData');
         const isSignedIn = useSelector(state => state.auth.isSignedIn);
         return (
           <View style={{ flex: 1, paddingTop: 20, flexDirection: 'column' }}>
@@ -117,7 +120,7 @@ const defaultNavOptions = {
                 />
               </View>
               <DrawerItems {...props} />
-              {(!isSignedIn) ? (<View style={{alignContent: 'flex-end'}}><Button
+              {(!userData) ? (<View style={{alignContent: 'flex-end'}}><Button
                 title="Conecteaza-te"
                 color={Colors.primary}
                 onPress={() => {
@@ -130,7 +133,7 @@ const defaultNavOptions = {
                   color={Colors.primary}
                   onPress={() => {
                     dispatch(authActions.logout());
-                    props.navigation.navigate('ProductsOverview');
+                    props.navigation.navigate('AuthScreen');
                   }}
                 />)}   
             </SafeAreaView>
@@ -151,7 +154,8 @@ const defaultNavOptions = {
 
   const StartupNavigator = createStackNavigator(
     {
-      StartupsScreen: StartupScreen
+      StartupsScreen: StartupScreen,
+      Welcome: WelcomeScreen
     },
     {
       defaultNavigationOptions: defaultNavOptions
@@ -164,7 +168,7 @@ const defaultNavOptions = {
       Startup: StartupNavigator
     },
     {
-      initialRouteName: 'Shop'
+      initialRouteName: 'Startup'
     }
   );
 
