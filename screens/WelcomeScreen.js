@@ -17,7 +17,7 @@ import Card from '../components/Card';
 import * as authActions from '../store/actions/auth';
 import CustomLinearGradient from '../components/CustomLinearGradient';
 
-const StartupScreen = props => {
+const WelcomeScreen = props => {
   const [policyChecked, setPolicyChecked] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
 
@@ -35,9 +35,9 @@ const StartupScreen = props => {
 
   return (
     <View style={styles.screen}>
-        <View style={{height: '30%', width: '60%', alignSelf: 'center', marginRight: 16}}>
+        <View style={{height: '30%', width: '70%', alignSelf: 'center', marginRight: 16, marginBottom: 48}}>
           <Image
-                style={{height: '100%', width: '100%', marginBottom: 8}}
+                style={{height: '100%', width: '100%', marginVertical: 48}}
                 source={require('../assets/logoalb.png')}
           />
         </View>
@@ -62,7 +62,6 @@ const StartupScreen = props => {
                     checked={policyChecked}
                     onIconPress={() => {
                       setPolicyChecked(true);
-                      handlePress(policyChecked, termsChecked);
                     }}    
                     title='Sunt de acord cu prelucrarea datelor cu caracter personal si Politica de Confidentialitate'
                   />
@@ -74,6 +73,7 @@ const StartupScreen = props => {
                     color={Colors.accent}
                     disabled={!termsChecked || !policyChecked} 
                     onPress={() => {
+                        handlePress(policyChecked, termsChecked);
                         props.navigation.navigate('AuthScreen');}} 
                   />
               <Button 
@@ -81,6 +81,7 @@ const StartupScreen = props => {
                   color={Colors.accent}
                   disabled={!termsChecked || !policyChecked}  
                   onPress={() => {
+                      handlePress(policyChecked, termsChecked);
                       props.navigation.navigate('ProductsOverview');}} 
                   />
               </View>  
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary
   },
   checkBoxesContainer: {
-    margin: 24,
+    margin: 16,
   },
   checkBoxContainer: {
     backgroundColor: Colors.primary,
@@ -113,4 +114,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default StartupScreen;
+WelcomeScreen.navigationOptions = {
+    header: null
+}
+
+export default WelcomeScreen;

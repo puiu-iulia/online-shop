@@ -22,12 +22,17 @@ const StartupScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const goToStore = async () => {
+
+    const goToWelcome = async () => {
       const userChecks = await AsyncStorage.getItem('userChecks');
+      console.log(userChecks);
       if (userChecks) {
-        props.navigation.navigate('ProductsOverview');
+        tryLogin();
+      } else {
+        props.navigation.navigate('Welcome');
+        return;
       }
-    }
+    };
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem('userData'); 
       console.log(userData);
@@ -38,12 +43,11 @@ const StartupScreen = props => {
       const transformedData = JSON.parse(userData);
       const { token, userId, } = transformedData;   
       props.navigation.navigate('ProductsOverview');
-      dispatch(authActions.authenticate(userId, token, ));
-    };
-    tryLogin().then(() => {
-      goToStore();
-    });
+      dispatch(authActions.authenticate(userId, token));
+    }; 
+    goToWelcome(); 
   }, [dispatch]);
+
 
   return (
     <View style={styles.centered}>

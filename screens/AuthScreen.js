@@ -141,7 +141,7 @@ const AuthScreen = props => {
     return (
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
                  <Image
-                    style={{height: '30%', width: '60%'}}
+                    style={{height: '30%', width: '70%'}}
                     source={require('../assets/logoalb.png')}
                   />
                 <View style={styles.loginContainer}>

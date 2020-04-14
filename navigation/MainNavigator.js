@@ -25,7 +25,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 
 const defaultNavOptions = {
     headerStyle: {
-      backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
+      backgroundColor: '#fcfcff'
     },
     headerTitleStyle: {
       fontFamily: 'playfair'
@@ -33,7 +33,7 @@ const defaultNavOptions = {
     headerBackTitleStyle: {
       fontFamily: 'playfair'
     },
-    headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+    headerTintColor: 'white'
   };
 
   const ProductsNavigator = createStackNavigator(
@@ -153,7 +153,10 @@ const defaultNavOptions = {
       AuthScreen: AuthScreen
     },
     {
-      defaultNavigationOptions: defaultNavOptions
+      headerMode: 'none',
+      navigationOptions: {
+        headerVisible: false,
+      }
     }
   );
 
