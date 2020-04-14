@@ -96,12 +96,12 @@ export const fetchOrders = () => {
     console.log(userId);
     await ShopWooCommerceAPI.get('orders', {
       per_page: 100,
-      customer: userId
+      // customer: userId
     })
     .then(data => {
       const loadedOrders = [];
       
-      // console.log(data);
+      console.log(data);
       for (const key in data) {
         const items = [];
         for (const i in data[key].line_items) {

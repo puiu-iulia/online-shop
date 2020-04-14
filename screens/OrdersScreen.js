@@ -9,6 +9,7 @@ import Order from '../components/Order';
 import * as orderActions from '../store/actions/orders';
 import * as userActions from '../store/actions/user';
 import Colors from '../constants/Colors';
+import Logo from '../components/Logo';
 
 
 const OrdersScreen = props => {
@@ -95,7 +96,11 @@ OrdersScreen.navigationOptions = navData => {
     }
   })(HeaderButton);
   return {
-    headerTitle: 'Comenzile Tale',
+    headerTitle: <Logo title={'Comenzi'} style={{textTransform: 'none'}}/>,
+    headerStyle: {
+      backgroundColor: 'white'
+    },
+    headerTintColor: Colors.primary,
     headerRight: (
       <HeaderButtons 
       HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}

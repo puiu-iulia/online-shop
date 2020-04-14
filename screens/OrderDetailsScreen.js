@@ -17,6 +17,8 @@ import HeaderButton from '../components/HeaderButton';
 import Colors from '../constants/Colors';
 import Card from '../components/Card';
 import { FlatList } from 'react-native-gesture-handler';
+import Logo from '../components/Logo';
+import CustomLinearGradient from '../components/CustomLinearGradient';
 
 
 const OrderDetailsScreen = props => {
@@ -33,7 +35,6 @@ const OrderDetailsScreen = props => {
 
   return (
     <View style={styles.screen}>
-      <LinearGradient colors={['#f5e296', '#926b14']} style={styles.gradient}>
         <ScrollView>  
           <Card style={styles.dataContainer}>
             <Text style={styles.products}>Produse: </Text>
@@ -49,7 +50,7 @@ const OrderDetailsScreen = props => {
                       <View><Text> x </Text></View>
                       <View><Text style={styles.text}>{itemData.item.quantity}</Text></View>
                     </View>
-                    <View><Text style={styles.price}>= {itemData.item.sum}</Text></View>
+                    <View><Text style={styles.price}>= {itemData.item.quantity * itemData.item.productPrice}</Text></View>
                   </View>
                 )}
             />
@@ -64,7 +65,6 @@ const OrderDetailsScreen = props => {
             <Text style={styles.shipping}>Adresa: {selectedOrder.shippingAddress}</Text>
           </Card>
         </ScrollView>
-      </LinearGradient>
     </View>
   );
 };
@@ -73,28 +73,23 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1
   },
-  gradient: {
-    flex: 1
-  },
   products: {
     fontSize: 18,
-    textAlign: 'center',
-    fontFamily: 'montserrat'
+    fontFamily: 'playfair',
+    marginBottom: 16
   },
   dataContainer: {
     padding: 8,
     margin: 8,
   },
-  list: {
-    marginTop: 16,
-    borderBottomColor: '#08292F',
-    borderBottomWidth: 0.5
-  },
   price: {
-    textAlign: 'right'
+    textAlign: 'right',
+    fontFamily: 'montserrat'
   },
   card: {
-    marginBottom: 16,
+    marginVertical: 8,
+    borderBottomColor: '#08292F',
+    borderBottomWidth: 0.3
   },
   itemDataContainer: {
     flex: 1,
@@ -127,7 +122,11 @@ OrderDetailsScreen.navigationOptions = navData => {
     }
   })(HeaderButton);
   return {
-    headerTitle: navData.navigation.getParam('productTitle'),
+    headerStyle: {
+      backgroundColor: 'white'
+    },
+    headerTintColor: Colors.primary,
+    headerTitle: <Logo title={'Detalii Comanda'} style={{textTransform: 'none'}}/>,
     headerRight: (
       <HeaderButtons HeaderButtonComponent={(itemsCount == 0) ? HeaderButton : ItemsCart}>
         <Item
@@ -144,3 +143,4 @@ OrderDetailsScreen.navigationOptions = navData => {
 };
 
 export default OrderDetailsScreen;
+

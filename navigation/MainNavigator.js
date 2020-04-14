@@ -108,8 +108,13 @@ const defaultNavOptions = {
       },
       contentComponent: props => {
         const dispatch = useDispatch();
-        const userData = AsyncStorage.getItem('userData');
+        // const getData = async () => {
+        //   const userData = await AsyncStorage.getItem('userData');
+        // };
+        // getData();
+        // console.log(userData);
         const isSignedIn = useSelector(state => state.auth.isSignedIn);
+        console.log(isSignedIn);
         return (
           <View style={{ flex: 1, paddingTop: 20, flexDirection: 'column' }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
@@ -120,7 +125,7 @@ const defaultNavOptions = {
                 />
               </View>
               <DrawerItems {...props} />
-              {(!userData) ? (<View style={{alignContent: 'flex-end'}}><Button
+              {(!isSignedIn) ? (<View style={{alignContent: 'flex-end'}}><Button
                 title="Conecteaza-te"
                 color={Colors.primary}
                 onPress={() => {

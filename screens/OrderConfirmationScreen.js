@@ -56,8 +56,8 @@ const OrderConfirmationScreen = props => {
                       source={require('../assets/logoalb.png')}
                 />
             </View>
-            <Text style={styles.textPrimary}>Plata a fost efectuata cu succes.</Text>
-            <Text style={styles.text}>Iti multumim pentru comanda. Aceasta va fi expediata in cel mai scurt timp posibil.
+            <Text style={styles.textPrimary}>Comanda a fost trimisa cu succes.</Text>
+            <Text style={styles.text}>Iti multumim. Aceasta va fi expediata in cel mai scurt timp posibil.
             </Text>
             <Button 
                 title={"Inapoi la Magazin"} 

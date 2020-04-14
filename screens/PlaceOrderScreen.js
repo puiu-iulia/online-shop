@@ -158,8 +158,9 @@ const PlaceOrderScreen = props => {
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
           <ScrollView style={styles.orderContainer}>
                 <View style={styles.orderContainer}>  
-                      <View><Text>Date facturare:</Text></View>
-                      <CustomLinearGradient /> 
+                      <View style={styles.billingTextContainer}><Text style={styles.billingText}>Date facturare:</Text>
+                      <CustomLinearGradient />
+                      </View> 
                         <Input
                            id="billingName"
                            label="Nume"
@@ -339,6 +340,13 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         alignItems: 'center'
+    },
+    billingTextContainer: {
+      marginVertical: 8
+    },
+    billingText: {
+      fontSize: 18,
+      fontFamily: 'montserrat'
     },
     orderContainer: {
         width: '100%',

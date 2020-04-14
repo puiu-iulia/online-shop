@@ -11,7 +11,8 @@ export default (state = initialState, action) => {
     case AUTHENTICATE:
       return {
         token: action.token,
-        userId: action.userId
+        userId: action.userId,
+        isSignedIn: action.isSignedIn
       };
     case LOGIN:
       return {

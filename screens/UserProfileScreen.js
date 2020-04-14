@@ -48,7 +48,7 @@ const UserProfileScreen = props => {
   if (isSignedIn && isUserLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size='large' color={Colors.primary} />
+        <ActivityIndicator size='large' color={Colors.accent} />
       </View>
     );
   }
@@ -161,10 +161,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   centered: {
-    marginVertical: 8,
+    paddingVertical: 8,
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: Colors.tiber
   },
   buttonsContainer: {
     flex: 1,
@@ -217,6 +218,7 @@ UserProfileScreen.navigationOptions = navData => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Back"
+          color={Colors.iron}
           iconName={Platform.OS === 'android' ? 'md-arrow-back' : 'ios-arrow-back'}
           onPress={() => {
             navData.navigation.navigate('ProductsOverview');
@@ -231,6 +233,7 @@ UserProfileScreen.navigationOptions = navData => {
         <Item
           style={styles.cart}
           title="Cart"
+          color={Colors.iron}
           iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
           onPress={() => {
             navData.navigation.navigate('Cart');
