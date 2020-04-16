@@ -1,6 +1,7 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
 import { ScrollView, ActivityIndicator, StyleSheet, View, KeyboardAvoidingView, Button, Text, Alert, Picker } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { CheckBox } from 'react-native-elements';
 
 import Input from '../components/Input';
 import Logo from '../components/Logo';
@@ -45,17 +46,13 @@ const PlaceOrderScreen = props => {
     const [error, setError] = useState();
     const [county, setCounty] = useState();
     const [billingCounty, setBillingCounty] = useState();
+    const [sameBilling, setSameBilling] = useState(true);
     const dispatch = useDispatch();
-
     const email = useSelector(state => state.auth.userId);
     const cartItems = useSelector(state => state.cart.items);
     const cartTotalAmount = useSelector(state => state.cart.totalAmount);
-
-    
     const user = useSelector(state => state.user.user);
    
-    
-
     const countyData = [];
     for (const key in data.judete) {
       countyData.push(data.judete[key].nume);
@@ -94,6 +91,40 @@ const PlaceOrderScreen = props => {
       }, [error]);
 
     const placeOrderHandler = async () => {
+      let order = {};
+      if (!sameBilling) {
+        order = (
+          cartItems,
+          cartTotalAmount,
+          formState.inputValues.billingName,
+          formState.inputValues.billingEmail,
+          formState.inputValues.billingPhone,
+          billingCounty,
+          formState.inputValues.billingCity,
+          formState.inputValues.billingAddress,
+          formState.inputValues.shippingName,
+          formState.inputValues.shipppingPhone,
+          county,
+          formState.inputValues.shippingCity,
+          formState.inputValues.shippingAddress
+        );
+      } else {
+        order = (
+          cartItems,
+          cartTotalAmount,
+          formState.inputValues.billingName,
+          formState.inputValues.billingEmail,
+          formState.inputValues.billingPhone,
+          billingCounty,
+          formState.inputValues.billingCity,
+          formState.inputValues.billingAddress,
+          formState.inputValues.billingName,
+          formState.inputValues.billingPhone,
+          billingCounty,
+          formState.inputValues.billingCity,
+          formState.inputValues.billingAddress
+        );
+      }
       try {
         setIsLoading(true);
         await dispatch(orderActions.addOrder(
@@ -228,20 +259,33 @@ const PlaceOrderScreen = props => {
                               errorText="Introdu o adresa valida."
                               onInputChange={inputChangeHandler}
                               initialValue={(user) ? user.billingAddress : ""}
+                          />     
+                       
+                        <CheckBox 
+                            containerStyle={styles.checkBoxContainer}
+                            textStyle={styles.checkBoxTextStyle}     
+                            checkedColor={Colors.accent}
+                            checked={!sameBilling}
+                            checkedIcon={'check-square-o'}
+                            onIconPress={() => {
+                              setSameBilling(prevState => !prevState);
+                            }}
+                            title='Vreau livrarea la o alta adresa'
                           />
-                        
-                        <View><Text>Date livrare:</Text></View> 
-                        <CustomLinearGradient /> 
-                        <Input
-                           id="shippingName"
-                           label="Nume"
-                           keyboardType="default"
-                           required
-                           autoCapitalize="words"
-                           errorText="Introdu numele tau."
-                           onInputChange={inputChangeHandler}
-                           initialValue=''
-                        />
+                        {!sameBilling && (
+                        <View style={styles.shippingContainer}>
+                          <View><Text>Date livrare:</Text></View> 
+                          <CustomLinearGradient />
+                          <Input
+                            id="shippingName"
+                            label="Nume"
+                            keyboardType="default"
+                            required
+                            autoCapitalize="words"
+                            errorText="Introdu numele tau."
+                            onInputChange={inputChangeHandler}
+                            initialValue=''
+                          />
                           <Input
                             id="shipppingPhone"
                             label="Numar de Telefon"
@@ -252,44 +296,45 @@ const PlaceOrderScreen = props => {
                             errorText="Introdu un numar de telefon valid."
                             onInputChange={inputChangeHandler}
                             initialValue=''
-                        />
-                        <View style={styles.countyContainer}>
-                          <Text>Judet </Text>
-                          <Picker
-                              style={styles.countyPicker}
-                              mode="dropdown"
-                              selectedValue={county}
-                              onValueChange={(county)=> {
-                                setCounty(county);
-                              }}
-                            >
-                              {countyData.map((item, index) => {
-                                return (<Picker.Item label={item} value={item} key={index}/>) 
-                              })}
-                            </Picker>
-                        </View>
-                        <Input
-                              id="shippingCity"
-                              label="Localitate"
-                              keyboardType="default"
-                              required
-                              autoCapitalize="words"
-                              errorText="Introdu localitatea."
-                              onInputChange={inputChangeHandler}
-                              initialValue=''
                           />
+                          <View style={styles.countyContainer}>
+                            <Text>Judet </Text>
+                            <Picker
+                                style={styles.countyPicker}
+                                mode="dropdown"
+                                selectedValue={county}
+                                onValueChange={(county)=> {
+                                  setCounty(county);
+                                }}
+                              >
+                                {countyData.map((item, index) => {
+                                  return (<Picker.Item label={item} value={item} key={index}/>) 
+                                })}
+                              </Picker>
+                          </View>
                           <Input
-                              id="shippingAddress"
-                              label="Adresa"
-                              keyboardType="default"
-                              required
-                              placeholder="Strada, numar, alte detalii..."
-                              autoCapitalize="none"
-                              errorText="Introdu o adresa valida."
-                              onInputChange={inputChangeHandler}
-                              initialValue=''
-                          />
-       
+                                id="shippingCity"
+                                label="Localitate"
+                                keyboardType="default"
+                                required
+                                autoCapitalize="words"
+                                errorText="Introdu localitatea."
+                                onInputChange={inputChangeHandler}
+                                initialValue=''
+                            />
+                            <Input
+                                id="shippingAddress"
+                                label="Adresa"
+                                keyboardType="default"
+                                required
+                                placeholder="Strada, numar, alte detalii..."
+                                autoCapitalize="none"
+                                errorText="Introdu o adresa valida."
+                                onInputChange={inputChangeHandler}
+                                initialValue=''
+                            />
+                          </View>
+                        )} 
                         <View style={styles.orderSummary}>
                           <Text style={styles.orderSummaryText}>Total de plata: {Math.round(props.navigation.getParam('totalAmount') * 100) / 100} RON</Text>
                         </View>
@@ -319,8 +364,7 @@ const PlaceOrderScreen = props => {
                                 props.navigation.navigate('OrderConfirmation');
                               }} 
                             />)}
-                        </View>   
-                    
+                        </View>          
                 </View>
               </ScrollView>
         </KeyboardAvoidingView>
@@ -356,6 +400,13 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       marginTop: 20
+    },
+    checkBoxContainer: {
+      marginVertical: 24,
+    },
+    checkBoxTextStyle: {
+      fontFamily: 'montserrat',
+      color: Colors.primary
     },
     buttonContainer: {
         marginVertical: 16
