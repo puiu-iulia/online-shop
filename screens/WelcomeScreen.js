@@ -11,6 +11,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
+import { Linking } from 'expo';
 
 import Colors from '../constants/Colors';
 import Card from '../components/Card';
@@ -48,6 +49,7 @@ const WelcomeScreen = props => {
                     textStyle={styles.checkBoxTextStyle}     
                     checkedColor={Colors.accent}
                     checked={termsChecked}
+                    onPress={() => Linking.openURL('http://gardenia.ro')}
                     checkedIcon={'check-square-o'}
                     onIconPress={() => {
                       setTermsChecked(true);
@@ -60,6 +62,7 @@ const WelcomeScreen = props => {
                     textStyle={styles.checkBoxTextStyle}
                     checkedColor={Colors.accent}
                     checked={policyChecked}
+                    onPress={() => Linking.openURL('http://gardenia.ro')}
                     onIconPress={() => {
                       setPolicyChecked(true);
                     }}    
