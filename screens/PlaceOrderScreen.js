@@ -402,6 +402,7 @@ const styles = StyleSheet.create({
       marginTop: 20
     },
     checkBoxContainer: {
+      padding: 0,
       marginVertical: 24,
     },
     checkBoxTextStyle: {
