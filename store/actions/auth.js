@@ -10,7 +10,7 @@ export const LOGOUT = 'LOGOUT';
 export const authenticate = (userId, token ) => {
   return dispatch => {
     let isSignedIn = true;
-    dispatch({ type: AUTHENTICATE, userId: userId, token: token, isSignedIn: isSignedIn });
+    dispatch({ type: AUTHENTICATE, userId: userId, token: token, isSignedIn: true });
   };
 };
 

@@ -96,7 +96,7 @@ export const fetchOrders = () => {
     console.log(userId);
     await ShopWooCommerceAPI.get('orders', {
       per_page: 100,
-      // customer: userId
+      customer: userId
     })
     .then(data => {
       const loadedOrders = [];
@@ -114,7 +114,7 @@ export const fetchOrders = () => {
             )
           );
         }
-        // if (data[key].customer_id === userId) {
+        if (data[key].customer_id === userId) {
           loadedOrders.push(
             new Order(
               data[key].id,
@@ -135,9 +135,9 @@ export const fetchOrders = () => {
               data[key].shipping.address_1
             )
           );
-        // }        
+        }        
       }
-        // console.log(loadedOrders);
+        console.log(loadedOrders);
         isLoading = false;
         dispatch({ type: SET_ORDERS, orders: loadedOrders, isLoading: isLoading });
       })

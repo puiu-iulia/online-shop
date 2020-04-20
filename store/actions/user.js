@@ -56,7 +56,7 @@ export const updateUser = (billingName, billingEmail, billingPhone, billingCount
         if (userId !== null) {
             // webhook = `"customers/${userId}"`;
             // console.log(webhook);
-            ShopWooCommerceAPI.put("customers/" + userId, data)
+            await ShopWooCommerceAPI.put("customers/" + userId, data)
             .then((response) => {
                 console.log(response);
                 dispatch({
