@@ -274,7 +274,7 @@ const PlaceOrderScreen = props => {
                           />
                         {!sameBilling && (
                         <View style={styles.shippingContainer}>
-                          <View><Text>Date livrare:</Text></View> 
+                          <View style={styles.billingTextContainer}><Text style={styles.billingText}>Date livrare:</Text></View> 
                           <CustomLinearGradient />
                           <Input
                             id="shippingName"
@@ -343,24 +343,22 @@ const PlaceOrderScreen = props => {
                               <ActivityIndicator size='small' color={Colors.primary} />
                             ) : 
                             (<Button
-                              // disabled={(formState.inputValues.billingName.length === 0) 
-                              //   || (formState.inputValues.billingEmail.length === 0) 
-                              //   || (formState.inputValues.billingPhone.length === 0) 
-                              //   || (formState.inputValues.billingCity.length === 0) 
-                              //   || (formState.inputValues.billingAddress.length === 0)
-                              //   || (formState.inputValues.shippingName.length === 0) 
-                              //   || (formState.inputValues.shipppingPhone.length === 0) 
-                              //   || (formState.inputValues.shippingCity.length === 0)
-                              //   || (formState.inputValues.shippingAddress.length === 0)} 
+                              disabled={
+                                (formState.inputValues.billingName.length === 0) 
+                                || (formState.inputValues.billingEmail.length === 0) 
+                                || (formState.inputValues.billingPhone.length === 0) 
+                                || (formState.inputValues.billingCity.length === 0) 
+                                || (formState.inputValues.billingAddress.length === 0)
+                              } 
                               title={"Plateste"} 
                               color={Colors.primary} 
                               onPress={() => {
-                                // placeOrderHandler().then(() => {
-                                //   updateUserData().then(() => {
-                                //     setIsLoading(false);
-                                //     props.navigation.navigate('OrderConfirmation');
-                                //   });
-                                // });
+                                placeOrderHandler().then(() => {
+                                  updateUserData().then(() => {
+                                    setIsLoading(false);
+                                    props.navigation.navigate('OrderConfirmation');
+                                  });
+                                });
                                 props.navigation.navigate('OrderConfirmation');
                               }} 
                             />)}
@@ -404,6 +402,8 @@ const styles = StyleSheet.create({
     checkBoxContainer: {
       padding: 0,
       marginVertical: 24,
+      backgroundColor: 'white',
+      borderWidth: 0
     },
     checkBoxTextStyle: {
       fontFamily: 'montserrat',

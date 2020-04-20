@@ -3,20 +3,11 @@ import {
   View,
   Image,
   StyleSheet,
-  AsyncStorage,
-  Text, 
-  ScrollView,
-  Button
+  AsyncStorage
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
-import { CheckBox } from 'react-native-elements';
-import { FontAwesome } from '@expo/vector-icons';
 
-import Colors from '../constants/Colors';
-import Card from '../components/Card';
 import * as authActions from '../store/actions/auth';
-import CustomLinearGradient from '../components/CustomLinearGradient';
 
 const StartupScreen = props => {
   const dispatch = useDispatch();

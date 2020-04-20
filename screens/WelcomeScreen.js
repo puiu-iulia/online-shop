@@ -4,18 +4,13 @@ import {
   Image,
   StyleSheet,
   AsyncStorage,
-  Text, 
   ScrollView,
   Button
 } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
-import { FontAwesome } from '@expo/vector-icons';
 import { Linking } from 'expo';
 
 import Colors from '../constants/Colors';
-import Card from '../components/Card';
-import * as authActions from '../store/actions/auth';
 import CustomLinearGradient from '../components/CustomLinearGradient';
 
 const WelcomeScreen = props => {
@@ -49,6 +44,7 @@ const WelcomeScreen = props => {
                     textStyle={styles.checkBoxTextStyle}     
                     checkedColor={Colors.accent}
                     checked={termsChecked}
+                    size={32}
                     onPress={() => Linking.openURL('http://gardenia.ro')}
                     checkedIcon={'check-square-o'}
                     onIconPress={() => {
@@ -62,6 +58,7 @@ const WelcomeScreen = props => {
                     textStyle={styles.checkBoxTextStyle}
                     checkedColor={Colors.accent}
                     checked={policyChecked}
+                    size={32}
                     onPress={() => Linking.openURL('http://gardenia.ro')}
                     onIconPress={() => {
                       setPolicyChecked(true);

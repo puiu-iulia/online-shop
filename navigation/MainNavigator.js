@@ -114,7 +114,7 @@ const defaultNavOptions = {
         // getData();
         // console.log(userData);
         const isSignedIn = useSelector(state => state.auth.isSignedIn);
-        console.log(isSignedIn);
+        // console.log(isSignedIn);
         return (
           <View style={{ flex: 1, paddingTop: 20, flexDirection: 'column' }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
@@ -129,7 +129,6 @@ const defaultNavOptions = {
                 title="Conecteaza-te"
                 color={Colors.primary}
                 onPress={() => {
-                  // dispatch(authActions.logout());
                   props.navigation.navigate('AuthScreen');
                 }}
               /></View>) : (
@@ -162,7 +161,7 @@ const defaultNavOptions = {
 
   const StartupNavigator = createStackNavigator(
     {
-      StartupsScreen: StartupScreen,
+      StartupScreen: StartupScreen,
       Welcome: WelcomeScreen
     },
     {

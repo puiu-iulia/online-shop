@@ -24,6 +24,7 @@ const ProductsListScreen = props => {
   const products = useSelector(state => state.products.availableProducts);
   const isLoading = useSelector(state => state.products.isLoading);
   const isSignedIn = useSelector(state => state.auth.isSignedIn);
+  console.log("user is signed in" + isSignedIn);
   const isCategoryLoading = useSelector(state => state.categories.isCategoryLoading);
   const [allProducts, setAllProducts] = useState(true);
   const [query, setQuery] = useState('');
@@ -47,8 +48,19 @@ const ProductsListScreen = props => {
         setCategoryError(err.message);
       };
     };
+    const loadUser = async () => {
+      try {
+        await dispatch(userActions.getUser());
+      } catch (err) {
+        setUserError(err.message);
+      }; 
+    };
     loadCategories().then(() => {
-      loadProducts();
+      loadProducts().then(() => {
+        if (isSignedIn) {
+          loadUser();
+        }
+      })
     });
   }, [dispatch]);
 

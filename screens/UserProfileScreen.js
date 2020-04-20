@@ -21,7 +21,6 @@ const UserProfileScreen = props => {
   const [error, setError] = useState();
   const totalItems = useSelector(state => state.cart.totalItems);
   const isUserLoading = useSelector(state => state.user.isLoading);
-  const isOrderLoading = useSelector(state => state.orders.isLoading);
   const isSignedIn = useSelector(state => state.auth.isSignedIn);
   const orders = useSelector(state => state.orders.orders);
   const lastOrder = orders[0];
@@ -214,6 +213,9 @@ UserProfileScreen.navigationOptions = navData => {
 
   return {
     headerTitle: <Logo title={'Profilul meu'} style={{textTransform: 'none'}}/>,
+    headerStyle: {
+      backgroundColor: Colors.primary,
+    },
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
