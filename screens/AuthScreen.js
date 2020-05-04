@@ -88,44 +88,6 @@ const AuthScreen = props => {
       }
     };
 
-    // const authHandler = async () => {
-    //   let action;
-    //   console.log(formState.inputValues.password);
-    //   if (isSignin) {
-    //     try {
-    //       setIsLoading(true);
-    //       console.log(formState.inputValues.password);
-    //       await dispatch(authActions.login(
-    //         formState.inputValues.email,
-    //         formState.inputValues.password
-    //       ));
-    //       setIsLoading(false);
-    //       props.navigation.navigate('ProductsOverview');
-    //     } catch (err) {
-    //       setError(err.message);
-    //       setIsLoading(false);
-    //     }    
-    //   } else {
-    //     try {
-    //       setIsLoading(true);
-    //       await dispatch(authActions.signup(
-    //         formState.inputValues.email,
-    //         formState.inputValues.password
-    //       ));
-    //       setIsLoading(false);
-    //     } catch (err) {
-    //       setError(err.message);
-    //       setIsLoading(false);
-    //     }
-    //     console.log(error);
-    //     // if (error) {
-    //     //   Alert.alert('A avut loc o eroare!', err.message, [{ text: 'In regula' }]);
-    //     // } else {
-    //     //   Toast.show('Contul tau a fost creat cu succes! Acum te poti conecta.', Toast.SHORT);
-    //     // }
-    //   }
-    // };
-
     const inputChangeHandler = useCallback(
         (inputIdentifier, inputValue, inputValidity) => {
           dispatchFormState({

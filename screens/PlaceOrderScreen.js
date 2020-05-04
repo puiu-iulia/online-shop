@@ -45,14 +45,14 @@ const PlaceOrderScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
     const [county, setCounty] = useState();
-    const [billingCounty, setBillingCounty] = useState();
+    const user = useSelector(state => state.user.user);
+    const [billingCounty, setBillingCounty] = useState(user? user.billingCounty : "");
     const [sameBilling, setSameBilling] = useState(true);
     const dispatch = useDispatch();
     const email = useSelector(state => state.auth.userId);
     const cartItems = useSelector(state => state.cart.items);
     const cartTotalAmount = useSelector(state => state.cart.totalAmount);
-    const user = useSelector(state => state.user.user);
-   
+    
     const countyData = [];
     for (const key in data.judete) {
       countyData.push(data.judete[key].nume);
@@ -60,22 +60,22 @@ const PlaceOrderScreen = props => {
 
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
-          billingName: '',
-          billingEmail: '',
-          billingPhone: '',
-          billingCity: '',
-          billingAddress: '',
+          billingName: "",
+          billingEmail: "",
+          billingPhone: "",
+          billingCity: "",
+          billingAddress: "",
           shippingName: '',
           shipppingPhone: '',
           shippingCity: '',
           shippingAddress: ''
         },
         inputValidities: {
-          billingName: '',
-          billingEmail: '',
-          billingPhone: '',
-          billingCity: '',
-          billingAddress: '',
+          billingName: (user) ? user.billingName : "",
+          billingEmail: (user) ? user.billingEmail : "",
+          billingPhone: (user) ? user.billingPhone : "",
+          billingCity: (user) ? user.billingCity : "",
+          billingAddress: (user) ? user.billingAddress : "",
           shippingName: '',
           shipppingPhone: '',
           shippingCity: '',
@@ -91,61 +91,51 @@ const PlaceOrderScreen = props => {
       }, [error]);
 
     const placeOrderHandler = async () => {
-      let order = {};
       if (!sameBilling) {
-        order = (
-          cartItems,
-          cartTotalAmount,
-          formState.inputValues.billingName,
-          formState.inputValues.billingEmail,
-          formState.inputValues.billingPhone,
-          billingCounty,
-          formState.inputValues.billingCity,
-          formState.inputValues.billingAddress,
-          formState.inputValues.shippingName,
-          formState.inputValues.shipppingPhone,
-          county,
-          formState.inputValues.shippingCity,
-          formState.inputValues.shippingAddress
-        );
+        try {
+          setIsLoading(true);
+          await dispatch(orderActions.addOrder(
+            cartItems,
+            cartTotalAmount,
+            formState.inputValues.billingName,
+            formState.inputValues.billingEmail,
+            formState.inputValues.billingPhone,
+            billingCounty,
+            formState.inputValues.billingCity,
+            formState.inputValues.billingAddress,
+            formState.inputValues.shippingName,
+            formState.inputValues.shipppingPhone,
+            county,
+            formState.inputValues.shippingCity,
+            formState.inputValues.shippingAddress
+          ));
+        } catch (err) {
+          setError(err.message);
+          setIsLoading(false);
+        }
       } else {
-        order = (
-          cartItems,
-          cartTotalAmount,
-          formState.inputValues.billingName,
-          formState.inputValues.billingEmail,
-          formState.inputValues.billingPhone,
-          billingCounty,
-          formState.inputValues.billingCity,
-          formState.inputValues.billingAddress,
-          formState.inputValues.billingName,
-          formState.inputValues.billingPhone,
-          billingCounty,
-          formState.inputValues.billingCity,
-          formState.inputValues.billingAddress
-        );
-      }
-      try {
-        setIsLoading(true);
-        await dispatch(orderActions.addOrder(
-          cartItems,
-          cartTotalAmount,
-          formState.inputValues.billingName,
-          formState.inputValues.billingEmail,
-          formState.inputValues.billingPhone,
-          billingCounty,
-          formState.inputValues.billingCity,
-          formState.inputValues.billingAddress,
-          formState.inputValues.shippingName,
-          formState.inputValues.shipppingPhone,
-          county,
-          formState.inputValues.shippingCity,
-          formState.inputValues.shippingAddress
-        ));
-      } catch (err) {
-        setError(err.message);
-        setIsLoading(false);
-      }
+        try {
+          setIsLoading(true);
+          await dispatch(orderActions.addOrder(
+            cartItems,
+            cartTotalAmount,
+            formState.inputValues.billingName,
+            formState.inputValues.billingEmail,
+            formState.inputValues.billingPhone,
+            billingCounty,
+            formState.inputValues.billingCity,
+            formState.inputValues.billingAddress,
+            formState.inputValues.billingName,
+            formState.inputValues.billingPhone,
+            billingCounty,
+            formState.inputValues.billingCity,
+            formState.inputValues.billingAddress
+          ));
+        } catch (err) {
+          setError(err.message);
+          setIsLoading(false);
+        }
+      }     
     };
 
     const updateUserData = async () => {
@@ -154,7 +144,7 @@ const PlaceOrderScreen = props => {
         await dispatch(userActions.updateUser(
           formState.inputValues.billingName,
           formState.inputValues.billingEmail,
-          formState.inputValues.billingPhone,
+          email,
           billingCounty,
           formState.inputValues.billingCity,
           formState.inputValues.billingAddress,
@@ -200,7 +190,7 @@ const PlaceOrderScreen = props => {
                            autoCapitalize="words"
                            errorText="Introdu numele tau."
                            onInputChange={inputChangeHandler}
-                           initialValue={(user) ? user.billingName : ""}
+                          //  initialValue={(user) ? user.billingName : ""}
                         />
                         <Input
                             id="billingEmail"
@@ -211,7 +201,7 @@ const PlaceOrderScreen = props => {
                             autoCapitalize="none"
                             errorText="Introdu o adresa de email valida."
                             onInputChange={inputChangeHandler}
-                            initialValue={(user) ? user.billingEmail : ""}
+                            // initialValue={(user) ? user.billingEmail : ""}
                         />
                         <Input
                             id="billingPhone"
@@ -222,7 +212,7 @@ const PlaceOrderScreen = props => {
                             autoCapitalize="none"
                             errorText="Introdu un numar de telefon valid."
                             onInputChange={inputChangeHandler}
-                            initialValue={(user) ? user.billingPhone : ""}
+                            // initialValue={(user) ? user.billingPhone : ""}
                         />
                          <View style={styles.countyContainer}>
                           <Text>Judet </Text>
@@ -247,7 +237,7 @@ const PlaceOrderScreen = props => {
                               autoCapitalize="words"
                               errorText="Introdu localitatea."
                               onInputChange={inputChangeHandler}
-                              initialValue={(user) ? user.billingCity : ""}
+                              // initialValue={(user) ? user.billingCity : ""}
                           />
                           <Input
                               id="billingAddress"
@@ -258,7 +248,7 @@ const PlaceOrderScreen = props => {
                               autoCapitalize="none"
                               errorText="Introdu o adresa valida."
                               onInputChange={inputChangeHandler}
-                              initialValue={(user) ? user.billingAddress : ""}
+                              // initialValue={(user) ? user.billingAddress : ""}
                           />     
                        
                         <CheckBox 
@@ -344,13 +334,13 @@ const PlaceOrderScreen = props => {
                             ) : 
                             (<Button
                               disabled={
-                                (formState.inputValues.billingName.length === 0) 
-                                || (formState.inputValues.billingEmail.length === 0) 
-                                || (formState.inputValues.billingPhone.length === 0) 
-                                || (formState.inputValues.billingCity.length === 0) 
-                                || (formState.inputValues.billingAddress.length === 0)
+                                (!formState.inputValues.billingName.length) 
+                                || (!formState.inputValues.billingEmail.length) 
+                                || (!formState.inputValues.billingPhone.length) 
+                                || (!formState.inputValues.billingCity.length) 
+                                || (!formState.inputValues.billingAddress.length)
                               } 
-                              title={"Plateste"} 
+                              title={"Trimite Comanda"} 
                               color={Colors.primary} 
                               onPress={() => {
                                 placeOrderHandler().then(() => {
@@ -359,7 +349,6 @@ const PlaceOrderScreen = props => {
                                     props.navigation.navigate('OrderConfirmation');
                                   });
                                 });
-                                props.navigation.navigate('OrderConfirmation');
                               }} 
                             />)}
                         </View>          
