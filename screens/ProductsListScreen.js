@@ -7,9 +7,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import HeaderButton from '../components/HeaderButton';
 import ProductsList from '../components/ProductsList';
-import Card from '../components/Card';
 import Logo from '../components/Logo';
-import * as cartActions from '../store/actions/cart';
 import * as userActions from '../store/actions/user';
 import * as productsActions from '../store/actions/products';
 import * as categoriesActions from '../store/actions/categories';
@@ -23,8 +21,6 @@ const ProductsListScreen = props => {
   const [category, setCategory] = useState('Toate');
   const products = useSelector(state => state.products.availableProducts);
   const isLoading = useSelector(state => state.products.isLoading);
-  const isSignedIn = useSelector(state => state.auth.isSignedIn);
-  console.log("user is signed in" + isSignedIn);
   const isCategoryLoading = useSelector(state => state.categories.isCategoryLoading);
   const [allProducts, setAllProducts] = useState(true);
   const [query, setQuery] = useState('');
@@ -48,22 +44,12 @@ const ProductsListScreen = props => {
         setCategoryError(err.message);
       };
     };
-    const loadUser = async () => {
-      try {
-        await dispatch(userActions.getUser());
-      } catch (err) {
-        setUserError(err.message);
-      }; 
-    };
+  
     loadCategories().then(() => {
       loadProducts().then(() => {
-        if (isSignedIn) {
-          loadUser();
-        }
       })
     });
   }, [dispatch]);
-
 
   const updateProductsList = (category, query) => {
     setCategory(category);
@@ -300,26 +286,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 4,
     fontFamily: 'montserrat'
-  },
-  searchInput: {
-  },
-  // search: {
-  //   position: "absolute",
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   bottom: -16,
-  //   left: 0,
-  //   width: '95%',
-  //   maxWidth: 240,
-  //   // height: '10%',
-  //   // maxHeight: 48,
-  //   borderColor: '#888',
-  //   borderWidth: 0.7,
-  //   borderRadius: 4,
-  //   flex: 1,
-  //   flexDirection: 'row'  
-  // }, 
+  } 
 })
 
 

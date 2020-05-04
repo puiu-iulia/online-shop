@@ -8,6 +8,7 @@ import {
 import { useDispatch } from 'react-redux';
 
 import * as authActions from '../store/actions/auth';
+import * as userActions from '../store/actions/user';
 
 const StartupScreen = props => {
   const dispatch = useDispatch();
@@ -24,6 +25,14 @@ const StartupScreen = props => {
         return;
       }
     };
+
+    const loadUser = async () => {
+      try {
+        await dispatch(userActions.getUser());
+      } catch (err) {
+        setUserError(err.message);
+      }; 
+    };
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem('userData'); 
       console.log(userData);
@@ -35,6 +44,7 @@ const StartupScreen = props => {
       const { token, userId, } = transformedData;   
       props.navigation.navigate('ProductsOverview');
       dispatch(authActions.authenticate(userId, token));
+      loadUser();
     }; 
     goToWelcome(); 
   }, [dispatch]);

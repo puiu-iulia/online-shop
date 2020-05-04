@@ -45,7 +45,7 @@ const WelcomeScreen = props => {
                     checkedColor={Colors.accent}
                     checked={termsChecked}
                     size={32}
-                    onPress={() => Linking.openURL('http://gardenia.ro')}
+                    onPress={() => Linking.openURL('https://gardenia.ro/index.php/termeni-si-conditii/')}
                     checkedIcon={'check-square-o'}
                     onIconPress={() => {
                       setTermsChecked(true);
@@ -59,7 +59,7 @@ const WelcomeScreen = props => {
                     checkedColor={Colors.accent}
                     checked={policyChecked}
                     size={32}
-                    onPress={() => Linking.openURL('http://gardenia.ro')}
+                    onPress={() => Linking.openURL('https://gardenia.ro/index.php/politica-cookie/')}
                     onIconPress={() => {
                       setPolicyChecked(true);
                     }}    
