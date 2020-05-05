@@ -1,6 +1,5 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { Image, Text, StyleSheet, View, KeyboardAvoidingView, Button, ActivityIndicator, Alert, AsyncStorage, RefreshControl } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Image, Text, StyleSheet, View, Dimensions, KeyboardAvoidingView, Button, ActivityIndicator, Alert, } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Toast from 'react-native-simple-toast';
 
@@ -79,7 +78,7 @@ const AuthScreen = props => {
         if (isSignin) {
           props.navigation.navigate('ProductsOverview');
         } else {
-          Alert.alert('Contul tau a fost creat cu succes! Acum te poti conecta.', [{ text: 'In regula' }]);
+          Alert.alert('Contul tau a fost creat cu succes!', 'Acum te poti conecta.', [{ text: 'In regula' }]);
           setIsSignin(true);
         }  
       } catch (err) {
@@ -102,10 +101,12 @@ const AuthScreen = props => {
 
     return (
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
-                 <Image
-                    style={{height: '30%', width: '70%'}}
-                    source={require('../assets/logoalb.png')}
+                 <View style={styles.imageView}>
+                  <Image
+                        style={styles.image}
+                        source={require('../assets/logoalb.png')}
                   />
+                </View>
                 <View style={styles.loginContainer}>
                         <Input
                             id="email"
@@ -173,6 +174,17 @@ const styles = StyleSheet.create({
         maxHeight: 400,
         padding: 20,
         backgroundColor: Colors.primary
+    },
+    imageView: {
+      height: Dimensions.get('window').height/3.4, 
+      width: Dimensions.get('window').width/1.2, 
+      alignSelf: 'center', 
+      marginBottom: 48
+    },
+    image: {
+      height: '100%', 
+      width: '100%',
+      marginVertical: 48
     },
     text: {
       justifyContent: 'center',

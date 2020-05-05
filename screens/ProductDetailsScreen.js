@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   price: {
-    fontSize: 14,
+    fontSize: 20,
     color: '#888',
     textAlign: 'center',
     marginBottom: 16,

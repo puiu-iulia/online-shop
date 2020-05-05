@@ -50,7 +50,7 @@ const OrderDetailsScreen = props => {
                       <View><Text> x </Text></View>
                       <View><Text style={styles.text}>{itemData.item.quantity}</Text></View>
                     </View>
-                    <View><Text style={styles.price}>= {itemData.item.quantity * itemData.item.productPrice}</Text></View>
+                    <View><Text style={styles.price}>= {itemData.item.quantity * itemData.item.productPrice} RON</Text></View>
                   </View>
                 )}
             />

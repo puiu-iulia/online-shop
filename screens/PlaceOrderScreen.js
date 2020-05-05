@@ -256,6 +256,7 @@ const PlaceOrderScreen = props => {
                             textStyle={styles.checkBoxTextStyle}     
                             checkedColor={Colors.accent}
                             checked={!sameBilling}
+                            size={32}
                             checkedIcon={'check-square-o'}
                             onIconPress={() => {
                               setSameBilling(prevState => !prevState);

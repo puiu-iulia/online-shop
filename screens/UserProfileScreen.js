@@ -22,9 +22,6 @@ const UserProfileScreen = props => {
   const totalItems = useSelector(state => state.cart.totalItems);
   const isUserLoading = useSelector(state => state.user.isLoading);
   const isSignedIn = useSelector(state => state.auth.isSignedIn);
-  const orders = useSelector(state => state.orders.orders);
-  const lastOrder = orders[0];
-  console.log(lastOrder);
   const user = useSelector(state => state.user.user);
   const email = useSelector(state => state.auth.userId);
   const dispatch = useDispatch();
@@ -55,16 +52,25 @@ const UserProfileScreen = props => {
   if (!isSignedIn || user === null) {
     return (
       <View style={styles.centered}>
-        <Text>Nu esti conectat.</Text>
+        <Text style={{fontFamily: 'montserrat', color: Colors.iron, fontSize: 16}}> Nu esti conectat.</Text>
         <Button
+          style={{margin: 16}}
           title="Conecteaza-te" 
           onPress={() => {
             props.navigation.navigate('AuthScreen');
           }}
-          color={Colors.primary}
+          color={Colors.accent}
         />
       </View>
     )
+  }
+
+  if (isSignedIn && user && user.billingName === " ") {
+    return (
+      <View style={styles.centered}>
+        <Text style={{fontFamily: 'montserrat', color: Colors.iron, fontSize: 16, marginHorizontal: 24, textAlign: 'center'}}>Dupa ce vei plasa prima comanda, datele tale vor aparea aici.</Text>
+      </View>
+    );
   }
 
   

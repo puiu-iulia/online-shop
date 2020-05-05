@@ -44,9 +44,17 @@ const ProductsListScreen = props => {
         setCategoryError(err.message);
       };
     };
+    const loadUser = async () => {
+      try {
+        await dispatch(categoriesActions.fetchCategories());
+      } catch (err) {
+        setCategoryError(err.message);
+      };
+    };
   
     loadCategories().then(() => {
       loadProducts().then(() => {
+        loadUser();
       })
     });
   }, [dispatch]);

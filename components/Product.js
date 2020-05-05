@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '100%',
-    height: '78%',
+    height: Dimensions.get('window').height/3.3,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     overflow: 'hidden'
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   details: {
     alignItems: 'center',
-    height: '15%',
+    height: Dimensions.get('window').height/4,
     padding: 8
   },
   title: {

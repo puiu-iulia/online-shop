@@ -5,7 +5,8 @@ import {
   StyleSheet,
   AsyncStorage,
   ScrollView,
-  Button
+  Button,
+  Dimensions
 } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { Linking } from 'expo';
@@ -31,9 +32,9 @@ const WelcomeScreen = props => {
 
   return (
     <View style={styles.screen}>
-        <View style={{height: '30%', width: '70%', alignSelf: 'center', marginRight: 16, marginBottom: 48}}>
+        <View style={styles.imageView}>
           <Image
-                style={{height: '100%', width: '100%', marginVertical: 48}}
+                style={styles.image}
                 source={require('../assets/logoalb.png')}
           />
         </View>
@@ -63,7 +64,7 @@ const WelcomeScreen = props => {
                     onIconPress={() => {
                       setPolicyChecked(true);
                     }}    
-                    title='Sunt de acord cu prelucrarea datelor cu caracter personal si Politica de Confidentialitate'
+                    title='Sunt de acord cu prelucrarea datelor cu caracter personal si Politica de tip Cookie'
                   />
                   <CustomLinearGradient />
               </View>  
@@ -94,6 +95,17 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.primary
+  },
+  imageView: {
+    height: Dimensions.get('window').height/3.4, 
+    width: Dimensions.get('window').width/1.2, 
+    alignSelf: 'center', 
+    marginVertical: 48
+  },
+  image: {
+    height: '100%', 
+    width: '100%',
+    marginVertical: 48
   },
   checkBoxesContainer: {
     margin: 16,

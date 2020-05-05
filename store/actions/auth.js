@@ -29,7 +29,9 @@ export const signup = (email, password) => {
       })
       .catch(error => {
         console.log(error);
-        throw new Error(error.message);
+        const errorResData = error.json();
+        let message = errorResData.message;
+        throw new Error(message);
       }); 
   };
 };

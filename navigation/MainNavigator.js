@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage } from 'react-native';
+import { Dimensions } from 'react-native';
 import { createAppContainer, SafeAreaView } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
@@ -118,7 +118,8 @@ const defaultNavOptions = {
         return (
           <View style={{ flex: 1, paddingTop: 20, flexDirection: 'column' }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-              <View style={{height: '35%', width: '70%', marginLeft: 16, marginBottom: 32}}>
+              <View style={{ height: Dimensions.get('window').height/5, 
+                   width: Dimensions.get('window').width/2, marginBottom: 32}}>
                 <Image
                       style={{height: '100%', width: '100%', margin: 16}}
                       source={require('../assets/logoalb.png')}
