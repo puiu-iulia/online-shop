@@ -118,8 +118,8 @@ const defaultNavOptions = {
         return (
           <View style={{ flex: 1, paddingTop: 20, flexDirection: 'column' }}>
             <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-              <View style={{ height: Dimensions.get('window').height/5, 
-                   width: Dimensions.get('window').width/2, marginBottom: 32}}>
+              <View style={{ height: Dimensions.get('window').height/4.7, 
+                   width: Dimensions.get('window').width/1.7, marginBottom: 32}}>
                 <Image
                       style={{height: '100%', width: '100%', margin: 16}}
                       source={require('../assets/logoalb.png')}
@@ -151,12 +151,6 @@ const defaultNavOptions = {
   const AuthNavigator = createStackNavigator(
     {
       AuthScreen: AuthScreen
-    },
-    {
-      headerMode: 'none',
-      navigationOptions: {
-        headerVisible: false,
-      }
     }
   );
 
