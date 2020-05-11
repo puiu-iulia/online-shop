@@ -69,19 +69,7 @@ const PlaceOrderScreen = props => {
           shipppingPhone: '',
           shippingCity: '',
           shippingAddress: ''
-        },
-        inputValidities: {
-          billingName: (user) ? user.billingName : "",
-          billingEmail: (user) ? user.billingEmail : "",
-          billingPhone: (user) ? user.billingPhone : "",
-          billingCity: (user) ? user.billingCity : "",
-          billingAddress: (user) ? user.billingAddress : "",
-          shippingName: '',
-          shipppingPhone: '',
-          shippingCity: '',
-          shippingAddress: ''
-        },
-        formIsValid: false
+        }
     });
 
     useEffect(() => {
@@ -156,11 +144,10 @@ const PlaceOrderScreen = props => {
     }
 
     const inputChangeHandler = useCallback(
-        (inputIdentifier, inputValue, inputValidity) => {
+        (inputIdentifier, inputValue) => {
           dispatchFormState({
             type: FORM_INPUT_UPDATE,
             value: inputValue,
-            isValid: inputValidity,
             input: inputIdentifier
           });
         },

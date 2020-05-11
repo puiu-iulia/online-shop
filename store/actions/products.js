@@ -1,14 +1,17 @@
 import Product from '../../models/product';
 import Category from '../../models/category';
 import ShopWooCommerceAPI from '../../constants/ShopWooCommerceAPI';
+import axios from 'axios';
 
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 export const SEARCH_PRODUCTS = 'SEARCH_PRODUCTS';
 export const FILTER_PRODUCTS = 'FILTER_PRODUCTS';
+import Api from '../../constants/Api';
 
 export const fetchProducts = () => {
   let isLoading;
   return async dispatch => {
+
     await ShopWooCommerceAPI.get('products', {
       per_page: 100
     })

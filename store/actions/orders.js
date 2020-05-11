@@ -26,7 +26,7 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
     const data = {
       payment_method: "bacs",
       payment_method_title: "Direct Bank Transfer",
-      // set_paid: true,
+      set_paid: false,
       customer_id: userId,
       billing: {
         first_name: billingName,

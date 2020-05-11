@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { withBadge } from 'react-native-elements';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Dropdown } from 'react-native-material-dropdown';
 
 import HeaderButton from '../components/HeaderButton';
 import ProductsList from '../components/ProductsList';
@@ -28,6 +29,11 @@ const ProductsListScreen = props => {
   const filterProducts = useSelector(state=> state.products.filterProducts);
   const totalItems = useSelector(state => state.cart.totalItems);
   const dispatch = useDispatch();
+
+  let categoriesOptions = [];
+  for ( const i in categories ) {
+    categoriesOptions.push(categories[i].name);
+  }
 
   useEffect(() => {
     const loadProducts = async () => {

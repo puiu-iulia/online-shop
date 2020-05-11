@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary
   },
   imageView: {
-    height: Dimensions.get('window').height/3.4, 
-    width: Dimensions.get('window').width/1.2, 
+    height: (Dimensions.get('window').width/1.1)/1.66, 
+    width: Dimensions.get('window').width/1.1,
     alignSelf: 'center', 
     marginVertical: 48
   },
