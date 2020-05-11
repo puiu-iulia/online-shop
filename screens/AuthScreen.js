@@ -1,55 +1,56 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { Image, Text, StyleSheet, View, Dimensions, KeyboardAvoidingView, Button, ActivityIndicator, Alert, } from 'react-native';
+import { Image, Text, StyleSheet, View, Dimensions, KeyboardAvoidingView, Button, ActivityIndicator, Alert, AsyncStorage} from 'react-native';
 import { useDispatch } from 'react-redux';
-import Toast from 'react-native-simple-toast';
 
 import Input from '../components/Input';
 import Card from '../components/Card';
 import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/auth';
+import { useTheme } from 'react-navigation';
 
-const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
+// const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
-const formReducer = (state, action) => {
-    if (action.type === FORM_INPUT_UPDATE) {
-      const updatedValues = {
-        ...state.inputValues,
-        [action.input]: action.value
-      };
-      const updatedValidities = {
-        ...state.inputValidities,
-        [action.input]: action.isValid
-      };
-      let updatedFormIsValid = true;
-      for (const key in updatedValidities) {
-        updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
-      }
-      return {
-        formIsValid: updatedFormIsValid,
-        inputValidities: updatedValidities,
-        inputValues: updatedValues
-      };
-    }
-    return state;
-  };
+// const formReducer = (state, action) => {
+//     if (action.type === FORM_INPUT_UPDATE) {
+//       const updatedValues = {
+//         ...state.inputValues,
+//         [action.input]: action.value
+//       }; 
+//       return {
+//         inputValues: updatedValues
+//       };
+//     }
+//     return state;
+// };
 
 const AuthScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
     const [isSignin, setIsSignin] = useState(true);
+    const [username, setUsername] = useState('');
+    const [userPassword, setUserPassword] = useState('');
     const dispatch = useDispatch();
 
-    const [formState, dispatchFormState] = useReducer(formReducer, {
-        inputValues: {
-          email: '',
-          password: ''
-        },
-        inputValidities: {
-          email: false,
-          password: false
-        },
-        formIsValid: false
-    });
+    const getUserCredentials = async () => {
+      const userCredentials = await AsyncStorage.getItem('userCredentials');
+      if (userCredentials) {
+        const transformedData = JSON.parse(userCredentials);
+        const { usernameData, userPasswordData } = transformedData;
+        setUsername(usernameData);
+        setUserPassword(userPasswordData);  
+      }   
+    }
+
+    getUserCredentials();
+    console.log(username, userPassword);
+
+    // const [formState, dispatchFormState] = useReducer(formReducer, {
+    //     inputValues: {
+    //       email: username ? username : '',
+    //       password: userPassword ? userPassword : ''
+    //     }
+    // });
+
 
     useEffect(() => {
         if (error) {
@@ -61,13 +62,13 @@ const AuthScreen = props => {
       let action;
       if (!isSignin) {
         action = authActions.signup(
-          formState.inputValues.email,
-          formState.inputValues.password
+          username,
+          userPassword
         );
       } else {
         action = authActions.login(
-          formState.inputValues.email,
-          formState.inputValues.password
+          username,
+          userPassword
         );
       }
       setError(null);
@@ -87,17 +88,16 @@ const AuthScreen = props => {
       }
     };
 
-    const inputChangeHandler = useCallback(
-        (inputIdentifier, inputValue, inputValidity) => {
-          dispatchFormState({
-            type: FORM_INPUT_UPDATE,
-            value: inputValue,
-            isValid: inputValidity,
-            input: inputIdentifier
-          });
-        },
-        [dispatchFormState]
-      );
+    // const inputChangeHandler = useCallback(
+    //     (inputIdentifier, inputValue ) => {
+    //       dispatchFormState({
+    //         type: FORM_INPUT_UPDATE,
+    //         value: inputValue,
+    //         input: inputIdentifier
+    //       });
+    //     },
+    //     [dispatchFormState]
+    //   );
 
     return (
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
@@ -109,36 +109,44 @@ const AuthScreen = props => {
                 </View>
                 <View style={styles.loginContainer}>
                         <Input
-                            id="email"
+                            // id="email"
                             placeholder=" Adresa de E-mail"
                             keyboardType="email-address"
                             required
-                            email
+                            value={username}
+                            // email
                             style={styles.input}
                             autoCapitalize="none"
                             errorText="Introdu o adresa de email valida."
-                            onInputChange={inputChangeHandler}
-                            initialValue=''
+                            // onInputChange={inputChangeHandler}
+                            onChangeText={() => {
+                              setUsername(username);
+                            }}
+                            initialValue={username ? username : 'Bla'}
                         />
                         <Input
-                            id="password"
+                            // id="password"
                             placeholder=" Parola"
                             keyboardType="default"
                             style={styles.input}
+                            value={userPassword}
                             secureTextEntry
                             required
                             minLength={6}
                             autoCapitalize="none"
                             errorText="Introdu o parola de minim 6 caractere."
-                            onInputChange={inputChangeHandler}
-                            initialValue=''
+                            // onInputChange={inputChangeHandler}
+                            onChangeText={() => {
+                              setUserPassword(userPassword);
+                            }}
+                            initialValue={userPassword ? userPassword : ''}
                         />
                         <View style={styles.buttonContainer} >
                             {isLoading ? (
                                <ActivityIndicator size='large' color={Colors.accent} />
                             ) : (
                                 <Button
-                                    disabled={(formState.inputValues.email.length == 0) || (formState.inputValues.password.length == 0)} 
+                                    disabled={(username.length == 0) || (userPassword.length == 0)} 
                                     title={isSignin ? "Conecteaza-te": "Creaza Cont"} 
                                     color={Colors.accent}
                                     onPress={() => {
@@ -147,14 +155,20 @@ const AuthScreen = props => {
                                 /> 
                             )}
                         </View>
-                        <View style={styles.text}><Text style={{fontFamily: 'montserrat', color: 'white'}}>{isSignin ? 'Nu am cont.' : 'Am deja cont.'}</Text></View>
-                        <View style={styles.buttonContainer}>           
-                            <Button 
-                              title={isSignin? "Creaza Cont Nou": "Vreau sa ma conectez"} 
-                              color={Colors.accent} 
-                              onPress={() => {setIsSignin(prevState => !prevState)}} 
-                            />
-                        </View>  
+                        <View style={styles.buttonContainer}>
+                          <Button 
+                            title={isSignin? "Vreau sa creez cont nou": "Vreau sa ma conectez"} 
+                            color={Colors.accent} 
+                            onPress={() => {setIsSignin(prevState => !prevState)}} 
+                          />                      
+                        </View>
+                        <View style={styles.buttonContainer} >
+                              <Button
+                                title={"Spre Magazin"} 
+                                color={Colors.accent} 
+                                onPress={() => {props.navigation.navigate('ProductsOverview');}} 
+                              />
+                            </View>    
                 </View>
         </KeyboardAvoidingView> 
     );
@@ -172,12 +186,12 @@ const styles = StyleSheet.create({
         width: '80%',
         // maxWidth: 600,
         maxHeight: 400,
-        padding: 20,
+        padding: 24,
         backgroundColor: Colors.primary
     },
     imageView: {
-      height: Dimensions.get('window').height/3.4, 
-      width: Dimensions.get('window').width/1.2, 
+      height: (Dimensions.get('window').width/1.1)/1.66, 
+      width: Dimensions.get('window').width/1.1, 
       alignSelf: 'center', 
       marginBottom: 48
     },
@@ -209,5 +223,9 @@ const styles = StyleSheet.create({
       color: 'white'
     }
 });
+
+AuthScreen.navigationOptions = {
+  header: null
+}
 
 export default AuthScreen;

@@ -10,7 +10,7 @@ export const LOGOUT = 'LOGOUT';
 export const authenticate = (userId, token ) => {
   return dispatch => {
     let isSignedIn = true;
-    dispatch({ type: AUTHENTICATE, userId: userId, token: token, isSignedIn: true });
+    dispatch({ type: AUTHENTICATE, userId: userId, token: token, isSignedIn: isSignedIn });
   };
 };
 
@@ -33,6 +33,8 @@ export const signup = (email, password) => {
         let message = errorResData.message;
         throw new Error(message);
       }); 
+
+    saveUserCredentials(email, password);
   };
 };
 
@@ -77,6 +79,17 @@ export const logout = () => {
   console.log('Logged out!');
   return { type: LOGOUT, token: null, userId: null, isSignedIn: false };
 };
+
+const saveUserCredentials = (username, password) => {
+  AsyncStorage.setItem(
+    'userCredentials',
+    JSON.stringify({
+      usernameData: username,
+      userPasswordData: password
+    })
+  );
+};
+
 
 const saveDataToStorage = (token, userId) => {
   AsyncStorage.setItem(
