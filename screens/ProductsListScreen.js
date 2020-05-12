@@ -25,6 +25,7 @@ const ProductsListScreen = props => {
   const isCategoryLoading = useSelector(state => state.categories.isCategoryLoading);
   const [allProducts, setAllProducts] = useState(true);
   const [query, setQuery] = useState('');
+  const isSignedIn = useSelector(state => state.auth.isSignedIn);
   const categories = useSelector(state => state.categories.availableCategories);
   const filterProducts = useSelector(state=> state.products.filterProducts);
   const totalItems = useSelector(state => state.cart.totalItems);
@@ -52,17 +53,18 @@ const ProductsListScreen = props => {
     };
     const loadUser = async () => {
       try {
-        await dispatch(categoriesActions.fetchCategories());
+        await dispatch(userActions.getUser());
       } catch (err) {
         setCategoryError(err.message);
       };
     };
   
     loadCategories().then(() => {
-      loadProducts().then(() => {
-        loadUser();
-      })
+      loadProducts();
     });
+    if (isSignedIn) {
+      loadUser();
+    }
   }, [dispatch]);
 
   const updateProductsList = (category, query) => {

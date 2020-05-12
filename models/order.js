@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 class Order {
-  constructor(id, userId, items, totalAmount, date, billingName, email, billingPhone, billingCounty, billingCity, billingAddress, shippingName, shippingPhone, shippingCounty, shippingCity, shippingAddress) {
+  constructor(id, userId, items, totalAmount, date, billingName, email, billingPhone, billingCounty, billingCity, billingAddress, notes, shippingName, shippingPhone, shippingCounty, shippingCity, shippingAddress) {
     this.id = id;
     this.userId = userId;
     this.items = items;
@@ -13,6 +13,7 @@ class Order {
     this.billingCounty = billingCounty;
     this.billingCity = billingCity;
     this.billingAddress = billingAddress;
+    this.notes = notes;
     this.shippingName = shippingName;
     this.shippingPhone = shippingPhone;
     this.shippingCounty = shippingCounty;

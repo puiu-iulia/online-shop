@@ -14,37 +14,52 @@ export default (state = initialState, action) => {
     case ADD_TO_CART:
       const addedProduct = action.product;
       const quantity = action.quantity;
-      const prodPrice = parseInt(addedProduct.price);
+      const prodPrice = parseInt(action.price);
       const prodTitle = addedProduct.name;
       const prodImage = addedProduct.imageUrl;
-
-      let updatedOrNewCartItem;
-      if (state.items[addedProduct.id]) {
-        // already have the item in the cart
-        updatedOrNewCartItem = new CartItem(
-          state.items[addedProduct.id].quantity + quantity,
-          prodPrice,
-          prodTitle,
-          prodImage,
-          state.items[addedProduct.id].sum + prodPrice *  quantity
-        );
+      
+      let newCartItems;
+      // console.log(action.prId);
+      // console.log(addedProduct.id);
+      let variationId = action.variationId;
+      if (state.items[variationId]) {
+        if  (addedProduct.price == prodPrice) {
+          console.log(addedProduct.price, prodPrice, "same");
+          newCartItems = { ...state.items, [variationId]: new CartItem(
+            state.items[variationId].quantity + quantity,
+            action.prId,
+            variationId,
+            prodPrice,
+            prodTitle + " - "  + action.variation,
+            prodImage,
+            prodPrice * (state.items[variationId].quantity + quantity)
+          )} 
+        } else {
+          console.log(addedProduct.price, prodPrice, "diferit");
+          newCartItems = { ...state.items, [variationId]: new CartItem(quantity, action.prId, variationId, prodPrice, prodTitle + " - "  + action.variation, prodImage, prodPrice * quantity)}  
+        }
       } else {
-        updatedOrNewCartItem = new CartItem(quantity, prodPrice, prodTitle, prodImage, prodPrice * quantity);
+        console.log(addedProduct.price, prodPrice, "new");
+        newCartItems = { ...state.items, [variationId]: new CartItem(quantity, action.prId, variationId, prodPrice, prodTitle + " - "  + action.variation, prodImage, prodPrice * quantity)}  
       }
+      console.log(newCartItems)
       return {
         ...state,
-        items: { ...state.items, [addedProduct.id]: updatedOrNewCartItem },
+        items: newCartItems,
         totalAmount: state.totalAmount + prodPrice * quantity,
         totalItems: state.totalItems + quantity
       };
     case REMOVE_FROM_CART:
       const selectedCartItem = state.items[action.pid];
       const currentQty = selectedCartItem.quantity;
+      // const currentPrice = selectedCartItem.price;
       let updatedCartItems;
       if (currentQty > 1) {
         // need to reduce it, not erase it
         const updatedCartItem = new CartItem(
           selectedCartItem.quantity - 1,
+          selectedCartItem.productId,
+          selectedCartItem.variationId,
           selectedCartItem.productPrice,
           selectedCartItem.productTitle,
           selectedCartItem.imageUrl,
@@ -62,13 +77,15 @@ export default (state = initialState, action) => {
         totalItems: state.totalItems - 1
       };
     case ADD_QUANTITY: 
-      console.log(state.items[action.prodId])
+      console.log(state.items[action.prodId]);
       const selectedItem = state.items[action.prodId];
       // const currentQtty = selectedCartItem.quantity;
       let updatedQtyItems;
       if (selectedItem) {
         const updatedItem = new CartItem(
           selectedItem.quantity + 1,
+          selectedItem.productId,
+          selectedItem.variationId,
           selectedItem.productPrice,
           selectedItem.productTitle,
           selectedItem.imageUrl,

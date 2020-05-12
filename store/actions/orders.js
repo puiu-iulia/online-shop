@@ -7,32 +7,39 @@ export const ADD_ORDER = 'ADD_ORDER';
 export const SET_ORDERS = 'SET_ORDERS';
 export const FILTER_ORDERS = 'FILTER_ORDERS';
 
-export const addOrder = (cartItems, totalAmount, billingName, billingEmail, billingPhone, billingCounty, billingCity, billingAddress, shippingName, shippingPhone, shippingCounty, shippingCity, shippingAddress) => {
+export const addOrder = (cartItems, totalAmount, billingName, billingEmail, billingPhone, billingCounty, billingCity, billingAddress, notes, shippingName, shippingPhone, shippingCounty, shippingCity, shippingAddress) => {
   let isLoading;
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().user.userId;
+    const variations = getState().variation.availableVariations;
     console.log(userId);
     const date = new Date();
 
     lineItems = [];
     for (const key in cartItems) {
       lineItems.push({
-        product_id: key,
+        product_id: cartItems[key].id,
+        variation_id: key,
         quantity: cartItems[key].quantity
       })
     };
 
+    // const status = "processing";
+
     const data = {
       payment_method: "bacs",
-      payment_method_title: "Direct Bank Transfer",
+      payment_method_title: "Plata prin transfer bancar",
       set_paid: false,
+      status: "processing",
       customer_id: userId,
+      customer_note: notes,
       billing: {
         first_name: billingName,
         last_name: "",
         address_1: billingAddress,
         address_2: billingPhone,
+        email: billingEmail,
         city: billingCity,
         state: billingCounty,
         postcode: "",
@@ -61,24 +68,25 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
       isLoading = false;
       dispatch({
         type: ADD_ORDER,
-        orderData: {
-          id: response.id,
-          userId: response.customer_id,
-          items: cartItems,
-          amount: totalAmount,
-          date: response.date_created, 
-          billingName: billingName,
-          billingEmail: billingEmail,
-          billingPhone: billingPhone,
-          billingCounty: billingCounty,
-          billingCity: billingCity,
-          billingAddress: billingAddress,
-          shippingName: shippingName,
-          shippingPhone: shippingPhone,
-          shippingCounty: shippingCounty,
-          shippingCity: shippingCity,
-          shippingAddress: shippingAddress
-        }, 
+        // orderData: {
+        //   id: response.id,
+        //   userId: response.customer_id,
+        //   items: cartItems,
+        //   amount: totalAmount,
+        //   date: response.date_created, 
+        //   billingName: billingName,
+        //   billingEmail: billingEmail,
+        //   billingPhone: billingPhone,
+        //   billingCounty: billingCounty,
+        //   billingCity: billingCity,
+        //   billingAddress: billingAddress,
+        //   notes: notes,
+        //   shippingName: shippingName,
+        //   shippingPhone: shippingPhone,
+        //   shippingCounty: shippingCounty,
+        //   shippingCity: shippingCity,
+        //   shippingAddress: shippingAddress
+        // }, 
         isLoading: isLoading
       });
     })
@@ -128,6 +136,7 @@ export const fetchOrders = () => {
               data[key].billing.state,
               data[key].billing.city,
               data[key].billing.address_1,
+              data[key].customer_note,
               data[key].shipping.first_name + " " + data[key].shipping.last_name,
               data[key].shipping.address_2,
               data[key].shipping.state,
