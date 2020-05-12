@@ -14,38 +14,12 @@ import * as orderActions from '../store/actions/orders';
 import * as userActions from '../store/actions/user';
 
 
-const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
-
-const formReducer = (state, action) => {
-    if (action.type === FORM_INPUT_UPDATE) {
-      const updatedValues = {
-        ...state.inputValues,
-        [action.input]: action.value
-      };
-      const updatedValidities = {
-        ...state.inputValidities,
-        [action.input]: action.isValid
-      };
-      let updatedFormIsValid = true;
-      for (const key in updatedValidities) {
-        updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
-      }
-      return {
-        formIsValid: updatedFormIsValid,
-        inputValidities: updatedValidities,
-        inputValues: updatedValues
-      };
-    }
-    return state;
-  };
-
-
-
 const PlaceOrderScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
     const [county, setCounty] = useState();
     const user = useSelector(state => state.user.user);
+    console.log(user);
     const [billingCounty, setBillingCounty] = useState(user? user.billingCounty : "");
     const [sameBilling, setSameBilling] = useState(true);
     const dispatch = useDispatch();
@@ -58,19 +32,16 @@ const PlaceOrderScreen = props => {
       countyData.push(data.judete[key].nume);
     }
 
-    const [formState, dispatchFormState] = useReducer(formReducer, {
-        inputValues: {
-          billingName: "",
-          billingEmail: "",
-          billingPhone: "",
-          billingCity: "",
-          billingAddress: "",
-          shippingName: '',
-          shipppingPhone: '',
-          shippingCity: '',
-          shippingAddress: ''
-        }
-    });
+    const [billingName, setBillingName ] = useState(user ? user.billingName : '');
+    const [billingEmail, setBillingEmail ] = useState(user ? user.billingEmail : '');
+    const [billingPhone, setBillingPhone ] = useState(user ? user.billingPhone : '');
+    const [billingCity, setBillingCity ] = useState(user ? user.billingCity : '');
+    const [billingAddress, setBillingAddress ] = useState(user ? user.billingAddress : '');
+    const [notes, setNotes] = useState('')
+    const [shippingName, setShippingName] = useState('');
+    const [shippingPhone, setShippingPhone] = useState('');
+    const [shippingCity, setShippingCity] = useState('');
+    const [shippingAddress, setShippingAddress] = useState('');
 
     useEffect(() => {
         if (error) {
@@ -85,17 +56,18 @@ const PlaceOrderScreen = props => {
           await dispatch(orderActions.addOrder(
             cartItems,
             cartTotalAmount,
-            formState.inputValues.billingName,
-            formState.inputValues.billingEmail,
-            formState.inputValues.billingPhone,
+            billingName,
+            billingEmail,
+            billingPhone,
             billingCounty,
-            formState.inputValues.billingCity,
-            formState.inputValues.billingAddress,
-            formState.inputValues.shippingName,
-            formState.inputValues.shipppingPhone,
+            billingCity,
+            billingAddress,
+            notes,
+            shippingName,
+            shippingPhone,
             county,
-            formState.inputValues.shippingCity,
-            formState.inputValues.shippingAddress
+            shippingCity,
+            shippingAddress
           ));
         } catch (err) {
           setError(err.message);
@@ -107,17 +79,18 @@ const PlaceOrderScreen = props => {
           await dispatch(orderActions.addOrder(
             cartItems,
             cartTotalAmount,
-            formState.inputValues.billingName,
-            formState.inputValues.billingEmail,
-            formState.inputValues.billingPhone,
+            billingName,
+            billingEmail,
+            billingPhone,
             billingCounty,
-            formState.inputValues.billingCity,
-            formState.inputValues.billingAddress,
-            formState.inputValues.billingName,
-            formState.inputValues.billingPhone,
+            billingCity,
+            billingAddress,
+            notes,
+            billingName,
+            billingPhone,
             billingCounty,
-            formState.inputValues.billingCity,
-            formState.inputValues.billingAddress
+            billingCity,
+            billingAddress
           ));
         } catch (err) {
           setError(err.message);
@@ -130,30 +103,18 @@ const PlaceOrderScreen = props => {
       try {
         setIsLoading(true);
         await dispatch(userActions.updateUser(
-          formState.inputValues.billingName,
-          formState.inputValues.billingEmail,
+          billingName,
           email,
+          billingPhone,
           billingCounty,
-          formState.inputValues.billingCity,
-          formState.inputValues.billingAddress,
+          billingCity,
+          billingAddress,
         ))
       } catch (err) {
         setError(err.message);
         setIsLoading(false);
       }
     }
-
-    const inputChangeHandler = useCallback(
-        (inputIdentifier, inputValue) => {
-          dispatchFormState({
-            type: FORM_INPUT_UPDATE,
-            value: inputValue,
-            input: inputIdentifier
-          });
-        },
-        [dispatchFormState]
-      );
-
       // if (isLoading) {
       //   return (
       //     <View style={styles.centered}>
@@ -174,31 +135,39 @@ const PlaceOrderScreen = props => {
                            label="Nume"
                            keyboardType="default"
                            required
+                           value={billingName}
                            autoCapitalize="words"
                            errorText="Introdu numele tau."
-                           onInputChange={inputChangeHandler}
-                          //  initialValue={(user) ? user.billingName : ""}
+                           onChangeText={(billingName) => {
+                             setBillingName(billingName);
+                           }}
+                           initialValue={(user) ? user.billingName : ""}
                         />
                         <Input
                             id="billingEmail"
                             label="Adresa de E-mail"
                             keyboardType="email-address"
                             required
-                            email
+                            value={billingEmail}
                             autoCapitalize="none"
                             errorText="Introdu o adresa de email valida."
-                            onInputChange={inputChangeHandler}
-                            // initialValue={(user) ? user.billingEmail : ""}
+                            onChangeText={(billingEmail) => {
+                              setBillingEmail(billingEmail);
+                            }}
+                            initialValue={(user) ? user.billingEmail : ""}
                         />
                         <Input
                             id="billingPhone"
                             label="Numar de Telefon"
                             keyboardType="number-pad"
                             required
+                            value={billingPhone}
                             minLength={10}
                             autoCapitalize="none"
                             errorText="Introdu un numar de telefon valid."
-                            onInputChange={inputChangeHandler}
+                            onChangeText={(billingPhone) => {
+                              setBillingPhone(billingPhone);
+                            }}
                             // initialValue={(user) ? user.billingPhone : ""}
                         />
                          <View style={styles.countyContainer}>
@@ -221,21 +190,41 @@ const PlaceOrderScreen = props => {
                               label="Localitate"
                               keyboardType="default"
                               required
+                              value={billingCity}
                               autoCapitalize="words"
                               errorText="Introdu localitatea."
-                              onInputChange={inputChangeHandler}
-                              // initialValue={(user) ? user.billingCity : ""}
+                              onChangeText={(billingCity) => {
+                                setBillingCity(billingCity);
+                              }}
+                              initialValue={(user) ? user.billingCity : ""}
                           />
                           <Input
                               id="billingAddress"
+                              value={billingAddress}
                               label="Adresa"
                               keyboardType="default"
                               required
                               placeholder="Strada, numar, alte detalii..."
                               autoCapitalize="none"
                               errorText="Introdu o adresa valida."
-                              onInputChange={inputChangeHandler}
-                              // initialValue={(user) ? user.billingAddress : ""}
+                              onChangeText={(billingAddress) => {
+                                setBillingAddress(billingAddress);
+                              }}
+                              initialValue={(user) ? user.billingAddress : ""}
+                          />
+                            <Input
+                              id="billingAddress"
+                              value={notes}
+                              label="Note comanda (optional)"
+                              keyboardType="default"
+                              required
+                              placeholder="Exemplu: note pentru livrare."
+                              autoCapitalize="none"
+                              errorText="Introdu o adresa valida."
+                              onChangeText={(notes) => {
+                                setNotes(notes);
+                              }}
+                              initialValue={(user) ? user.billingAddress : ""}
                           />     
                        
                         <CheckBox 
@@ -257,11 +246,14 @@ const PlaceOrderScreen = props => {
                           <Input
                             id="shippingName"
                             label="Nume"
+                            id={shippingName}
                             keyboardType="default"
                             required
                             autoCapitalize="words"
                             errorText="Introdu numele tau."
-                            onInputChange={inputChangeHandler}
+                            onChangeText={(shippingName) => {
+                              setShippingName(shippingName);
+                            }}
                             initialValue=''
                           />
                           <Input
@@ -269,10 +261,13 @@ const PlaceOrderScreen = props => {
                             label="Numar de Telefon"
                             keyboardType="number-pad"
                             required
+                            value={shippingPhone}
                             minLength={8}
                             autoCapitalize="none"
                             errorText="Introdu un numar de telefon valid."
-                            onInputChange={inputChangeHandler}
+                            onChangeText={(shippingPhone) => {
+                              setShippingPhone(shippingPhone);
+                            }}
                             initialValue=''
                           />
                           <View style={styles.countyContainer}>
@@ -295,9 +290,12 @@ const PlaceOrderScreen = props => {
                                 label="Localitate"
                                 keyboardType="default"
                                 required
+                                value={shippingCity}
                                 autoCapitalize="words"
                                 errorText="Introdu localitatea."
-                                onInputChange={inputChangeHandler}
+                                onChangeText={(shippingCity) => {
+                                  setShippingCity(shippingCity);
+                                }}
                                 initialValue=''
                             />
                             <Input
@@ -305,10 +303,13 @@ const PlaceOrderScreen = props => {
                                 label="Adresa"
                                 keyboardType="default"
                                 required
+                                value={shippingAddress}
                                 placeholder="Strada, numar, alte detalii..."
                                 autoCapitalize="none"
                                 errorText="Introdu o adresa valida."
-                                onInputChange={inputChangeHandler}
+                                onChangeText={(shippingAddress) => {
+                                  setShippingAddress(shippingAddress);
+                                }}
                                 initialValue=''
                             />
                           </View>
@@ -322,21 +323,22 @@ const PlaceOrderScreen = props => {
                             ) : 
                             (<Button
                               disabled={
-                                (!formState.inputValues.billingName.length) 
-                                || (!formState.inputValues.billingEmail.length) 
-                                || (!formState.inputValues.billingPhone.length) 
-                                || (!formState.inputValues.billingCity.length) 
-                                || (!formState.inputValues.billingAddress.length)
+                                (billingName == '') 
+                                || (billingEmail == '') 
+                                || (billingPhone == '') 
+                                || (billingCity.length == '') 
+                                || (billingAddress.length == '')
                               } 
                               title={"Trimite Comanda"} 
                               color={Colors.primary} 
                               onPress={() => {
                                 placeOrderHandler().then(() => {
-                                  updateUserData().then(() => {
                                     setIsLoading(false);
                                     props.navigation.navigate('OrderConfirmation');
-                                  });
                                 });
+                                if (user) {
+                                  updateUserData();
+                                }
                               }} 
                             />)}
                         </View>          
