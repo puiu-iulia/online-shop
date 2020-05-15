@@ -17,7 +17,7 @@ const StartupScreen = props => {
 
     const goToWelcome = async () => {
       const userChecks = await AsyncStorage.getItem('userChecks');
-      console.log(userChecks);
+      // console.log(userChecks);
       if (userChecks) {
         tryLogin();
       } else {

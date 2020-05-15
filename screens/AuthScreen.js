@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { Image, Text, StyleSheet, View, Dimensions, KeyboardAvoidingView, Button, ActivityIndicator, Alert, AsyncStorage} from 'react-native';
+import { Image, StyleSheet, View, Dimensions, KeyboardAvoidingView, Button, ActivityIndicator, Alert, AsyncStorage} from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import Input from '../components/Input';
@@ -7,6 +7,7 @@ import Card from '../components/Card';
 import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/auth';
 import { useTheme } from 'react-navigation';
+import { ScrollView } from 'react-native-gesture-handler';
 
 // const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -36,13 +37,19 @@ const AuthScreen = props => {
       if (userCredentials) {
         const transformedData = JSON.parse(userCredentials);
         const { usernameData, userPasswordData } = transformedData;
-        setUsername(usernameData);
-        setUserPassword(userPasswordData);  
+        if (usernameData != '' && userPasswordData != '') {
+          setUsername(usernameData);
+          setUserPassword(userPasswordData);
+        }            
       }   
     }
 
-    getUserCredentials();
-    console.log(username, userPassword);
+    useEffect(() => {
+      getUserCredentials();
+      // console.log(username, userPassword, 'credentials');
+    }, [username, userPassword]);
+   
+
 
     // const [formState, dispatchFormState] = useReducer(formReducer, {
     //     inputValues: {
@@ -101,6 +108,7 @@ const AuthScreen = props => {
 
     return (
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
+          <ScrollView>
                  <View style={styles.imageView}>
                   <Image
                         style={styles.image}
@@ -109,37 +117,35 @@ const AuthScreen = props => {
                 </View>
                 <View style={styles.loginContainer}>
                         <Input
-                            // id="email"
+                            id="email"
                             placeholder=" Adresa de E-mail"
                             keyboardType="email-address"
-                            required
                             value={username}
                             // email
                             style={styles.input}
                             autoCapitalize="none"
                             errorText="Introdu o adresa de email valida."
                             // onInputChange={inputChangeHandler}
-                            onChangeText={() => {
+                            onChangeText={(username) => {
                               setUsername(username);
                             }}
-                            initialValue={username ? username : 'Bla'}
+                            initialValue={(username != '') ? username : ''}
                         />
                         <Input
-                            // id="password"
+                            id="password"
                             placeholder=" Parola"
                             keyboardType="default"
                             style={styles.input}
                             value={userPassword}
                             secureTextEntry
-                            required
                             minLength={6}
                             autoCapitalize="none"
                             errorText="Introdu o parola de minim 6 caractere."
                             // onInputChange={inputChangeHandler}
-                            onChangeText={() => {
+                            onChangeText={(userPassword) => {
                               setUserPassword(userPassword);
                             }}
-                            initialValue={userPassword ? userPassword : ''}
+                            initialValue={(userPassword != '') ? userPassword : ''}
                         />
                         <View style={styles.buttonContainer} >
                             {isLoading ? (
@@ -170,6 +176,7 @@ const AuthScreen = props => {
                               />
                             </View>    
                 </View>
+                </ScrollView>
         </KeyboardAvoidingView> 
     );
 };
@@ -183,11 +190,10 @@ const styles = StyleSheet.create({
         paddingVertical: 24
     },
     loginContainer: {
-        width: '80%',
+        width: '100%',
         // maxWidth: 600,
         maxHeight: 400,
-        padding: 24,
-        backgroundColor: Colors.primary
+        padding: 20
     },
     imageView: {
       height: (Dimensions.get('window').width/1.1)/1.66, 
