@@ -33,9 +33,9 @@ const ProductDetailScreen = props => {
   const [quantity, setQuantity] = useState(1);
   const [variationOption, setVariationOption] = useState('Selecteaza');
   const variation = variations.find((variation => variation.option === 'Selecteaza'));
-  console.log(variation);
+  // console.log(variation);
   const [variationId, setVariationId] = useState();
-  const [price, setPrice] = useState('0');
+  const [price, setPrice] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -76,6 +76,13 @@ const ProductDetailScreen = props => {
     );
   }
 
+  const stripHTMLTags = (description) => {
+    if (description) {
+      str = description.toString();
+      return str.replace(/<[^>]*>/g, '');
+    }
+  } 
+
   const addToCartHandler = useCallback(() => {
 
     dispatch(cartActions.addToCart(selectedProduct, price, quantity, variationOption, productId, variationId));
@@ -95,7 +102,7 @@ const ProductDetailScreen = props => {
   }, [totalItems]);
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.screen}>
       <View style={styles.imageContainer}><Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} /></View>
       <Text style={styles.title}>{selectedProduct.name}</Text>
       <View style={styles.filtersContainer}>
@@ -109,7 +116,7 @@ const ProductDetailScreen = props => {
                 onValueChange={(variationOption)=> {
                   // updateProductsList(category, query);
                   setVariationOption(variationOption);
-                  console.log(variationOption);
+                  // console.log(variationOption);
                   updatePrice(variationOption);
                   // console.log(price);
                 }}
@@ -172,7 +179,7 @@ const ProductDetailScreen = props => {
             </View>
         </TouchableOpacity> 
       </View>
-      <Text style={styles.description}>{selectedProduct.description}</Text>
+      <Text style={styles.description}>{selectedProduct.description.replace(/<[^>]*>/g, '')}</Text>
     </ScrollView>
   );
 };
@@ -208,6 +215,9 @@ ProductDetailScreen.navigationOptions = navData => {
 };
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1
+  },
   addToCartButton: {
     marginRight: 8,
     marginLeft: 24,
@@ -235,11 +245,10 @@ const styles = StyleSheet.create({
   filtersContainer: {
     maxHeight: 64,
     // paddingVertical: 32,
-    flex: 1,
     marginTop: 4,
     marginBottom: 8,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     alignItems: 'center',
     alignContent: 'center',
   },
@@ -251,16 +260,16 @@ const styles = StyleSheet.create({
     width: 150,
     backgroundColor: '#dbe1e1',
     marginRight: 24,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
   },
   priceContainer: {
-    width: 184
+    width: 176
   },
   variationPicker: {
-     width: Dimensions.get('window').width / 3,
+     width: Dimensions.get('window').width / 2.8,
   },
   actions: {
     flex: 1,
@@ -287,16 +296,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     marginVertical: 8,
+    marginHorizontal: 8,
     color: Colors.primary
   },
   description: {
     fontFamily: 'montserrat',
-    fontSize: 14,
-    textAlign: 'center',
-    marginHorizontal: 20
+    fontSize: 16,
+    textAlign: 'left',
+    margin: 8
   },
   quantityBox: {
-    width: 64,
+    width: 56,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',

@@ -70,7 +70,7 @@ const CartScreen = props => {
             Livrare:{' '}
           </Text>
           <Text style={styles.amount}>
-            15 RON
+            0 RON
           </Text>  
         </View>
         <View style={styles.summaryTotal}>
@@ -78,7 +78,7 @@ const CartScreen = props => {
             Total:{' '}
           </Text>
           <Text style={styles.amount}>
-            {Math.round(cartTotalAmount * 100) / 100 + 15} RON
+            {Math.round(cartTotalAmount * 100) / 100} RON
           </Text>
         </View>
       </View>

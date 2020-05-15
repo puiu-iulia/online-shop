@@ -28,7 +28,7 @@ export const fetchCategories = () => {
         dispatch({ type: SET_CATEGORIES, categories: loadedCategories, isCategoryLoading: isCategoryLoading });
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
       });
         
     };

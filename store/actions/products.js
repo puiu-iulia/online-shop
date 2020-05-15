@@ -33,7 +33,7 @@ export const fetchProducts = () => {
             data[key].id,
             data[key].name,
             data[key].images[0].src,
-            data[key].description,
+            data[key].short_description,
             data[key].price,
             loadedCategories
           )
@@ -43,7 +43,7 @@ export const fetchProducts = () => {
       dispatch({ type: SET_PRODUCTS, products: loadedProducts, isLoading: isLoading });
     })
     .catch(error => {
-      console.log(error);
+      // console.log(error);
       isLoading = false;
     });
       

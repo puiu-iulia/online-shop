@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
       let variationId = action.variationId;
       if (state.items[variationId]) {
         if  (addedProduct.price == prodPrice) {
-          console.log(addedProduct.price, prodPrice, "same");
+          // console.log(addedProduct.price, prodPrice, "same");
           newCartItems = { ...state.items, [variationId]: new CartItem(
             state.items[variationId].quantity + quantity,
             action.prId,
@@ -35,14 +35,12 @@ export default (state = initialState, action) => {
             prodPrice * (state.items[variationId].quantity + quantity)
           )} 
         } else {
-          console.log(addedProduct.price, prodPrice, "diferit");
+          // console.log(addedProduct.price, prodPrice, "diferit");
           newCartItems = { ...state.items, [variationId]: new CartItem(quantity, action.prId, variationId, prodPrice, prodTitle + " - "  + action.variation, prodImage, prodPrice * quantity)}  
         }
       } else {
-        console.log(addedProduct.price, prodPrice, "new");
         newCartItems = { ...state.items, [variationId]: new CartItem(quantity, action.prId, variationId, prodPrice, prodTitle + " - "  + action.variation, prodImage, prodPrice * quantity)}  
       }
-      console.log(newCartItems)
       return {
         ...state,
         items: newCartItems,
@@ -77,7 +75,6 @@ export default (state = initialState, action) => {
         totalItems: state.totalItems - 1
       };
     case ADD_QUANTITY: 
-      console.log(state.items[action.prodId]);
       const selectedItem = state.items[action.prodId];
       // const currentQtty = selectedCartItem.quantity;
       let updatedQtyItems;

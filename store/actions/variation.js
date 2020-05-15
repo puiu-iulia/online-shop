@@ -29,7 +29,7 @@ export const fetchVariations = (productId) => {
         dispatch({ type: SET_VARIATIONS, variations: loadedVariations });
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
         isLoading = false;
       });
         

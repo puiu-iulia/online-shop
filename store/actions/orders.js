@@ -13,7 +13,7 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
     const token = getState().auth.token;
     const userId = getState().user.userId;
     const variations = getState().variation.availableVariations;
-    console.log(userId);
+    // console.log(userId);
     const date = new Date();
 
     lineItems = [];
@@ -64,7 +64,7 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
 
     })
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       isLoading = false;
       dispatch({
         type: ADD_ORDER,
@@ -91,7 +91,7 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
       });
     })
     .catch(error => {
-      console.log(error);
+      // console.log(error);
     });   
   };
 };
@@ -99,9 +99,9 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
 export const fetchOrders = () => {
   let isLoading;
   return async (dispatch, getState) => {
-    console.log(getState().user);
+    // console.log(getState().user);
     const userId = getState().user.userId;
-    console.log(userId);
+    // console.log(userId);
     await ShopWooCommerceAPI.get('orders', {
       per_page: 100,
       customer: userId
@@ -116,8 +116,11 @@ export const fetchOrders = () => {
           items.push(
             new CartItem(
               data[key].line_items[i].quantity,
+              data[key].line_items[i].product_id,
+              data[key].line_items[i].variation_id,
               data[key].line_items[i].price,
               data[key].line_items[i].name,
+              '',
               data[key].line_items[i].total
             )
           );
@@ -146,12 +149,12 @@ export const fetchOrders = () => {
           );
         }        
       }
-        console.log(loadedOrders);
+        // console.log(loadedOrders);
         isLoading = false;
         dispatch({ type: SET_ORDERS, orders: loadedOrders, isLoading: isLoading });
       })
     .catch(error => {
-      console.log(error);
+      // console.log(error);
       isLoading = false;
     });
       

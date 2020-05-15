@@ -21,6 +21,7 @@ const ProductsListScreen = props => {
   const [isSearching, setIsSearching] = useState(false);
   const [category, setCategory] = useState('Toate');
   const products = useSelector(state => state.products.availableProducts);
+  // console.log(products);
   const isLoading = useSelector(state => state.products.isLoading);
   const isCategoryLoading = useSelector(state => state.categories.isCategoryLoading);
   const [allProducts, setAllProducts] = useState(true);
@@ -62,9 +63,7 @@ const ProductsListScreen = props => {
     loadCategories().then(() => {
       loadProducts();
     });
-    if (isSignedIn) {
-      loadUser();
-    }
+    loadUser();
   }, [dispatch]);
 
   const updateProductsList = (category, query) => {
@@ -94,7 +93,7 @@ const ProductsListScreen = props => {
   }
 
 
-  if (products === null)  {
+  if (!isLoading && products.length == 0)  {
     return (
       <View style={styles.centered}>
         <Text>Nu s-au gasit produse. Incercati mai tarziu.</Text>
