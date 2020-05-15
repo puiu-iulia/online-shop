@@ -12,6 +12,7 @@ import cartReducer from './store/reducers/cart';
 import authReducer from './store/reducers/auth';
 import ordersReducer from './store/reducers/orders';
 import userReducer from './store/reducers/user';
+import variationReducer from './store/reducers/variation';
 import MainNavigator from './navigation/MainNavigator';
 
 const rootReducer = combineReducers({
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   orders: ordersReducer,
   auth: authReducer,
-  user: userReducer
+  user: userReducer,
+  variation: variationReducer
 });
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk)));

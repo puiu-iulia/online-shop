@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@woocommerce/woocommerce-rest-api": "^1.0.1",
     "axios": "^0.19.2",
     "braces": "^3.0.2",
     "expo": "^35.0.0",
