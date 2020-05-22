@@ -105,8 +105,7 @@ const ProductDetailScreen = props => {
     <ScrollView style={styles.screen}>
       <View style={styles.imageContainer}><Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} /></View>
       <Text style={styles.title}>{selectedProduct.name}</Text>
-      <View style={styles.filtersContainer}>
-        <View style={styles.priceContainer}><Text style={styles.price}>{price} RON</Text></View>
+      <View style={styles.filtersContainer}>     
         <View style={styles.variationsContainer}>
           <Text style={styles.pickerLabel} >  Marime:</Text>
               <Picker
@@ -130,8 +129,6 @@ const ProductDetailScreen = props => {
                 })}
             </Picker>
         </View>
-      </View>
-      <View style={styles.actions}>
         <View style={styles.quantityContainer}>
             {/* {props.deletable && ( */}
             <TouchableOpacity
@@ -164,6 +161,9 @@ const ProductDetailScreen = props => {
               />
             </TouchableOpacity> 
           </View>
+      </View>
+      <View style={styles.actions}>
+        <View style={styles.priceContainer}><Text style={styles.price}>{price} RON</Text></View>
         <TouchableOpacity 
           style={styles.addToCartButton}
           disabled={variationOption == 'Selecteaza'}
@@ -219,13 +219,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   addToCartButton: {
-    marginRight: 8,
-    marginLeft: 24,
     height: 40,
-    flex: 1,
+    flex: 3,
+    marginLeft: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     backgroundColor: Colors.accent,
     borderRadius: 8
   },
@@ -247,37 +246,33 @@ const styles = StyleSheet.create({
     // paddingVertical: 32,
     marginTop: 4,
     marginBottom: 8,
+    marginRight: 16,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    alignContent: 'center',
   },
   variationsContainer: {
     flexDirection: 'row',
-    flex: 1,
     height: 40,
-    width: Dimensions.get('window').width / 3,
-    width: 150,
+    // width: Dimensions.get('window').width / 3,
+    flex: 4,
+    marginLeft: 16,
+    marginRight: 8,
     backgroundColor: '#dbe1e1',
-    marginRight: 24,
-    justifyContent: 'flex-start',
-    alignContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
   },
   priceContainer: {
-    width: 176
+    flex: 4
   },
   variationPicker: {
-     width: Dimensions.get('window').width / 2.8,
+     width: "72%"
   },
   actions: {
-    flex: 1,
     flexDirection: 'row',
     marginVertical: 8,
     marginHorizontal: 16,
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    // justifyContent: 'space-evenly'
   },
   price: {
     fontSize: 20,
@@ -288,25 +283,24 @@ const styles = StyleSheet.create({
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#f1f1f3',
+    flex: 3
   },
   title: {
     fontFamily: 'playfair',
     fontSize: 24,
     textAlign: 'center',
-    marginVertical: 8,
-    marginHorizontal: 8,
+    margin: 8,
     color: Colors.primary
   },
   description: {
     fontFamily: 'montserrat',
     fontSize: 16,
-    textAlign: 'left',
+    textAlign: 'center',
     margin: 8
   },
   quantityBox: {
-    width: 56,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',

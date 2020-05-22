@@ -28,7 +28,8 @@
       "bundleIdentifier": "ro.gardenia.gardenia"
     },
     "android": {
-      "package": "ro.gardenia.gardenia"
+      "package": "ro.gardenia.gardenia",
+      "versionCode": 2
     }
   }
 }
