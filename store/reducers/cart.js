@@ -19,12 +19,9 @@ export default (state = initialState, action) => {
       const prodImage = addedProduct.imageUrl;
       
       let newCartItems;
-      // console.log(action.prId);
-      // console.log(addedProduct.id);
       let variationId = action.variationId;
       if (state.items[variationId]) {
         if  (addedProduct.price == prodPrice) {
-          // console.log(addedProduct.price, prodPrice, "same");
           newCartItems = { ...state.items, [variationId]: new CartItem(
             state.items[variationId].quantity + quantity,
             action.prId,
@@ -35,7 +32,6 @@ export default (state = initialState, action) => {
             prodPrice * (state.items[variationId].quantity + quantity)
           )} 
         } else {
-          // console.log(addedProduct.price, prodPrice, "diferit");
           newCartItems = { ...state.items, [variationId]: new CartItem(quantity, action.prId, variationId, prodPrice, prodTitle + " - "  + action.variation, prodImage, prodPrice * quantity)}  
         }
       } else {
@@ -50,10 +46,8 @@ export default (state = initialState, action) => {
     case REMOVE_FROM_CART:
       const selectedCartItem = state.items[action.pid];
       const currentQty = selectedCartItem.quantity;
-      // const currentPrice = selectedCartItem.price;
       let updatedCartItems;
       if (currentQty > 1) {
-        // need to reduce it, not erase it
         const updatedCartItem = new CartItem(
           selectedCartItem.quantity - 1,
           selectedCartItem.productId,
@@ -76,7 +70,6 @@ export default (state = initialState, action) => {
       };
     case ADD_QUANTITY: 
       const selectedItem = state.items[action.prodId];
-      // const currentQtty = selectedCartItem.quantity;
       let updatedQtyItems;
       if (selectedItem) {
         const updatedItem = new CartItem(

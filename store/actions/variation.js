@@ -13,7 +13,6 @@ export const fetchVariations = (productId) => {
         const loadedVariations = [];
         const select = new Variation(-1, 'Selecteaza');
         loadedVariations.push(select);
-        // console.log(data);
     
         for (const key in data) {
           loadedVariations.push(
@@ -24,12 +23,10 @@ export const fetchVariations = (productId) => {
             )
           );
         }
-        // console.log(loadedVariations);
         isLoading = false;
         dispatch({ type: SET_VARIATIONS, variations: loadedVariations });
       })
       .catch(error => {
-        // console.log(error);
         isLoading = false;
       });
         

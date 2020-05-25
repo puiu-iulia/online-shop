@@ -19,7 +19,6 @@ const ProductsList = props => {
         <FlatList
             data={props.listData}
             numColumns={2}
-            // initialNumToRender={props.listData.length}
             keyExtractor={item => item.id}
             renderItem={itemData => (
             <Product
@@ -30,14 +29,6 @@ const ProductsList = props => {
                     selectItemHandler(itemData.item.id, itemData.item.name);
                 }}
             >
-                {/* <Button
-                    color={Colors.primary}
-                    title="Vezi Detalii"
-                    textStyle={{fontFamily: 'montserrat'}}
-                    onPress={() => {
-                        selectItemHandler(itemData.item.id, itemData.item.name);
-                    }}
-                /> */}
             </Product>
             )}
         />

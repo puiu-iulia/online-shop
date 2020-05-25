@@ -3,10 +3,8 @@ import {
   ScrollView,
   View,
   Text,
-  Button,
   Platform,
   StyleSheet,
-  TouchableOpacity
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -18,8 +16,6 @@ import Colors from '../constants/Colors';
 import Card from '../components/Card';
 import { FlatList } from 'react-native-gesture-handler';
 import Logo from '../components/Logo';
-import CustomLinearGradient from '../components/CustomLinearGradient';
-
 
 const OrderDetailsScreen = props => {
   const orderId = props.navigation.getParam('orderId');

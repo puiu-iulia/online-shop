@@ -243,7 +243,6 @@ const styles = StyleSheet.create({
   },
   filtersContainer: {
     maxHeight: 64,
-    // paddingVertical: 32,
     marginTop: 4,
     marginBottom: 8,
     marginRight: 16,
@@ -253,7 +252,6 @@ const styles = StyleSheet.create({
   variationsContainer: {
     flexDirection: 'row',
     height: 40,
-    // width: Dimensions.get('window').width / 3,
     flex: 4,
     marginLeft: 16,
     marginRight: 8,

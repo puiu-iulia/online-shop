@@ -24,11 +24,9 @@ export const signup = (email, password) => {
     await ShopWooCommerceAPI.post('customers', data, { 
       })
       .then((responseData) => {
-        // console.log(responseData);
         dispatch({ type: SIGNUP, userId: responseData.id });
       })
       .catch(error => {
-        // console.log(error);
         const errorResData = error.json();
         let message = errorResData.message;
         throw new Error(message);
@@ -39,7 +37,6 @@ export const signup = (email, password) => {
 export const login = (email, password) => {
   let isSignedIn;
   return async dispatch => {
-    // console.log(password);
     const response = await fetch(
       'https://gardenia.ro/wp-json/jwt-auth/v1/token',
       {
@@ -58,7 +55,6 @@ export const login = (email, password) => {
 
     if (!response.ok) {
       const errorResData = await response.json();
-      // console.log(errorResData);
       let message = errorResData;
       if (errorResData.code === "[jwt_auth] invalid_email" || errorResData.code === "[jwt_auth] incorrect_password") {
         message = "Ai introdus o adresa de email sau o parola gresita";
@@ -76,7 +72,6 @@ export const login = (email, password) => {
 
 export const logout = () => {
   AsyncStorage.removeItem('userData');
-  // console.log('Logged out!');
   return { type: LOGOUT, token: null, userId: null, isSignedIn: false };
 };
 

@@ -17,7 +17,6 @@ const StartupScreen = props => {
 
     const goToWelcome = async () => {
       const userChecks = await AsyncStorage.getItem('userChecks');
-      // console.log(userChecks);
       if (userChecks) {
         tryLogin();
       } else {
@@ -35,7 +34,6 @@ const StartupScreen = props => {
     };
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem('userData'); 
-      // console.log(userData);
       if (!userData) {
         props.navigation.navigate('ProductsOverview');
         return;

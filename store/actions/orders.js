@@ -149,7 +149,6 @@ export const fetchOrders = () => {
           );
         }        
       }
-        // console.log(loadedOrders);
         isLoading = false;
         dispatch({ type: SET_ORDERS, orders: loadedOrders, isLoading: isLoading });
       })

@@ -73,15 +73,6 @@ const UserProfileScreen = props => {
     );
   }
 
-  
-  // if (products === null)  {
-  //   return (
-  //     <View style={styles.centered}>
-  //       <Text>Nu s-au gasit produse. Incercati mai tarziu.</Text>
-  //     </View>
-  //   );
-  // }
-
   if (userError || error) {
     return (
       <View style={styles.centered}>
@@ -179,11 +170,6 @@ const styles = StyleSheet.create({
   },
   dataContainer: {
     flex: 1,
-    // width: '100%',
-    // maxWidth: 340,
-    // minWidth: '90%',
-    // height: '75%',
-    // maxHeight: 380,
     padding: 8,
     margin: 8,
   },

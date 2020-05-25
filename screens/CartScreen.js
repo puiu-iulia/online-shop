@@ -5,12 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import Colors from '../constants/Colors';
 import Logo from '../components/Logo';
 import Cart from '../components/Cart';
-import Card from '../components/Card';
 import * as cartActions from '../store/actions/cart';
-import * as ordersActions from '../store/actions/orders';
 
 const CartScreen = props => {
-  const [isLoading, setIsLoading] = useState(false);
   const cartTotalAmount = useSelector(state => state.cart.totalAmount);
   const cartItems = useSelector(state => {
     const transformedCartItems = [];
@@ -31,7 +28,6 @@ const CartScreen = props => {
   const dispatch = useDispatch();
 
   const sendOrderHandler = async () => {
-    // await dispatch(ordersActions.addOrder(cartItems, cartTotalAmount));
     props.navigation.navigate('Order', {totalAmount: cartTotalAmount});
   }
 

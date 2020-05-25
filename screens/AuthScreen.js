@@ -9,21 +9,6 @@ import * as authActions from '../store/actions/auth';
 import { useTheme } from 'react-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 
-// const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
-
-// const formReducer = (state, action) => {
-//     if (action.type === FORM_INPUT_UPDATE) {
-//       const updatedValues = {
-//         ...state.inputValues,
-//         [action.input]: action.value
-//       }; 
-//       return {
-//         inputValues: updatedValues
-//       };
-//     }
-//     return state;
-// };
-
 const AuthScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
@@ -46,18 +31,7 @@ const AuthScreen = props => {
 
     useEffect(() => {
       getUserCredentials();
-      // console.log(username, userPassword, 'credentials');
     }, [username, userPassword]);
-   
-
-
-    // const [formState, dispatchFormState] = useReducer(formReducer, {
-    //     inputValues: {
-    //       email: username ? username : '',
-    //       password: userPassword ? userPassword : ''
-    //     }
-    // });
-
 
     useEffect(() => {
         if (error) {
@@ -95,17 +69,6 @@ const AuthScreen = props => {
       }
     };
 
-    // const inputChangeHandler = useCallback(
-    //     (inputIdentifier, inputValue ) => {
-    //       dispatchFormState({
-    //         type: FORM_INPUT_UPDATE,
-    //         value: inputValue,
-    //         input: inputIdentifier
-    //       });
-    //     },
-    //     [dispatchFormState]
-    //   );
-
     return (
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
           <ScrollView>
@@ -121,11 +84,9 @@ const AuthScreen = props => {
                             placeholder=" Adresa de E-mail"
                             keyboardType="email-address"
                             value={username}
-                            // email
                             style={styles.input}
                             autoCapitalize="none"
                             errorText="Introdu o adresa de email valida."
-                            // onInputChange={inputChangeHandler}
                             onChangeText={(username) => {
                               setUsername(username);
                             }}
@@ -141,7 +102,6 @@ const AuthScreen = props => {
                             minLength={6}
                             autoCapitalize="none"
                             errorText="Introdu o parola de minim 6 caractere."
-                            // onInputChange={inputChangeHandler}
                             onChangeText={(userPassword) => {
                               setUserPassword(userPassword);
                             }}
@@ -191,7 +151,6 @@ const styles = StyleSheet.create({
     },
     loginContainer: {
         width: '100%',
-        // maxWidth: 600,
         maxHeight: 400,
         padding: 20
     },

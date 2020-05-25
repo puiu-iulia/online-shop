@@ -33,9 +33,6 @@ const Product = props => {
               <Text style={styles.title} numberOfLines={1}>{props.title}</Text>
               <Text style={styles.price}>{props.price} RON</Text>
             </View>
-            {/* <View style={styles.actions}>
-              {props.children}
-            </View> */}
           </View>
         </TouchableCmp>
       </View>
@@ -81,16 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#888',
-  },
-  // actions: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   height: '23%',
-  //   paddingHorizontal: 20,
-  //   marginTop: 2
-  // }
+  }
 });
 
 export default Product;

@@ -21,7 +21,6 @@ const ProductsListScreen = props => {
   const [isSearching, setIsSearching] = useState(false);
   const [category, setCategory] = useState('Toate');
   const products = useSelector(state => state.products.availableProducts);
-  // console.log(products);
   const isLoading = useSelector(state => state.products.isLoading);
   const isCategoryLoading = useSelector(state => state.categories.isCategoryLoading);
   const [allProducts, setAllProducts] = useState(true);
@@ -263,7 +262,6 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   categoryContainer: {
-    // backgroundColor: '#dbe1e1',
     flex: 1,  
     flexDirection: 'row',
     height: 40,
@@ -277,9 +275,6 @@ const styles = StyleSheet.create({
   categoryPicker: {
      width: "64%",
      marginRight: 8
-    // position: 'absolute',
-    // right: 0,
-    // top: -14
   },
   searchContainer: {
     flex: 1,  

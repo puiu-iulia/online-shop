@@ -29,11 +29,9 @@ export const getUser = () => {
                     data[0].shipping.address_1
                 );
                 id = data[0].id;
-                // console.log(user);
                 isLoading = false;
                 dispatch({ type: GET_USER, id: id, user: user, isLoading: isLoading})
             }).catch(error => {
-                // console.log(error);
                 isLoading = false;
             });
         }
@@ -58,11 +56,8 @@ export const updateUser = (billingName, billingEmail, billingPhone, billingCount
             }
         };
         if (userId !== null) {
-            // webhook = `"customers/${userId}"`;
-            // console.log(webhook);
             await ShopWooCommerceAPI.put("customers/" + userId, data)
             .then((response) => {
-                // console.log(response);
                 dispatch({
                     type: UPDATE_USER,
                     pid: userId,
@@ -78,7 +73,6 @@ export const updateUser = (billingName, billingEmail, billingPhone, billingCount
                 })
             })
             .catch(error => {
-                // console.log(error);
             });
         }
     }

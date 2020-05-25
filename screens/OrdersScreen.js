@@ -7,7 +7,6 @@ import { withBadge } from 'react-native-elements';
 import HeaderButton from '../components/HeaderButton';
 import Order from '../components/Order';
 import * as orderActions from '../store/actions/orders';
-import * as userActions from '../store/actions/user';
 import Colors from '../constants/Colors';
 import Logo from '../components/Logo';
 
@@ -31,16 +30,7 @@ const OrdersScreen = props => {
         setError(err.message);
       };
     };
-    // const loadUser = async () => {
-    //   try {
-    //     await dispatch(userActions.getUser());
-    //   } catch (err) {
-    //     setUserError(err.message);
-    //   };
-    // };
-    // loadUser().then(() => {
       loadOrders();
-    // });
   }, [dispatch]);
 
   if (isLoading) {

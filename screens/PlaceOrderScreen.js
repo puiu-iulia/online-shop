@@ -19,7 +19,6 @@ const PlaceOrderScreen = props => {
     const [error, setError] = useState();
     const [county, setCounty] = useState();
     const user = useSelector(state => state.user.user);
-    console.log(user);
     const [billingCounty, setBillingCounty] = useState(user? user.billingCounty : "");
     const [sameBilling, setSameBilling] = useState(true);
     const dispatch = useDispatch();
@@ -115,13 +114,6 @@ const PlaceOrderScreen = props => {
         setIsLoading(false);
       }
     }
-      // if (isLoading) {
-      //   return (
-      //     <View style={styles.centered}>
-      //       <ActivityIndicator size='large' color={Colors.primary} />
-      //     </View>
-      //   );
-      // }
 
     return (
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
@@ -168,7 +160,6 @@ const PlaceOrderScreen = props => {
                             onChangeText={(billingPhone) => {
                               setBillingPhone(billingPhone);
                             }}
-                            // initialValue={(user) ? user.billingPhone : ""}
                         />
                          <View style={styles.countyContainer}>
                           <Text>Judet </Text>
