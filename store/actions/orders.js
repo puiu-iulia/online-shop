@@ -16,7 +16,7 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
     // console.log(userId);
     const date = new Date();
 
-    lineItems = [];
+    let lineItems = [];
     for (const key in cartItems) {
       lineItems.push({
         product_id: cartItems[key].id,
@@ -64,7 +64,7 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
 
     })
     .then((response) => {
-      // console.log(response);
+      console.log(response);
       isLoading = false;
       dispatch({
         type: ADD_ORDER,
