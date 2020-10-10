@@ -1,9 +1,10 @@
-import { ADD_ORDER, SET_ORDERS, FILTER_ORDERS } from '../actions/orders';
+import { ADD_ORDER, SET_ORDERS, SET_META } from '../actions/orders';
 import Order from '../../models/order';
 
 const initialState = {
   isLoading: true,
   // orders: []
+  meta: {}
 };
 
 export default (state = initialState, action) => {
@@ -34,6 +35,11 @@ export default (state = initialState, action) => {
     case SET_ORDERS:
       return {
         orders: action.orders
+      };
+    case SET_META:
+      return {
+        ...state,
+        meta: action.meta
       };
   }
 

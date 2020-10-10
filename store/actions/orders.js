@@ -6,6 +6,7 @@ import moment from 'moment';
 export const ADD_ORDER = 'ADD_ORDER';
 export const SET_ORDERS = 'SET_ORDERS';
 export const FILTER_ORDERS = 'FILTER_ORDERS';
+export const SET_META = 'SET_META';
 
 export const addOrder = (cartItems, totalAmount, billingName, billingEmail, billingPhone, billingCounty, billingCity, billingAddress, notes, shippingName, shippingPhone, shippingCounty, shippingCity, shippingAddress) => {
   let isLoading;
@@ -64,7 +65,17 @@ export const addOrder = (cartItems, totalAmount, billingName, billingEmail, bill
 
     })
     .then((response) => {
-      console.log(response);
+      if(response.gardenia_meta != null) {
+        const meta_data = {
+          number: response.number,
+          total: response.total,
+          account_number: response.gardenia_meta[0].account_number,
+          bank_name: response.gardenia_meta[0].bank_name,
+          iban: response.gardenia_meta[0].iban,
+          suplier_email: response.gardenia_meta[0].suplier_email
+        }
+        dispatch({type: SET_META, meta: meta_data});
+      };
       isLoading = false;
       dispatch({
         type: ADD_ORDER,
