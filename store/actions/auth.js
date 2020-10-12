@@ -24,11 +24,11 @@ export const signup = (email, password) => {
     await ShopWooCommerceAPI.post('customers', data, { 
       })
       .then((responseData) => {
-        console.log(responseData);
+        console.log("response auth", responseData);
         dispatch({ type: SIGNUP, userId: responseData.id });
       })
       .catch(error => {
-        console.log(error);
+        console.log("error auth", error);
         const errorResData = error.json();
         let message = errorResData.message;
         throw new Error(message);

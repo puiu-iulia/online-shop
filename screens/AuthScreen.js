@@ -1,7 +1,6 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
 import { Image, Text, StyleSheet, View, Dimensions, KeyboardAvoidingView, Button, ActivityIndicator, Alert, } from 'react-native';
 import { useDispatch } from 'react-redux';
-import Toast from 'react-native-simple-toast';
 
 import Input from '../components/Input';
 import Card from '../components/Card';

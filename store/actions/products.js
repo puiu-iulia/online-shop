@@ -14,7 +14,7 @@ export const fetchProducts = () => {
     })
     .then(data => {
       const loadedProducts = [];
-      // console.log(loadedProducts);
+      console.log("Products", data);
   
       for (const key in data) {
         const loadedCategories = [];
